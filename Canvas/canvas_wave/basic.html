@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+<canvas id="canvas_wave" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script>
+    (function(){
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 400;
+        canvas.height = 300;
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height/2);
+        var x,y;
+        for(var i =0;i<360;i=i+10){
+            x = i;
+            y = Math.sin(i * Math.PI /180) * 50 + canvas.height/2;
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+    })();
+    (function(){
+        var canvas = document.getElementById('canvas_wave');
+        var ctx = canvas.getContext('2d');
+        ctx.lineJoin = 'round';
+        canvas.width = 400;
+        canvas.height = 300;
+        var x=0,y=0;
+        var step = 0;
+        var draw = function(step){
+            ctx.clearRect(0,0,400,300);
+            ctx.save();
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for(var i =0;i< 360;i=i+10){
+                x =  i;
+                y = Math.sin((step + i) * Math.PI /180) * 50 + canvas.height/2;
+                ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            setTimeout(function(){
+                step = step + 0.5;
+                x = 0;
+                draw(step);
+            },1);
+        }
+        ctx.save();
+        draw(x);
+
+    })();
+
+
+
+</script>
+</html>
