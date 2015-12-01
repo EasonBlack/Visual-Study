@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="400" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.lineJoin = 'round';
+    canvas.width = 600;
+    canvas.height = 400;
+    var torch = {
+        x : canvas.width/2,
+        y : 0
+    }
+    var center = {
+        x : 100,
+        y : 200,
+        w: 150,
+        h: 50
+    }
+    draw(center.x,center.y,center.w, center.h);
+    var step = 0;
+    $(window).on('keydown',function(e){
+        if ( e.keyCode == 39 ) {   //right
+            center.x = center.x + 10;
+        }
+        if ( e.keyCode == 37 ) {   //left
+            center.x = center.x - 10;
+        }
+        if ( e.keyCode == 38 ) {   //up
+            center.y = center.y - 10;
+            center.w -= 5;
+            center.h -=1;
+        }
+        if ( e.keyCode == 40 ) {   //down
+            center.y = center.y + 10;
+            center.w += 5;
+            center.h +=1;
+        }
+        draw(center.x,center.y, center.w, center.h);
+    });
+
+
+    function draw(centerX, centerY, width, height) {
+        ctx.clearRect(0,0,600,400);
+        drawEllipse(centerX, centerY, width, height);
+        drawLight(centerX, centerY, width, height);
+    }
+
+    function drawEllipse(centerX, centerY, width, height) {
+
+        ctx.beginPath();
+        ctx.moveTo(centerX - width/2, centerY); // A1
+        ctx.bezierCurveTo(
+                centerX - width/2, centerY + height/2, // C1
+                centerX + width/2, centerY + height/2, // C2
+                centerX+ width/2, centerY); // A2
+        ctx.bezierCurveTo(
+                centerX + width/2, centerY - height/2, // C3
+                centerX - width/2, centerY - height/2, // C4
+                centerX - width/2, centerY); // A1
+
+        ctx.fillStyle = "#FFFF99";
+        ctx.fill();
+        ctx.closePath();
+
+
+    }
+    function drawLight(centerX, centerY, width, height) {
+        ctx.beginPath();
+        ctx.moveTo(torch.x, torch.y);
+        ctx.lineTo(centerX - width/2, centerY);
+        ctx.bezierCurveTo(
+                centerX - width/2, centerY - height/2,
+                centerX + width/2, centerY - height/2,
+                centerX+ width/2, centerY);
+        ctx.lineTo(torch.x, torch.y);
+        ctx.fillStyle = "#FFFFCC";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+
+</script>
+</html>
