@@ -24,6 +24,13 @@
         w: 150,
         h: 50
     }
+
+    var gradient = ctx.createLinearGradient(0,0,0,center.y);
+    gradient.addColorStop(0.1, "transparent");
+    gradient.addColorStop(0.1, "#FFFFCC");
+    gradient.addColorStop(0.9, "#FFFF99");
+
+
     draw(center.x,center.y,center.w, center.h);
     var step = 0;
     $(window).on('keydown',function(e){
@@ -66,7 +73,7 @@
                 centerX - width/2, centerY - height/2, // C4
                 centerX - width/2, centerY); // A1
 
-        ctx.fillStyle = "#FFFF99";
+        ctx.fillStyle = "#faf100";
         ctx.fill();
         ctx.closePath();
 
@@ -81,7 +88,7 @@
                 centerX + width/2, centerY - height/2,
                 centerX+ width/2, centerY);
         ctx.lineTo(torch.x, torch.y);
-        ctx.fillStyle = "#FFFFCC";
+        ctx.fillStyle =gradient; //"#FFFFCC";
         ctx.fill();
         ctx.closePath();
     }
