@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="800" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "skyblue";
+    ctx.strokeStyle = "black";
+    var canvasOffset = $("#canvas").offset();
+
+    var falls = [];
+
+    var friend = {
+        w: 30,
+        h: 30,
+        color: 'green'
+    }
+
+    var enemy = {
+        w: 30,
+        h: 30,
+        color: 'black'
+    }
+    var step =0;
+    draw();
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if(step%120 == 0) {
+            var _type = Math.floor(Math.random()*2);
+            if(_type) {  //enemy
+                falls.push(createFalls(enemy));
+            } else {    //friend
+                falls.push(createFalls(friend));
+            }
+        }
+
+
+        for(var i =0;i<falls.length;i++){
+            var _o = falls[i];
+            ctx.fillStyle =  _o.color;
+            ctx.fillRect(_o.x,_o.y,_o.w,_o.h);
+            falls[i].y += 1;
+        }
+
+        for(var i=falls.length-1;i>0;i--){
+            if(falls[i].y>=canvas.height) {
+                falls.splice(i, 1);
+            }
+        }
+
+        step++;
+        requestAnimationFrame(draw);
+    }
+
+    function createFalls(obj) {
+        var _x = Math.random()*500+50;
+        var _y = 5;
+        var _o = $.extend({}, obj);
+        _o.x = _x;
+        _o.y = _y;
+        return _o;
+    }
+
+
+
+
+</script>
+</html>

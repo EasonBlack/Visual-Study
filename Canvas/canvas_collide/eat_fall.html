@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="800" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "skyblue";
+    var canvasOffset = $("#canvas").offset();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+    var isDown = false;
+
+    var falls = [];
+
+    var startX;
+    var startY;
+
+    var user = {
+        x: 50,
+        y: canvas.height - 50,
+        w: 30,
+        h: 30,
+        color: '#00f'
+    }
+
+    var friend = {
+        w: 30,
+        h: 30,
+        color: 'green'
+    }
+
+    var enemy = {
+        w: 30,
+        h: 30,
+        color: 'black'
+    }
+    var requestId;
+
+    draw();
+    var step = 0;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.fillStyle = user.color;
+        ctx.fillRect(user.x,user.y,user.w,user.h);
+
+        if(step%120 == 0) {
+            var _type = Math.floor(Math.random()*2)? falls.push(createFalls(enemy)) : falls.push(createFalls(friend))
+        }
+
+        for(var i=falls.length-1;i>=0;i--){
+            var _o = falls[i];
+            if(_o.y>=canvas.height) {
+                falls.splice(i, 1);
+            } else {
+                ctx.fillStyle =  _o.color;
+                ctx.fillRect(_o.x,_o.y,_o.w,_o.h);
+                falls[i].y += 1;
+            }
+            if (collides(user,_o)) {
+                if(_o.color == 'green') {
+                    falls.splice(i, 1);
+                } else {
+                    cancelAnimationFrame(requestId);
+                    return false;
+                }
+            }
+        }
+
+        step++;
+        requestId = requestAnimationFrame(draw);
+    }
+
+
+    function collides(a, b) {
+        return a.x < b.x + b.w &&
+                a.x + a.w > b.x &&
+                a.y < b.y + b.h &&
+                a.y + a.h > b.y;
+    }
+
+    function handleMouseDown(e){
+        e.preventDefault();
+        startX = parseInt(e.clientX - offsetX);
+        startY = parseInt(e.clientY - offsetY);
+        // Put your mousedown stuff here
+        var dx = startX - user.x;
+        var dy = startY - user.y;
+        var _r = user.w > user.h ? user.h : user.w;
+        isDown = (dx * dx + dy * dy < _r * _r);
+    }
+    function handleMouseMove(e){
+        e.preventDefault();
+        if (!isDown) {
+            return;
+        }
+
+        mouseX = parseInt(e.clientX - offsetX);
+        mouseY = parseInt(e.clientY - offsetY);
+        var dx = mouseX - startX;
+        var dy = mouseY - startY;
+        startX = mouseX;
+        startY = mouseY;
+        user.x += dx;
+        user.y += dy;
+
+        for(var i=falls.length-1;i>=0;i--){
+            var _o = falls[i];
+            if (collides(user, _o)) {
+               if(_o.color == 'green') {
+                   falls.splice(i, 1);
+               } else {
+                   cancelAnimationFrame(requestId);
+                   return false;
+               }
+            }
+        }
+
+    }
+    function handleMouseUp(e){
+        e.preventDefault();
+        isDown = false;
+    }
+    function handleMouseOut(e){
+        e.preventDefault();
+        isDown = false;
+    }
+
+    $("#canvas").mousedown(function (e) {
+        handleMouseDown(e);
+    });
+    $("#canvas").mousemove(function (e) {
+        handleMouseMove(e);
+    });
+    $("#canvas").mouseup(function (e) {
+        handleMouseUp(e);
+    });
+    $("#canvas").mouseout(function (e) {
+        handleMouseOut(e);
+    });
+
+    function createFalls(obj) {
+        var _x = Math.random()*500+50;
+        var _y = 5;
+        var _o = $.extend({}, obj);
+        _o.x = _x;
+        _o.y = _y;
+        return _o;
+    }
+
+</script>
+</html>

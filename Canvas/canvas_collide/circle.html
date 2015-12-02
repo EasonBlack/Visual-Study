@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "skyblue";
+    ctx.strokeStyle = "black";
+    var canvasOffset = $("#canvas").offset();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+    var isDown = false;
+
+    var startX;
+    var startY;
+
+    var circle1 ={
+        x: 50,
+        y: 50,
+        r: 40
+    }
+    var circle2 = {
+        x: 300,
+        y: 150,
+        r: 100
+    }
+
+    draw();
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(circle1.x,circle1.y,circle1.r, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(circle2.x,circle2.y,circle2.r, 0, 2*Math.PI);
+        ctx.stroke();
+    }
+
+    function collides(a, b) {
+        var distX = a.x - b.x;
+        var distY = a.y - b.y;
+        return (distX * distX) + (distY * distY) < (a.r + b.r)*(a.r + b.r);
+
+    }
+
+    function handleMouseDown(e){
+        e.preventDefault();
+        startX = parseInt(e.clientX - offsetX);
+        startY = parseInt(e.clientY - offsetY);
+
+        // Put your mousedown stuff here
+        var dx = startX - circle1.x;
+        var dy = startY - circle1.y;
+
+        isDown = (dx * dx + dy * dy < circle1.r * circle1.r);
+    }
+    function handleMouseMove(e){
+        e.preventDefault();
+        // Put your mousemove stuff here
+        if (!isDown) {
+            return;
+        }
+
+        mouseX = parseInt(e.clientX - offsetX);
+        mouseY = parseInt(e.clientY - offsetY);
+        var dx = mouseX - startX;
+        var dy = mouseY - startY;
+        startX = mouseX;
+        startY = mouseY;
+        circle1.x += dx;
+        circle1.y += dy;
+
+        if (collides(circle1, circle2)) {
+            ctx.fillStyle = "red";
+        } else {
+            ctx.fillStyle = "skyblue";
+        }
+
+        draw();
+    }
+    function handleMouseUp(e){
+        e.preventDefault();
+        isDown = false;
+    }
+    function handleMouseOut(e){
+        e.preventDefault();
+        isDown = false;
+    }
+
+    $("#canvas").mousedown(function (e) {
+        handleMouseDown(e);
+    });
+    $("#canvas").mousemove(function (e) {
+        handleMouseMove(e);
+    });
+    $("#canvas").mouseup(function (e) {
+        handleMouseUp(e);
+    });
+    $("#canvas").mouseout(function (e) {
+        handleMouseOut(e);
+    });
+</script>
+</html>
