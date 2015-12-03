@@ -58,6 +58,9 @@
     function createBullet() {
         for(var i =0;i<bullets.length;i++){
             var _b = bullets[i];
+//            x1=x0cosn-y0sinn
+//            y1=x0sinn+y0cosn
+
             _b.x = _b.x + Math.sin((360-_b.du) * Math.PI / 180)*_b.speed;
             _b.y = _b.y + Math.cos((360-_b.du) * Math.PI / 180)*_b.speed;
             ctx.fillStyle=_b.color;
@@ -79,10 +82,10 @@
             rect1.y = rect1.y + 2;
         }
         if (keys[65]) {   //a
-            rect1.du = rect1.du - 2;
+            rect1.du = rect1.du + 2;
         }
         if (keys[68]) {   //d
-            rect1.du = rect1.du + 2;
+            rect1.du = rect1.du - 2;
         }
     }
 
@@ -90,8 +93,15 @@
         if(e.keyCode == 32){
             var _bullet = $.extend({},bullet);
             _bullet.du = rect1.du;
-            _bullet.x = rect1.x;
-            _bullet.y = rect1.y;
+            var _dx2 = rect1.w*0.5;
+            var _dy2 = rect1.h*0.5;
+            var _x1 = rect1.x+rect1.w*0.5;
+            var _y1 = rect1.y+rect1.h*0.5;
+            var _a = (rect1.du) * Math.PI / 180;
+            _bullet.x = _x1 + _dx2*Math.cos(_a) - _dy2*Math.sin(_a);
+            _bullet.y = _y1 + _dx2*Math.sin(_a) + _dy2*Math.cos(_a);
+//            _bullet.x = rect1.x;
+//            _bullet.y = rect1.y;
             bullets.push(_bullet);
         } else {
             keys[e.keyCode] = true;
