@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "skyblue";
+    var canvasOffset = $("#canvas").offset();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+    var circle1 ={
+        x: 50,
+        y: 50,
+        r: 20,
+        speed: 3
+    }
+
+    draw();
+    // Math.atan(a/b)*180/Math.PI;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        if(circle1.du){
+            var _du = (90 - circle1.du)*Math.PI/180;
+            circle1.x = circle1.x + Math.cos(_du)*circle1.speed;
+            circle1.y = circle1.y + Math.sin(_du)*circle1.speed;
+        }
+        ctx.arc(circle1.x,circle1.y,circle1.r, 0, 2*Math.PI);
+        ctx.fill();
+
+        requestAnimationFrame(draw);
+    }
+
+
+    function handleMouseDown(e){
+        e.preventDefault();
+        startX = parseInt(e.clientX - offsetX);
+        startY = parseInt(e.clientY - offsetY);
+        // Put your mousedown stuff here
+        var dx = startX - circle1.x;
+        var dy = startY - circle1.y;
+
+        isDown = (dx * dx + dy * dy < circle1.r * circle1.r);
+
+        if(isDown){
+            var _du = Math.atan2(circle1.x -startX, circle1.y-startY);
+            circle1.du = _du*180/Math.PI;
+        }
+    }
+
+    $("#canvas").mousedown(function (e) {
+        handleMouseDown(e);
+    });
+
+</script>
+</html>
