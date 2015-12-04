@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var user = {
+        x:50,
+        y:50,
+        r:15,
+        color: 'skyblue',
+        speed: 0
+    }
+
+    var leg = {
+        x: user.x +10,
+        y: user.y,
+        w: 2,
+        default_h: 11,
+        h: 11,
+        h_all: 18,
+        color: 'green',
+        showLeg : false
+    }
+    var isShowLeg = false;
+
+    draw();
+
+    function draw() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.fillStyle = leg.color;
+        if(isShowLeg) {
+            showLeg(leg);
+        }
+
+        ctx.fillRect(leg.x, leg.y, leg.w, leg.h);
+        ctx.fillStyle =  user.color;
+        ctx.arc(user.x,user.y,user.r, 0, 2*Math.PI);
+        ctx.fill();
+
+        requestAnimationFrame(draw);
+    }
+
+    function showLeg(leg) {
+            if(leg.showLeg && leg.h<leg.h_all) {
+                leg.h += 1;
+            } else  {
+                leg.showLeg = false;
+                leg.h -= 1;
+            }
+
+            if(!leg.showLeg && leg.h == leg.default_h){
+                isShowLeg =  false;
+            }
+    }
+
+
+    document.body.addEventListener("keydown", function (e) {
+        if(e.keyCode == 32) {
+            leg.showLeg = true;
+            isShowLeg = true;
+        }
+    });
+</script>
+</html>

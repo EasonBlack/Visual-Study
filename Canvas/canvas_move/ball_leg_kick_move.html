@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="module/ball.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var keys = [];
+
+    var ballOptions ={
+        x: 150,
+        y: 150,
+        r: 10,
+        color: 'grey'
+    }
+
+    var user = {
+        x:50,
+        y:50,
+        r:15,
+        color: 'skyblue',
+        speed: 0,
+        angle : 0
+    }
+
+    var leg = {
+        x: user.x+10,
+        y: user.y,
+        w: 2,
+        default_h: 15,
+        h: 15,
+        h_all: 32,
+        color: 'green',
+        showLeg : false
+    }
+    var isShowLeg = false;
+
+    var ball =  new Ball(ctx, ballOptions);
+    draw();
+
+    function draw() {
+
+        updatePosition(user);
+        updateLeg();
+
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+        ctx.beginPath();
+        ctx.fillStyle = leg.color;
+        if(isShowLeg) {
+            showLeg(leg);
+        }
+        ctx.save();
+        ctx.translate(user.x, user.y);
+        ctx.rotate(user.angle * Math.PI / 180);
+        ctx.fillRect(leg.x - user.x, leg.y-user.y, leg.w, leg.h);
+        ctx.restore();
+
+        ctx.fillStyle =  user.color;
+        ctx.arc(user.x,user.y,user.r, 0, 2*Math.PI);
+        ctx.fill();
+
+        if(collides(user, ball)){
+            ball.angle = getAngel(user, ball);
+            ball.speed += 2;
+        }
+        if(leg_collides(leg, ball)){
+            ball.angle = getAngel(user, ball);
+            ball.speed += 3;
+        }
+        ball.draw();
+
+        requestAnimationFrame(draw);
+    }
+
+    function getAngel(user, ball){
+        var _du = Math.atan2( ball.y-user.y , ball.x -user.x);
+        return  _du*180/Math.PI;
+    }
+
+    function collides(a, b) {
+        var distX = a.x - b.x;
+        var distY = a.y - b.y;
+        return (distX * distX) + (distY * distY) < (a.r + b.r)*(a.r + b.r);
+    }
+
+    function leg_collides(rect, c) {
+        var _x, _y;
+        if(user.angle){
+            var alpha = -user.angle* Math.PI/180;
+            _x = Math.cos(alpha) * (c.x - user.x) - Math.sin(alpha) * (c.y - user.y) + user.x;
+            _y = Math.sin(alpha) * (c.x - user.x) + Math.cos(alpha) * (c.y - user.y) + user.y;
+        } else {
+            _x = c.x;
+            _y = c.y;
+        }
+
+        var distX = Math.abs(_x - rect.x-rect.w/2);
+        var distY = Math.abs(_y - rect.y-rect.h/2);
+
+        if (distX > (rect.w/2 + c.r)) { return false; }
+        if (distY > (rect.h/2 + c.r)) { return false; }
+
+        if (distX <= (rect.w/2)) { return true; }
+        if (distY <= (rect.h/2)) { return true; }
+
+        var dx=distX-rect.w/2;
+        var dy=distY-rect.h/2;
+        return (dx*dx+dy*dy<=(c.r*c.r));
+    }
+
+    function showLeg(leg) {
+        if(leg.showLeg && leg.h<leg.h_all) {
+            leg.h += 1;
+        } else  {
+            leg.showLeg = false;
+            leg.h -= 1;
+        }
+
+        if(!leg.showLeg && leg.h == leg.default_h){
+            isShowLeg =  false;
+        }
+    }
+
+    function updatePosition(obj) {
+        if (keys[39]) {
+            obj.x = obj.x + 2;
+        }
+        if (keys[37]) {
+            obj.x = obj.x - 2;
+        }
+        if (keys[38]) {   //up
+            obj.y = obj.y - 2;
+        }
+        if (keys[40]) {   //down
+            obj.y = obj.y + 2;
+        }
+        if (keys[65]) {   //a
+            obj.angle = obj.angle + 2;
+        }
+        if (keys[68]) {   //d
+            obj.angle = obj.angle - 2;
+        }
+
+    }
+
+    function updateLeg() {
+        leg.x = user.x+10;
+        leg.y = user.y ;
+    }
+
+    document.body.addEventListener("keydown", function (e) {
+        if(e.keyCode == 32) {
+            leg.showLeg = true;
+            isShowLeg = true;
+        } else {
+            keys[e.keyCode] = true;
+        }
+
+    });
+    document.body.addEventListener("keyup", function (e) {
+        keys[e.keyCode] = false;
+    });
+
+
+
+</script>
+</html>

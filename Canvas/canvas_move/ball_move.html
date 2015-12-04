@@ -28,10 +28,14 @@
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
-        if(circle1.du){
+        if(circle1.du && circle1.speed >0){
             var _du = (90 - circle1.du)*Math.PI/180;
             circle1.x = circle1.x + Math.cos(_du)*circle1.speed;
             circle1.y = circle1.y + Math.sin(_du)*circle1.speed;
+            circle1.speed -= 0.1;
+        } else {
+            circle1.du =  null;
+            circle1.speed = 3
         }
         ctx.arc(circle1.x,circle1.y,circle1.r, 0, 2*Math.PI);
         ctx.fill();

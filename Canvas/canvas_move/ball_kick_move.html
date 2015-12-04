@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="module/ball.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var keys = [];
+
+    var ballOptions ={
+        x: 150,
+        y: 150,
+        r: 10,
+        color: 'grey'
+    }
+
+    var user = {
+        x:50,
+        y:50,
+        r:15,
+        color: 'skyblue',
+        speed: 0
+    }
+
+    var ball =  new Ball(ctx, ballOptions);
+    draw();
+
+    function draw() {
+
+        updatePosition(user);
+
+        if(collides(user, ball)){
+            ball.angle = getAngel(user, ball);
+            ball.speed += 2;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ball.draw();
+
+        ctx.beginPath();
+        ctx.fillStyle =  user.color;
+        ctx.arc(user.x,user.y,user.r, 0, 2*Math.PI);
+        ctx.fill();
+
+
+
+
+        requestAnimationFrame(draw);
+    }
+
+    function getAngel(user, ball){
+        var _du = Math.atan2( ball.y-user.y , ball.x -user.x);
+        return  _du*180/Math.PI;
+    }
+
+    function collides(a, b) {
+        var distX = a.x - b.x;
+        var distY = a.y - b.y;
+        return (distX * distX) + (distY * distY) < (a.r + b.r)*(a.r + b.r);
+    }
+
+    function updatePosition(obj) {
+        if (keys[39]) {
+            obj.x = obj.x + 2;
+        }
+        if (keys[37]) {
+            obj.x = obj.x - 2;
+        }
+        if (keys[38]) {   //up
+            obj.y = obj.y - 2;
+        }
+        if (keys[40]) {   //down
+            obj.y = obj.y + 2;
+        }
+
+    }
+
+    document.body.addEventListener("keydown", function (e) {
+        keys[e.keyCode] = true;
+    });
+    document.body.addEventListener("keyup", function (e) {
+        keys[e.keyCode] = false;
+    });
+
+
+
+</script>
+</html>

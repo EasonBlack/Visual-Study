@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script>
+    (function(){
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.strokeStyle = '#00f';
+        var _angle = 30;
+        var _rangle = 30*Math.PI/180;
+        var x1=150,y1=150,x2=300,y2=150;
+        var r=x2-x1;
+        var x3,y3;
+        x3 = r*Math.cos(_rangle)+x1;
+        y3 = r*Math.sin(_rangle)+y1;
+
+
+
+        draw();
+
+        function draw() {
+            ctx.beginPath();
+            ctx.moveTo(x1,y1);
+            ctx.lineTo(x2,y2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x1,y1);
+            ctx.lineTo(x3,y3);
+            ctx.stroke();
+        }
+    })()
+</script>
+</html>
