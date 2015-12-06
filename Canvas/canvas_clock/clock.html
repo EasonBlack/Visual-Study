@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="300" height="300" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="clock.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.strokeStyle = '#333333';
+    console.log(ctx);
+    var opts = {
+        outRadius: 150,
+        color: 'steelblue'
+    }
+    var clock = new Clock(ctx, opts);
+
+
+    setInterval(function(){
+        clock.draw();
+    },1000)
+
+</script>
+</html>
