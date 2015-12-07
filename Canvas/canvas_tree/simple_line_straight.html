@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="800" height="600" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="../../canvas_module/canvas.tree.rectangular.handle.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var rect1Options = {
+        x: 10,
+        y: 20,
+        w: 200,
+        h: 50,
+        fillColor: 'steelblue',
+        strokeColor: '#CCCCCC',
+        element : '#canvas',
+        isLineStraight: true,
+        text: 'Father'
+    }
+    var rect2Options = {
+        x: 10,
+        y: 120,
+        w: 200,
+        h: 50,
+        fillColor: '#99CCCC',
+        strokeColor: '#CCCCCC',
+        element : '#canvas',
+        text: 'Child'
+    }
+
+    var rect3Options = {
+        x: 220,
+        y: 120,
+        w: 200,
+        h: 50,
+        fillColor: '#FF6666',
+        strokeColor: '#CCCCCC',
+        element : '#canvas',
+        text: 'Child'
+    }
+
+    var rect4Options = {
+        x: 20,
+        y: 320,
+        w: 200,
+        h: 50,
+        fillColor: '#006633',
+        strokeColor: '#CCCCCC',
+        element : '#canvas',
+        text: 'GrandChild'
+    }
+
+    var rect5Options = {
+        x: 220,
+        y: 320,
+        w: 200,
+        h: 50,
+        fillColor: '#6666CC',
+        strokeColor: '#CCCCCC',
+        element : '#canvas',
+        text: 'GrandChild'
+    }
+
+    var rect1 = new Rectangular(ctx, rect1Options);
+    var rect2 = new Rectangular(ctx, rect2Options);
+    var rect3 = new Rectangular(ctx, rect3Options);
+    var rect4 = new Rectangular(ctx, rect4Options);
+    var rect5 = new Rectangular(ctx, rect5Options);
+    draw();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        rect1.draw();
+        rect2.draw(); rect3.draw();
+        rect4.draw(); rect5.draw();
+        rect1.setChildren([rect2,rect3]);
+        rect2.setChildren([rect4,rect5]);
+        requestAnimationFrame(draw);
+    }
+
+
+
+
+
+</script>
+</html>
