@@ -5,58 +5,56 @@
     <title></title>
 </head>
 <body>
-<canvas id="canvas" width="800" height="600" style="border:1px solid gainsboro" ></canvas>
+<canvas id="canvas" width="420" height="420" style="border:1px solid steelblue" ></canvas>
 </body>
 <script src="../../vendor/jquery.min.js"></script>
-<script src="../../canvas_module/canvas.tree.rectangular.handle.js"></script>
+<script src="../../canvas_module/canvas.grid.js"></script>
+<script src="../../canvas_module/canvas.grid.rectangular.js"></script>
 <script>
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
 
+    var gridOptions = {
+        x: 10,
+        y: 10,
+        w: 50,
+        strokeColor: '#CCCCCC',
+    }
+
     var rect1Options = {
         x: 10,
-        y: 20,
-        w: 200,
+        y: 10,
+        w: 50,
         h: 50,
-        fillColor: 'steelblue',
+        fillColor: '#009966',
         strokeColor: '#CCCCCC',
         element : '#canvas'
     }
-
     var rect2Options = {
-        x: 10,
-        y: 120,
-        w: 200,
+        x: 60,
+        y: 10,
+        w: 50,
         h: 50,
-        fillColor: '#99CCCC',
+        fillColor: '#336699',
         strokeColor: '#CCCCCC',
         element : '#canvas'
     }
-
-    var rect3Options = {
-        x: 220,
-        y: 120,
-        w: 200,
-        h: 50,
-        fillColor: '#FF6666',
-        strokeColor: '#CCCCCC',
-        element : '#canvas'
-    }
+    var grid = new Grid(ctx, gridOptions);
 
     var rect1 = new Rectangular(ctx, rect1Options);
     var rect2 = new Rectangular(ctx, rect2Options);
-    var rect3 = new Rectangular(ctx, rect3Options);
+
     draw();
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        rect1.draw();
-        rect2.draw(); rect3.draw();
-        rect1.setChildren([rect2,rect3]);
+        var boxes = [];
+        grid.draw();
+        boxes = grid.getBoxes();
+        rect1.draw(boxes);
+        rect2.draw(boxes);
+
         requestAnimationFrame(draw);
     }
-
-
-
 
 
 </script>
