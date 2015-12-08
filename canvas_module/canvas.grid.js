@@ -4,10 +4,14 @@ var Grid = function(ctx, options){
     this.strokeStyle= options.strokeStyle;
     this.width = ctx.canvas.width;
     this.height = ctx.canvas.height;
+    this.element = options.element;
     this.w = options.w;
     this.c = ctx;
     this.c.lineWidth = 1;
     this.boxes = [];
+
+    this.c.lineWidth= 1;
+    this.c.strokeStyle = this.strokeStyle;
 }
 
 Grid.prototype.draw =  function() {
@@ -60,3 +64,6 @@ Grid.prototype.setBoxes =  function() {
 Grid.prototype.getBoxes = function() {
     return this.boxes;
 }
+
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420" style="border:1px solid steelblue" ></canvas>
+<canvas id="buildingCanvas" width="120" height="420" style="border:1px solid steelblue" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="../../canvas_module/canvas.grid.js"></script>
+<script src="../../canvas_module/canvas.grid.building.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var buildingCanvas = document.getElementById('buildingCanvas');
+    var buildingCtx = buildingCanvas.getContext('2d');
+
+    var gridOptions = {x: 10, y: 10, w: 50, strokeStyle: 'steelblue', element: '#canvas'}
+    var grid = new Grid(ctx, gridOptions);
+
+    var builds=[
+        {w: 100, h: 50, fillStyle: '#99CC66', strokeStyle: '#cccccc'},
+        {w: 100, h: 100, fillStyle: '#FF6666', strokeStyle: '#cccccc'},
+    ];
+    var buildingOptions = {x:10,y:5, ystep: 5, element: '#buildingCanvas'};
+    var buildings = new Buildings(buildingCtx, buildingOptions, builds);
+
+    draw();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        buildingCtx.clearRect(0, 0, buildingCanvas.width, buildingCanvas.height);
+        var boxes = [];
+        grid.draw();
+        boxes = grid.getBoxes();
+        buildings.draw();
+
+        requestAnimationFrame(draw);
+    }
+
+
+</script>
+</html>
