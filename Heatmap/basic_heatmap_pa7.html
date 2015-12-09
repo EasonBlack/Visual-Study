@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container {
+            width:400px;
+            height:500px;
+
+        }
+        #container2 {
+            width:400px;
+            height:500px;
+
+        }
+    </style>
+</head>
+<body>
+  <div id="container">
+      <div>Hello World</div>
+  </div>
+  <div id="container2">
+      <div>Hello World</div>
+  </div>
+</body>
+<script src="../vendor/heatmap.js"></script>
+<script>
+    var heatmapInstance = h337.create({
+        container: document.querySelector('#container')
+    });
+
+    var data = {
+        max: 30,
+        data: [
+            {x: 100,y: 100,value:19, radius: 10},
+            {x: 150,y: 120,value:5,  radius: 70},
+            {x: 250,y: 220,value:5,  radius: 270},
+        ]
+    };
+    heatmapInstance.setData(data);
+
+    var heatmapInstance2 = h337.create({
+        container: document.querySelector('#container2')
+    });
+
+    var data2 = {
+        max: 5,
+        data: [
+            {x: 100,y: 100,value:19, radius: 10},
+            {x: 150,y: 120,value:5,  radius: 70},
+            {x: 250,y: 220,value:5,  radius: 270},
+        ]
+    };
+    heatmapInstance2.setData(data2);
+</script>
+</html>
