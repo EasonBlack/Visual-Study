@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #d1 {
+            width:400px;
+            height:300px;
+            background-image: url('gradient.400_300.png');
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div id="d1">
+    <canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</div>
+
+<div id="d2">
+    <canvas id="canvas2" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</div>
+</body>
+<script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    var gradient = ctx.createRadialGradient(200,150,10,200,150,300);
+    gradient.addColorStop(0,"rgba(255,0,0,0.3)");
+    gradient.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0,0,400,300);
+
+
+    var canvas2 = document.getElementById("canvas2");
+    var ctx2 = canvas2.getContext("2d");
+
+    var gradient2 = ctx2.createLinearGradient(0,0,400,0);
+    gradient2.addColorStop(0,"rgba(255,0,0,0.3)");
+    gradient2.addColorStop(1,'rgba(0,0,0,0)');
+    ctx2.fillStyle = gradient2;
+    ctx2 .fillRect(0,0,400,300);
+
+
+
+
+</script>
+</html>
