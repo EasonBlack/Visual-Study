@@ -5,6 +5,7 @@ var Buildings = function(ctx,options, bs){
     this.y = options.y;
     this.element = options.element;
     this.ystep = options.ystep;
+    this.targetBuilding;
     for(var i = 0,ilen=bs.length;i<ilen;i++){
         var _options = bs[i];
         _options.x = this.x;
@@ -50,17 +51,20 @@ Buildings.prototype.handleMouseDown = function(e){
 
         if(_isDown) {
             if(_b.hasStroke) {
-                window.building = null;
+                this.targetBuilding = null;
                 _b.setHasStroke(false);
             } else {
-                window.building = this;
+                this.targetBuilding = _b;
                 _b.setHasStroke(true);
             }
         } else {
-            window.building = null;
             _b.setHasStroke(false);
         }
     }
+}
+
+Buildings.prototype.getTarget = function(){
+    return this.targetBuilding;
 }
 
 Buildings.prototype.isDownFunction = function(x, y){
@@ -89,25 +93,26 @@ var Building = function(ctx, options){
 
 }
 
-Building.prototype.draw =  function(){
-    this.drawBuilding();
+Building.prototype.draw =  function(ctx){
+    this.drawBuilding(ctx);
 }
 
 Building.prototype.setHasStroke =  function(bool){
     this.hasStroke = bool;
 }
 
-Building.prototype.drawBuilding =  function(){
-    this.c.beginPath();
-    this.c.fillStyle= this.fillStyle;
-    this.c.strokeStyle = this.strokeStyle;
-    this.c.fillRect(this.x, this.y, this.w, this.h);
+Building.prototype.drawBuilding =  function(ctx){
+    if(!ctx) ctx = this.c;
+    ctx.beginPath();
+    ctx.fillStyle= this.fillStyle;
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.fillRect(this.x, this.y, this.w, this.h);
     if(this.hasStroke) {
-        this.c.beginPath();
-        this.c.strokeStyle = 'skyblue';
-        this.c.lineWidth = 3;
-        this.c.rect(this.x, this.y, this.w,this.h);
-        this.c.stroke();
+        ctx.beginPath();
+        ctx.strokeStyle = 'skyblue';
+        ctx.lineWidth = 3;
+        ctx.rect(this.x, this.y, this.w,this.h);
+        ctx.stroke();
     }
 }
 
