@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container{
+            width:50%;
+            height:50%;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6QkMdfO2FR1k3qiceZxbWnG9"></script>
+</head>
+<body>
+<div style="width:697px;height:550px;border:#ccc solid 1px;" id="container"></div>
+<script type="text/javascript">
+    var map = new BMap.Map("container");//在百度地图容器中创建一个地图
+    map.centerAndZoom("上海",15);
+    var local = new BMap.LocalSearch(map, {
+        renderOptions:{map: map}
+    });
+    local.search("建国中路");
+
+    map.addEventListener("click", getInfo);
+    var circle ;
+    function getInfo(e){
+        if(circle) {
+            map.removeOverlay(circle);
+        }
+
+        var mPoint = e.point;
+        circle = new BMap.Circle(mPoint,50,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+        map.addOverlay(circle);
+
+    }
+
+
+</script>
+</body>
+</html>
