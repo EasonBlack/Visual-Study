@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="400" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+<canvas id="gradient_canvas" width="1" height="256" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+<canvas id="radius_canvas" width="1" height="256" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+<canvas id="copy_canvas" width="300" height="256" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+<div>
+    <button id="btnCopy">Copy</button>
+    <button id="btnChange">Change</button>
+</div>
+</body>
+<script src="basic_heatmap_simpleheat.my.simpleheat.js"></script>
+<!--<script src="../../vendor/simpleheat.js"></script>-->
+<script>
+    var data = [[10,10,5], [15,15,9], [115,115,9]]
+    var heat = simpleheat('canvas').data(data).max(9);
+
+    function draw() {
+        heat.draw();
+    }
+
+    draw();
+
+    document.getElementById('canvas').onmousemove = function (e) {
+        heat.add([e.offsetX, e.offsetY, 1]);
+        window.requestAnimationFrame(draw);
+    };
+
+    document.getElementById('btnCopy').onclick = function(e) {
+        var ccc = document.getElementById('copy_canvas');
+        var c1 = document.getElementById('radius_canvas');
+        var ccctx = ccc.getContext('2d');
+        ccctx.drawImage(c1, 10, 20);
+    }
+
+    document.getElementById('btnChange').onclick=function(e){
+        var ccc = document.getElementById('copy_canvas');
+        var ccctx = ccc.getContext('2d');
+        var colored = ccctx.getImageData(0, 0, 300, 256);
+
+        var gc = document.getElementById('gradient_canvas');
+        var gctx = gc.getContext('2d');
+        var _grad = gctx.getImageData(0, 0, 1, 256).data;
+
+        colorize(colored.data, _grad);
+
+//        var c = document.getElementById('canvas');
+//        var ctx = c.getContext('2d');
+        ccctx.putImageData(colored, 0, 0);
+    }
+
+    function colorize(pixels, gradient) {
+        for (var i = 0, len = pixels.length, j; i < len; i += 4) {
+            j = pixels[i + 3] * 4; // get gradient color from opacity value
+
+            if (j) {
+                pixels[i] = gradient[j];
+                pixels[i + 1] = gradient[j + 1];
+                pixels[i + 2] = gradient[j + 2];
+            }
+        }
+    }
+
+
+</script>
+</html>

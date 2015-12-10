@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="400" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+</body>
+<script src="../../vendor/simpleheat.js"></script>
+<script>
+    var data = [[10,10,5], [15,15,9], [115,115,9]]
+    var heat = simpleheat('canvas').data(data).max(9);
+
+    function draw() {
+        heat.draw();
+    }
+
+    draw();
+
+    document.getElementById('canvas').onmousemove = function (e) {
+        heat.add([e.offsetX, e.offsetY, 1]);
+        window.requestAnimationFrame(draw);
+    };
+</script>
+</html>
