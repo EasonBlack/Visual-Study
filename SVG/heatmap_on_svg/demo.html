@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container {
+            width:600px;
+            height:400px;
+            overflow:scroll;
+            position:relative;
+        }
+
+        .img_container  {
+            position:absolute;
+            left:0;
+            top:0;
+        }
+
+        #canvas {
+            position:absolute;
+            left:0;
+            top:0;
+        }
+
+        #button_container {
+            position:relative;
+
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div class="img_container">
+        <img id="imgsvg" src="potofgold.svg">
+    </div>
+    <canvas id="canvas" width="600" height="400" style="border:1px solid #333333"></canvas>
+</div>
+<div id="button_container">
+    <button id="btnPlus">+</button>
+    <button id="btnMinus">-</button>
+</div>
+
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="simpleheat.heatmap_on_svg.js"></script>
+<script>
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var originWidth = canvas.width;
+    var originHeight = canvas.height;
+    $('.img_container img').css('width',canvas.width );
+    $('.img_container img').css('height',canvas.height );
+
+    var data = [[280,140,5], [150,150,9], [115,115,9]]
+    
+    draw(data);
+
+    function draw(data) {
+        var heat = simpleheat('canvas').data(data).max(9);
+        heat.draw();
+    }
+
+    function resetAxis(){
+        var width =   parseInt($('#imgsvg').css('width'));
+        var height =   parseInt($('#imgsvg').css('height'));
+        canvas.width = width;
+        canvas.height = height;
+        var w_rate = width / originWidth;
+        var h_rate = height/ originHeight;
+        var _data = [];
+        for(var i= 0,ilen=data.length;i<ilen;i++){
+            _data[i] = [];
+            _data[i][0] = data[i][0] * w_rate;
+            _data[i][1] = data[i][1] * h_rate;
+            _data[i][2] = data[i][2] ;
+        }
+        return _data;
+    }
+
+    function handleImg(span) {
+        $('#imgsvg').css('width', parseInt($('#imgsvg').width()) + span);
+        $('#imgsvg').css('height', parseInt($('#imgsvg').height()) + span);
+        var _d = resetAxis();
+        draw( _d);
+    }
+
+    $('#btnPlus').click(function(e){
+        var span = 30;
+        handleImg(span);
+
+    });
+
+    $('#btnMinus').click(function(e){
+        var span =  -30;
+        handleImg(span);
+    });
+
+
+</script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .container {
+            width:200px;
+            height:200px;
+            overflow:scroll;
+        }
+
+
+    </style>
+</head>
+<body>
+   <div class="container">
+       <div id="scale_container" style='width:180px;height:180px' >
+            <img src="potofgold.svg" />
+       </div>
+   </div>
+   <button id="btnPlus">+</button>
+   <button id="btnMinus">-</button>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+
+    $('#btnPlus').click(function(e){
+        $('#scale_container').css('width', $('#scale_container').width() + 30);
+        $('#scale_container').css('height', $('#scale_container').height() + 30);
+    });
+
+    $('#btnMinus').click(function(e){
+        $('#scale_container').css('width', $('#scale_container').width() - 30);
+        $('#scale_container').css('height', $('#scale_container').height() - 30);
+    });
+
+</script>
+</html>
