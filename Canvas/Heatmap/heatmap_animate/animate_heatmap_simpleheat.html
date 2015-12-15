@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="400" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+<canvas id="canvas1" width="600" height="400" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+</body>
+<script src="../../../vendor/simpleheat.js"></script>
+<script>
+
+    var datas = [
+        [[210,120,5], [15,15,9], [115,115,3]],
+        [[210,120,1], [15,15,4], [115,115,4]],
+        [[210,120,3], [15,15,9], [115,115,9]],
+        [[210,120,3], [15,15,1], [115,115,2]],
+    ];
+
+    (function(){
+        var i=0;
+        draw();
+        function draw() {
+            var _data = datas[i];
+            var heat = simpleheat('canvas').data(_data).max(9);
+            heat.draw();
+            i++;
+            setTimeout(function () {
+                if(i<datas.length) {
+                    draw();
+                } else {
+                    return ;
+                }
+            }, 300);
+        }
+    })();
+
+    (function(){
+        var i=0;
+        draw();
+        function draw() {
+            var _data = datas[i];
+            var heat = simpleheat('canvas1').data(_data).max(9);
+            heat.draw();
+            i++;
+            setTimeout(function () {
+                if(i<datas.length) {
+                    draw();
+                } else {
+                    return ;
+                }
+            }, i*500);
+        }
+    })()
+</script>
+</html>

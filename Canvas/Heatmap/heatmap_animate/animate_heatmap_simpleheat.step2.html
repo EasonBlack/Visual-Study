@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="400" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="../../../vendor/lodash.js"></script>
+<script src="simpleheat.animate_heatmap.step2.js"></script>
+<script src="animate_heatmap_point.js"></script>
+<script>
+
+
+    var datas = [
+        [[210,120,5], [110,130,1], [330,130,17]],
+        [[210,120,15], [110,130,4], [330,130,3]],
+        [[210,120,20], [110,130,19], [330,130,16]],
+        [[210,120,1], [110,130,1], [330,130,20]]
+    ];
+
+    var AnimationId ;
+    (function(){
+        var datalen = datas.length;
+        var pointList = new PointList(datas);
+        pointList.setAllValue(datas);
+        pointList.setSpeed('slow');
+        pointList.setSpeedValue();
+
+        for(var i= 0,ilen=pointList.stepsLen;i<ilen;i++){
+            (function(index) {
+                setTimeout(function(){
+                    var _dataSet = pointList.getOneLayerValue(index);
+                    var heat = simpleheat('canvas').data(_dataSet).max(20);
+                    heat.draw();
+                },index*pointList.time);
+            })(i);
+        }
+
+    })();
+
+</script>
+</html>

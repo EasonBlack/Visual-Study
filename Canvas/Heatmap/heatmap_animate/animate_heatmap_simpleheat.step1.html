@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="400" style="left:100px;top:100px;position:relative;border:1px solid #333333"></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="simpleheat.animate_heatmap.js"></script>
+<script>
+
+    var datas = [
+        [210,120,5], [210,120,1]
+    ];
+
+    var AnimationId ;
+    (function(){
+        var i=0;
+        draw();
+
+        //AnimationId = window.requestAnimationFrame(draw);
+
+
+        function draw() {
+            var nexti = i+1;
+            var _data = $.extend(true, [], datas[i]);
+            var _data_next = datas[nexti] ? datas[nexti] : null;
+            var _value = _data[2];
+            var _value_next = _data_next ? _data_next[2]: null;
+            var _step = 0,_jend;
+            if(_data_next) {
+                _step = (_value_next - _value)/30;
+            }
+            if(Math.abs(Math.floor(_step))>1) {
+               _step = Math.floor(_step);
+                _jend = 30;
+            } else {
+                _step = _step> 0 ?1:-1;
+                _jend =Math.abs( _value_next - _value);
+            }
+
+            for(var j=0;j<_jend;j++){
+                var _obj = $.extend(true, [], _data);
+                _obj[2] = _data[2]+j*_step;
+                (function(index, obj) {
+                    setTimeout(function(){
+                        var heat = simpleheat('canvas').data([obj]).max(9);
+                        heat.draw();
+                    },index*150);
+                })(j, _obj);
+            }
+
+
+            i++;
+        }
+    })();
+
+</script>
+</html>
