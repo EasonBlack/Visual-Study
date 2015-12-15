@@ -15,12 +15,14 @@
             position:absolute;
             left:0;
             top:0;
+            cursor: hand;
         }
 
         #canvas {
             position:absolute;
             left:0;
             top:0;
+
         }
 
         #button_container {
@@ -95,6 +97,26 @@
     $('#btnMinus').click(function(e){
         var span =  -30;
         handleImg(span);
+    });
+
+    var x, y, _top, _left, down;
+    $('#container').mousedown(function (e) {
+        e.preventDefault();
+        down = true;
+        x = e.pageX;
+        y = e.pageY;
+        _top = $(this).scrollTop();
+        _left = $(this).scrollLeft();
+    });
+    $(document).mouseup(function (e) { down = false; });
+    $(document).mousemove(function (e) {
+        if (down) {
+            var newX = e.pageX;
+            var newY = e.pageY;
+            $('#container').scrollTop(_top - newY + y);
+            $('#container').scrollLeft(_left - newX + x);
+            console.log(_top,newY,y);
+        }
     });
 
 
