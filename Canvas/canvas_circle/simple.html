@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="600" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script>
+    var circle = {x: 300, y:300, r:100}
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(128,165,208,0.7)';
+    ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.fillStyle = '#0A1119';
+    ctx.arc(circle.x, circle.y, 15, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.fillStyle = '#3F444A';
+    ctx.arc(circle.x, circle.y, 8, 0, 2 * Math.PI);
+    ctx.fill()
+</script>
+</html>

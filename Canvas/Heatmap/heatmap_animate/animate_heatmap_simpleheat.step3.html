@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="../../../style/bootstrap.css" rel="stylesheet">
+    <link href="../../../style/bootstrap-theme.css" rel="stylesheet">
+    <style>
+        .canvas-container {
+            position:relative;
+            height:400px;
+            width:600px;
+            overflow:scroll;
+        }
+        .img_container  {
+            position:absolute;
+            left:0;
+            top:0;
+            cursor: hand;
+
+        }
+        .img_container img {
+            height:888px;
+            width:1385px;
+        }
+        #canvas {
+            top:0;
+            left:0;
+            position:absolute;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row canvas-container">
+        <div class="img_container">
+            <img id="imgsvg" src="floor1_map.svg">
+        </div>
+        <canvas id="canvas" width="1385" height="888" style="border:1px solid #333333"></canvas>
+    </div>
+    <div  class="row">
+        <button id="btnTransfer">Click Me</button>
+        <button id="btnShow">Show Point</button>
+    </div>
+    <div  class="row">
+       <select id="sel">
+           <option>slow</option>
+           <option>normal</option>
+           <option>fast</option>
+       </select>
+        <button id="btnSpeed">Speed</button>
+        <button id="btnPause">Pause</button>
+        <button id="btnPlay">Play</button>
+        <button id="btnPlus">+</button>
+        <button id="btnMinus">-</button>
+    </div>
+</div>
+
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="../../../vendor/lodash.js"></script>
+<script src="simpleheat.animate_heatmap.step3.js"></script>
+<script src="animate_heatmap_point.step3.js"></script>
+<script>
+
+    var totalCount = 0;
+    var canvas = document.getElementById('canvas');
+    var originWidth = canvas.width;
+    var originHeight = canvas.height;
+    var ctx = canvas.getContext('2d');
+    var timeouts = [];
+
+    var datas = [
+        [[210,120,55], [110,130,100], [160,130,100], [330,130,50]],
+        [[210,120,155], [110,130,40], [160,130,20],[330,130,100]],
+        [[210,120,200], [110,130,191],[160,130,70],[330,130,150]],
+        [[210,120,17], [110,130,111], [160,130,160], [330,130,200]]
+    ];
+    var datalen = datas.length;
+    var pointList = new PointList(datas);
+    pointList.setAllValue(datas);
+    pointList.setSpeed('slow');
+    pointList.setSpeedValue();
+
+    isHeatMap = false;
+    $('#btnSpeed').click(function(){
+        isHeatMap = true;
+        var _s = $('#sel').val();
+        pointList.setSpeed(_s);
+        pointList.setSpeedValue();
+
+        for (var i = 0; i < timeouts.length; i++) {
+            clearTimeout(timeouts[i]);
+        }
+        timeouts = [];
+        drawHeatMap();
+    });
+
+    $('#btnPause').click(function(){
+        for (var i = 0; i < timeouts.length; i++) {
+            clearTimeout(timeouts[i]);
+        }
+        timeouts = [];
+    });
+
+    $('#btnPlay').click(function(){
+        isHeatMap = true;
+        drawHeatMap(pointList.currentIndex);
+    });
+
+    $('#btnShow').click(function(){
+        for (var i = 0; i < timeouts.length; i++) {
+            clearTimeout(timeouts[i]);
+        }
+        timeouts = [];
+        pointList.drawSolidPoint(ctx ,40);
+
+    })
+
+    $('#btnTransfer').click(function(){
+        isHeatMap = !isHeatMap;
+        if(isHeatMap) {
+            drawHeatMap();
+        } else {
+            for (var i = 0; i < timeouts.length; i++) {
+                clearTimeout(timeouts[i]);
+            }
+            pointList.drawSolidPoint(ctx ,40);
+            timeouts = [];
+        }
+    });
+
+
+    function handleImg(wspan, hspan) {
+        $('#imgsvg').css('width', parseInt($('#imgsvg').width()) + wspan);
+        $('#imgsvg').css('height', parseInt($('#imgsvg').height()) + hspan);
+        canvas.width = canvas.width + wspan;
+        canvas.height = canvas.height + hspan;
+        var w_rate =  canvas.width / originWidth;
+        var h_rate =   canvas.height/ originHeight;
+        pointList.resetAxis(w_rate,h_rate);
+    }
+
+    $('#btnPlus').click(function(e){
+        var wspan = 1 * originWidth*0.25;
+        var hspan = 1 * originHeight*0.25;
+        handleImg(wspan, hspan);
+
+    });
+
+    $('#btnMinus').click(function(e){
+        var wspan = -1 * originWidth*0.25;
+        var hspan = -1 * originHeight*0.25;
+        handleImg(wspan, hspan);
+    });
+
+    function drawHeatMap(currentIndex) {
+        if(!currentIndex) currentIndex =0;
+        var heat = simpleheat('canvas');
+        heat.radius(30,40);   //radius , blur
+        totalCount  = pointList.stepsLen;
+        for(var i= currentIndex,ilen=pointList.stepsLen;i<ilen;i++){
+            (function(index, tindex) {
+                timeouts.push(setTimeout(function(){
+                    var _dataSet = pointList.getOneLayerValue(index);
+                    heat.data(_dataSet).max(200);
+                    heat.draw();
+                    console.log(index,pointList.time);
+                },tindex*pointList.time));
+            })(i, i - currentIndex);
+        }
+    }
+
+</script>
+</html>
