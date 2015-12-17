@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+   <div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data= [20,130,160];
+    (function(){
+
+        var widthScale = d3.scale.linear()
+                .domain([0, 160])
+                .range([0,500]);
+
+        var axis = d3.svg.axis()
+                .ticks(3)
+                .scale(widthScale);
+
+        var canvas = d3.select('#container')
+                .append('svg')
+                .attr('width', 500)
+                .attr('height',300)
+                .append('g')     //group
+                .attr('transform','translate(20,0)');
+
+
+
+        var bars = canvas.selectAll('rect') //selectAll:  return empty rect
+                .data(data)
+                .enter()   //place hold for each data
+                .append('rect')
+                .attr('width',function(d){ return widthScale(d) })
+                .attr('height',50)
+                .attr('y', function(d, i ){return i*60})
+                .attr('fill', '#CC0033');
+
+        canvas.append('g')
+                .attr('transform','translate(0,200)')
+                .call(axis);
+    })();
+
+</script>
+</html>

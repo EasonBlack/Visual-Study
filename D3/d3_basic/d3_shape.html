@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+   <div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height',500);
+
+    var circle = canvas.append('circle')
+            .attr('cx', 250)
+            .attr('cy', 250)
+            .attr('r',20)
+            .attr('fill', '#99CCCC');
+
+    var rect = canvas.append('rect')
+            .attr('width', 150)
+            .attr('height', 50)
+            .attr('fill','#FF6666');
+
+    var line = canvas.append('line')
+            .attr('x1', 0)
+            .attr('y1', 100)
+            .attr('x2',400)
+            .attr('y2',400)
+            .attr('stroke', '#336633')
+            .attr('stroke-width', 10);
+
+</script>
+</html>
