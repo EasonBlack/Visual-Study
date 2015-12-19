@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data = {
+        name: "aaaa",
+        value: 100,
+        children: [
+            {
+                name : 'bbbb',
+                value: 70,
+                children: [
+                    {name : 'cccc', value:60},
+                    {name : 'ddddd', value:10}
+                ]
+            },
+            {
+                name: 'eeee',
+                value: 20,
+                children: [
+                    {name: 'fffff', value:10},
+                    {name: 'ggggg', value:10}
+                ]
+            },
+            {
+                name: 'hhhh',
+                value: 10
+            }
+        ]
+    }
+
+    var width = 800;
+    var height= 600;
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .append('g')
+            .attr('transform', 'translate(20,20)');
+
+    var pack = d3.layout.pack()
+            .size([width,height -50 ])
+            .padding(10)
+
+    var nodes = pack.nodes(data);
+    var node = canvas.selectAll('.node')
+            .data(nodes)
+            .enter()
+            .append('g')
+            .attr('class', 'node')
+            .attr('transform', function(d){return  'translate('+ d.x + ',' + d.y + ')' })
+
+    node.append('circle')
+            .attr('r', function(d) { return d.r})
+            .attr('fill', 'steelblue')
+            .attr('opacity', 0.2);
+
+    node.append('text')
+            .text(function(d) { return d.children? '': d.name})
+
+
+</script>
+</html>
