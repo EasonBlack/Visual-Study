@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .node rect {
+            cursor: move;
+            fill-opacity: .9;
+            shape-rendering: crispEdges;
+        }
+
+        .node text {
+            pointer-events: none;
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        .link {
+            fill: none;
+            stroke: #000;
+            stroke-opacity: .2;
+        }
+        .link:hover {
+            stroke-opacity: .5;
+        }
+    </style>
+</head>
+<body>
+ <div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script src="../../vendor/sankey.js"></script>
+<script>
+   var data = {
+       nodes: [
+           { "name": "Gate"},
+           { "name": "Store1"},
+           { "name": "Store2"},
+           { "name": "Store3"},
+           { "name": "Store4"}
+       ],
+       links: [
+           { "source": 0,  "target": 1, "value": 10},
+           { "source": 0,  "target": 2, "value": 20},
+           { "source": 1,  "target": 3, "value": 5},
+           { "source": 1,  "target": 4, "value": 5},
+           { "source": 2,  "target": 3, "value": 5},
+           { "source": 2,  "target": 4, "value": 10}
+       ]
+   }
+
+   var color = d3.scale.category20();
+
+   var margin = {top: 10, right: 20, bottom: 10, left: 10};
+   var width = 960 - margin.left - margin.right,
+       height = 500- margin.top - margin.bottom;
+
+
+   var canvas = d3.select('#container')
+           .append('svg')
+           .attr('width', width + margin.left + margin.right)
+           .attr('height',height + margin.top + margin.bottom)
+           .append("g")
+           .attr("transform", "translate(" + margin.left + "," + margin.top+ ")");
+
+   var sankey = d3.sankey()
+           .nodeWidth(50)
+           .nodePadding(10)
+           .size([width, height]);
+
+   var path = sankey.link();
+
+
+   sankey.nodes(data.nodes)
+           .links(data.links)
+           .layout(32);
+
+   console.log(data);
+   var link = canvas.append("g").selectAll(".link")
+           .data(data.links)
+           .enter()
+           .append("path")
+           .attr("class", "link")
+           .attr("d", path)
+           .attr("stroke-width", function(d) {
+               return Math.max(1, d.dy);
+           })
+           .sort(function(a, b) { return b.dy - a.dy; })
+
+   link.append("title").text(function(d) {
+               return d.source.name + " → " + d.target.name ;
+           });
+
+   var node = canvas.append("g").selectAll(".node")
+           .data(data.nodes)
+           .enter().append("g")
+           .attr("class", "node")
+           .attr("transform", function(d) {
+               return "translate(" + d.x + "," + d.y + ")";
+           })
+           .call(d3.behavior.drag()
+                   .origin(function(d) { return d; })
+                   .on("dragstart", function() {
+                       this.parentNode.appendChild(this); })
+                   .on("drag", dragmove));
+
+   node.append("rect")
+           .attr("height", function(d) {
+               return d.dy;
+           })
+           .attr("width", sankey.nodeWidth())
+           .style("fill", function(d) {
+               return d.color = color(d.name);
+           })
+           .style("stroke", function(d) {
+               return d3.rgb(d.color).darker(2);
+           })
+           .append("title").text(function(d) {
+               return d.name;
+           });
+
+   node.append("text")
+           .attr("x", 4)
+           .attr("y", function(d) {
+               return d.dy / 2;
+           })
+           .attr("dy", ".35em")
+           .attr("text-anchor", "start ")
+           .attr('font-family', 'Microsoft YaHei')
+           .attr('font-size', '12px')
+           .attr("transform", null)
+           .text(function(d) {
+               return d.name;
+           })
+
+   function dragmove(d) {
+       d3.select(this).attr("transform",
+               "translate(" + (
+                       d.x = Math.max(0, Math.min(width - d.dx, d3.event.x))
+               )
+               + "," + (
+                       d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))
+               ) + ")");
+       sankey.relayout();
+       link.attr("d", path);
+   }
+
+</script>
+</html>
