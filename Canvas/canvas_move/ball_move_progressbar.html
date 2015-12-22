@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+       #container {
+           width:400px;
+           height:300px;
+           position:relative;
+       }
+
+       canvas {
+           position:absolute;
+           left: 0;
+           top:0;
+       }
+
+       input[type=range] {
+           width:400px;
+           height:5px;
+       }
+
+       #slider {
+           -webkit-appearance: none;
+           padding-top: 13px;
+           padding-bottom: 13px;
+           overflow: hidden;
+           box-sizing: border-box;
+           padding-left: 9px;
+           padding-right: 9px;
+       }
+
+       #slider::-webkit-slider-runnable-track {
+           width: 400px;
+           height: 5px;
+           background: #ddd;
+           border: none;
+           border-radius: 3px;
+       }
+
+       #slider::-webkit-slider-thumb {
+           -webkit-appearance: none;
+           appearance: none;
+           cursor: pointer;
+           height: 5px; width: 12px;
+           position: relative;
+       }
+
+       #slider:focus {
+           outline: none;
+       }
+
+       #slider::-webkit-slider-thumb:before {
+           content: '';
+           height: 5px; width: 400px;
+           position: absolute; top: 0px; right: 0;
+           background: hsl(140, 50%, 70%);
+           pointer-events: none;
+       }
+
+       #slider::-webkit-slider-thumb:after {
+           content: '';
+           border: none;
+           background: hsl(140, 50%, 70%);
+           width: 25px; height: 25px;
+           position: absolute; top: -9px; left: -8px;
+       }
+    </style>
+</head>
+<body>
+<div id="container">
+    <canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+</div>
+<div>
+   input事件： <input id='slider1' type="range" min="0" max="400" value="0">
+</div>
+<div>
+   change事件： <input id='slider2' type="range" min="0" max="400" value="0">
+</div>
+<div>
+    <input id='slider' type="range" min="0" max="400" value="0">
+</div>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "skyblue";
+    var circle ={x: 50, y: 50, r: 20};
+
+    draw(0);
+
+    function draw(dx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(circle.x+dx,circle.y,circle.r, 0, 2*Math.PI);
+        ctx.fill();
+    }
+
+    $("#slider1").on("input", function(){
+        console.log(this.value);
+        draw(parseInt(this.value));
+    });
+
+    $("#slider").on("input", function(){
+        console.log(this.value);
+        draw(parseInt(this.value));
+    });
+
+    $("#slider2").on("change", function(){
+        draw(parseInt(this.value));
+    });
+
+
+</script>
+</html>
