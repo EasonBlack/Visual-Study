@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container {
+            width: 500px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script src="../../vendor/d3-funnel.js"></script>  <!--https://github.com/jakezatecky/d3-funnel -->
+<script>
+    var data = [
+        ['Plants',     3000],
+        ['',     280, '#fff'],
+        ['Flowers',    2500],
+        ['',     280, '#fff'],
+        ['Perennials', 1200],
+        ['',     280, '#fff'],
+        ['Roses',      150],
+    ];
+    var options = {
+        chart: {
+            bottomWidth: 1 / 2,
+            animate: 200,
+            curve: {
+                enabled: false,
+            }
+        },
+        block: {
+            dynamicHeight: true
+        }
+    };
+
+    var chart = new D3Funnel('#container');
+    chart.bottomWidth = 1/2;
+    chart.draw(data, options);
+</script>
+</html>
