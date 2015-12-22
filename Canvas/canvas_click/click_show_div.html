@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+     #container {
+         margin-left:100px;
+         margin-top:100px;
+         position:relative;
+         height:600px;
+         width:800px;
+
+     }
+
+     canvas {
+         position:absolute;
+         left:0;
+         top:0;
+     }
+
+     #tips {
+         width:100px;
+         height:100px;
+         position:absolute;
+         left:0;
+         top:0;
+         display:none
+     }
+
+     .bubble
+     {
+         position: relative;
+         width: 180px;
+         height: 205px;
+         background: black;
+         color: white;
+     }
+
+     .bubble:after
+     {
+         content: '';
+         position: absolute;
+         border-style: solid;
+         border-width: 10px 16px 10px 0;
+         border-color: transparent black;
+         display: block;
+         width: 0;
+         z-index: 1;
+         left: -16px;
+         top: 32px;
+     }
+
+
+
+     #title-span {
+         background-color: #35383B;
+         color: #808fa5;
+     }
+
+     ul {
+         list-style: none;
+         padding-left: 10px;
+     }
+    </style>
+</head>
+<body>
+<div id="container">
+    <canvas id="canvas" width="400" height="300" style="border:1px solid gainsboro" ></canvas>
+    <div id="tips" class="bubble">
+        <div id="title-span">Infomation</div>
+        <div>
+            <ul>
+                <li>Name: sdfa</li>
+                <li>Age: 12</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "skyblue";
+    var canvasOffset = $("#canvas").offset();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+    var circle1 ={ x: 50, y: 50, r: 20 }
+
+
+    draw();
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(circle1.x,circle1.y,circle1.r, 0, 2*Math.PI);
+        ctx.fill();
+    }
+
+
+    function handleMouseDown(e){
+        e.preventDefault();
+        startX = parseInt(e.clientX - offsetX);
+        startY = parseInt(e.clientY - offsetY);
+        // Put your mousedown stuff here
+        var dx = startX - circle1.x;
+        var dy = startY - circle1.y;
+
+        isDown = (dx * dx + dy * dy < circle1.r * circle1.r);
+
+        var $tips = $('#tips');
+        if(isDown){
+            $tips.css({left: startX + 18, top:startY - 44 });
+            $tips.show();
+        } else {
+            $tips.hide();
+        }
+    }
+
+    $("#canvas").mousedown(function (e) {
+        handleMouseDown(e);
+    });
+
+
+
+
+</script>
+</html>
