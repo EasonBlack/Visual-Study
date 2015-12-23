@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="../../style/bootstrap.css" rel="stylesheet">
+    <link href="../../style/bootstrap-theme.css" rel="stylesheet">
+    <style>
+        .canvas-container {
+            position:relative;
+            height:400px;
+            width:600px;
+            overflow:scroll;
+        }
+        .img_container  {
+            position:absolute;
+            left:0;
+            top:0;
+            cursor: hand;
+
+        }
+        .img_container img {
+            height:888px;
+            width:1385px;
+        }
+        #canvas {
+            top:0;
+            left:0;
+            position:absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row canvas-container">
+        <div class="img_container">
+            <img id="imgsvg" src="floor1_map.jpg">
+        </div>
+        <canvas id="canvas" width="1385" height="888" style="border:1px solid #333333"></canvas>
+    </div>
+    <div class="row">
+        <button id="btnPdf">PDF</button>
+    </div>
+</div>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="../../vendor/jspdf.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'steelblue'
+    ctx.arc(100,100,100,0, 2 * Math.PI);
+    ctx.fill();
+
+    
+
+    $('#btnPdf').click(function(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var img=document.getElementById("imgsvg");
+        ctx.drawImage(img, 0, 0, canvas.width,canvas.height);
+        ctx.arc(100,100,100,0, 2 * Math.PI);
+        ctx.fill();
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var pdf = new jsPDF('landscape');    // new jsPDF()
+
+        pdf.addImage(imgData, 'JPEG', 0, 0,297, 210);
+        pdf.save("download.pdf");
+    });
+
+
+
+
+
+
+</script>
+</html>
