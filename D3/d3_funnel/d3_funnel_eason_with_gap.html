@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container {
+            width: 800px;
+            height: 250px;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script src="d3-funnel-eason_with_gap.js"></script>
+<script>
+    var data = [
+        ['Plants',     200 , '100%'],
+        ['Flowers',    200, '80%'],
+        ['Perennials', 200, '50%'],
+        ['Roses',      200, '10%'],
+    ];
+
+    var options = {
+        chart: {
+            strokeWidth: 20,
+            bottomWidth: 1 / 2,
+            animate: 200,
+            curve: {
+                enabled: false,
+            }
+        },
+        block: {
+            dynamicHeight: true
+        }
+    };
+
+    var chart = new D3Funnel('#container');
+    chart.draw(data, options);
+</script>
+</html>
