@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+<div id="svgdataurl"></div>
+<div id="svgdiv"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height',300);
+
+    var group = canvas.append('g')
+            .attr('transform','translate(100,100)');
+
+    var arc = d3.svg.arc()
+            .innerRadius(20)
+            .outerRadius(40)
+            .startAngle(0)
+            .endAngle(Math.PI*2);
+    group.append('path')
+            .attr('d',arc);
+
+
+    var html = d3.select("svg")
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .node().parentNode.innerHTML;
+    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+    var img = '<img src="'+imgsrc+'">';
+    d3.select("#svgdataurl").html(img);
+
+
+</script>
+</html>
