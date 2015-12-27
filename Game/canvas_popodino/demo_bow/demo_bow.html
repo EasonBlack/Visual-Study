@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="400" style="border:1px solid gainsboro" ></canvas>
+</body>
+</html>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="bow.js"></script>
+<script src="handle.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var bow = new Bow(ctx, {long: 20, radius: 5});
+    KeyHandle(bow);
+    bow.init();
+    draw();
+    function draw() {
+        bow.draw();
+        requestAnimationFrame(draw);
+    }
+
+
+</script>
