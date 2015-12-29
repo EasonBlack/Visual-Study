@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+   <div id="container" style="min-width: 410px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="../../vendor/highcharts.src.js"></script>
+<script src="../../vendor/highcharts-more.src.js"></script>
+<script src="../../vendor/highcharts-funnel.src.js"></script>
+<script>
+    $(function () {
+
+        $('#container').highcharts({
+            chart: {
+                type: 'funnel',
+                marginRight: 100
+            },
+            connectorWidth:0,
+            title: {
+                text: 'Sales funnel',
+                x: -50
+            },
+            colors: ['#12b48b','#3d75d2','#b51b27','#edb40d'],
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        distance : -60,
+                        position: 'left',
+                        connectorWidth: 0   //连接线的宽度
+                    },
+                    //neckWidth: '30%',
+                    neckHeight: '0',
+
+                    //borderWidth: 25,
+                    height: '90%'
+                    //-- Other available options
+                    // height: pixels or percent
+                    // width: pixels or percent
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                enabled: false
+            },
+            series: [{
+                name: 'Unique users',
+                data: [
+                    {y: 1, type: 'pie', name: 'aaa', dataLabels: {}},
+                    {y: 0.7,name: '', color: 'white', dataLabels: {}},
+                    {y: 1, name: 'bbb', dataLabels: {}},
+                    {y: 0.7,name: '', color: 'white', dataLabels: {}},
+                    {y: 1, name: 'ccc', dataLabels: {}},
+                ]
+            }]
+        });
+    });
+</script>
+</html>
