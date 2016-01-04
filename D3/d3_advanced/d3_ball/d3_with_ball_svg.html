@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+   <div id="container"></div>
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+
+    var ballData = [6,2,3];
+
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height',300);
+
+    var group = canvas.append('g')
+
+
+    group.selectAll(".ball")
+            .data(ballData)
+            .enter()
+            .append('image')
+            .attr('class', 'ball')
+            .attr("xlink:href", 'icon_ball.svg')
+            .attr("x", function(d){return d*10})
+            .attr("y", function(d){return d*10})
+            .attr("width", "24px")
+            .attr("height", "24px");
+
+
+    var bar = canvas.append('g')
+            .attr('transform','translate(120,100)');
+
+    for(var i= 0,ilen=ballData.length;i<ilen;i++){
+        var _b = new Array(ballData[i]);
+        var _ii = i;
+        bar.selectAll('.bar'+ _ii)
+                .data(_b)
+                .enter()
+                .append('image')
+                .attr("xlink:href", 'icon_ball.svg')
+                .attr("x", function(d,i){return i*30})
+                .attr("y", function(d){return _ii*30})
+                .attr("width", "24px")
+                .attr("height", "24px");
+    }
+
+
+
+
+</script>
+</html>
