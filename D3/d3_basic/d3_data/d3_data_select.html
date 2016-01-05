@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../../vendor/d3.js" charset="utf-8"></script>
+    <style type="text/css">
+        p {
+            font-size: 20px;
+            color: orangered;
+        }
+    </style>
+</head>
+<body>
+<div id="example3">
+    <p>Already existing paragraph 1</p>
+    <p>Already existing paragraph 2</p>
+</div>
+<script type="text/javascript">
+    pdata = [12,12,6,10,6,2];
+
+    selectDIV = d3.select("#example3");
+
+    selectDIV.selectAll("p")
+            .data(pdata, function(d,i){return d+'_'+i })
+            .enter()
+            .append("p")
+            .text(function(d){return d;});
+
+    selectDIV.exit().remove();
+</script>
+</body>
+</html>

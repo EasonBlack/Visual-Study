@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var outerData = [0,0,1,1,0,1,0,1,1,0,1,0];
+    var innerData = [0,0,0,1,1,0,1,1,1,0,1,1];
+    var outerColor = ['#EEEEEE', '#F0BD56'];
+    var innerColor = ['#EEEEEE','#FFF1D2'];
+    var strokeWidth = 2;
+
+    var outerR =60;
+    var innerR =34;
+
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 1500)
+            .attr('height',1300);
+
+
+    var groupOuter = canvas.append('g')
+            .attr('transform','translate(300,300)');
+    var groupInner = canvas.append('g')
+            .attr('transform','translate(300,300)');
+    var groupMask = canvas.append('g')
+            .attr('transform','translate(300,300)');
+
+    var outerArc= d3.svg.arc()
+            .innerRadius(5)
+            .outerRadius(outerR);
+
+    var innerArc= d3.svg.arc()
+            .innerRadius(5)
+            .outerRadius(innerR);
+
+    var pie = d3.layout.pie()
+            .value(function(d) {return 1}).sort(null);
+
+    var maskArcs = groupMask.selectAll('path')
+            .data(pie(outerData))
+            .enter()
+            .append('path')
+            .attr('d', outerArc)
+            .attr('fill-opacity', 0)
+            .attr('stroke-opacity', 0)
+            .attr('stroke', '#000')
+            .attr('stroke-width', strokeWidth)
+            .on("mouseover", fnmouseover)
+            .on("mouseout", fnmouseout);
+
+    function fnmouseover(){
+        d3.select(this)
+                .attr("stroke-opacity",1)
+    };
+
+    function fnmouseout(){
+        d3.select(this)
+                .attr("stroke-opacity",0)
+    };
+
+    var outerArcs= groupOuter.selectAll('path')
+            .data(pie(outerData))
+            .enter()
+            .append('path')
+            .attr('d', outerArc)
+            .attr('fill',function(d){ return  outerColor[d.data] })
+            .attr('stroke', '#fff')
+            .attr('stroke-width', strokeWidth)
+
+
+    var innerArcs = groupInner.selectAll('path')
+            .data(pie(innerData))
+            .enter()
+            .append('path')
+            .attr('d', innerArc)
+            .attr('fill',function(d){ return  innerColor[d.data] })
+            .attr('stroke', '#fff')
+            .attr('stroke-width', strokeWidth)
+
+
+
+    //----------------------
+    var groupExample = canvas.append('g')
+            .attr('transform','translate(100,100)');
+
+    var arcOuterExample = d3.svg.arc()
+            .innerRadius(5)
+            .outerRadius(outerR)
+            .startAngle(0)
+            .endAngle(-Math.PI*2/4);
+    groupExample.append('path')
+            .attr('d',arcOuterExample)
+            .attr('fill',function(d){ return  outerColor[1] });
+    arcOuterExample.outerRadius(innerR);
+    groupExample.append('path')
+            .attr('d',arcOuterExample)
+            .attr('fill',function(d){ return  innerColor[1] });
+
+</script>
+</html>
