@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container {
+            width:  500px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var width = 500;
+    var height = 400;
+    var root = {
+        "nodes":[
+            { "name": "a"   , "value" : "1" },
+            { "name": "b"   , "value" : "2" },
+            { "name": "c"   , "value" : "3" },
+            { "name": "d" , "value" : "4" }
+        ],
+        "edges":[
+            { "source": 0 , "target": 1},
+            { "source": 0 , "target": 2},
+            { "source": 0 , "target": 3}
+        ]
+    }
+
+    var force = d3.layout.force()
+            .nodes(root.nodes)
+            .links(root.edges)
+            .size([width,height])
+            .linkDistance(50)
+            .charge(-1000)
+            .start();
+    console.log(root);
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', width)
+            .attr('height',height)
+
+    var groupRelations = canvas.append('g')
+            .attr('transform','translate(10,10)');
+
+    var nodesPoint = groupRelations.selectAll("circle")
+            .data(root.nodes)
+            .enter()
+            .append('circle')
+            .attr('r', 10)
+            .attr('fill','steelblue')
+            .call(force.drag);
+
+    var linksPoint = groupRelations.selectAll("line")
+            .data(root.edges)
+            .enter().append("line")
+            .attr("stroke", 'black')
+            .attr("stroke-width", 1);
+
+    force.on("tick", function() {
+        linksPoint.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+
+        nodesPoint.attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
+    });
+
+
+
+
+</script>
+</html>
