@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data = [
+        {x: 100,y:150},
+        {x: 80, y:50},
+        {x: 120, y:10}
+    ]
+    var len = data.length;
+    var radius = 10;
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 300);
+
+    var group = canvas.append('g');
+
+    group.append('defs')
+            .append('marker')
+            .attr({
+                id: "markerArrow",
+                markerWidth: "13",
+                markerHeight: "13",
+                "refX": "10",
+                "refY": "6",
+                orient: "auto"
+            })
+            .append("path")
+            .attr("d", "M2,2 L3,6,L2,11 L10,6 L2,2")
+            .attr('file', 'steelblue');
+
+
+
+
+    group.selectAll('line')
+            .data(data)
+            .enter()
+            .append('line')
+            .attr({
+                x1: function(d,i) {return d.x},
+                y1: function(d,i) {return d.y},
+                x2: function(d,i){
+                    var nexti=0 ;
+                    if(i < len-1) {
+                        nexti = i+1;
+                    }
+
+                    var angleInDegrees = Math.atan2( data[nexti].y - d.y ,data[nexti].x - d.x);
+                    return data[nexti].x - radius * Math.cos(angleInDegrees);
+                },
+                y2: function(d,i){
+                    var nexti=0 ;
+                    if(i < len-1) {
+                        nexti = i+1;
+                    }
+
+                    var angleInDegrees = Math.atan2( data[nexti].y - d.y ,data[nexti].x - d.x);
+                    return data[nexti].y - radius* Math.sin(angleInDegrees);
+                },
+                stroke : '#333333',
+                'marker-end' : 'url(#markerArrow)'
+            });
+
+    group.selectAll('circle')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr({
+                cx: function(d) {return d.x},
+                cy: function(d) {return d.y},
+                r: radius,
+                fill: 'steelblue'
+            })
+
+</script>
+</html>

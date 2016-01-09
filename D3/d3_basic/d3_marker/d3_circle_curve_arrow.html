@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data = [
+        {x: 100, y: 150},
+        {x: 80, y: 50},
+        {x: 120, y: 10}
+    ]
+    var links = [
+        {source: 0, target: 1},
+        {source: 1, target: 2},
+        {source: 2, target: 0}
+    ]
+    var len = data.length;
+    var radius = 10;
+    links.forEach(function (link) {
+        var _target = data[link.target];
+        var _source = data[link.source]
+        var _angle = Math.atan2(_target.y - _source.y, _target.x - _source.x);
+        link.x2 = _target.x - radius * Math.cos(_angle);
+        link.y2 = _target.y - radius * Math.sin(_angle);
+        link.x1 = _source.x;
+        link.y1 = _source.y;
+        link.ax = (link.x1 + link.x2) / 2;
+        link.ay = (link.y1 + link.y2) / 2;
+    });
+
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 300);
+
+    var group = canvas.append('g');
+
+    group.append('defs')
+            .append('marker')
+            .attr({
+                id: "markerArrow",
+                markerWidth: "13",
+                markerHeight: "13",
+                "refX": "10",
+                "refY": "6",
+                orient: "auto"
+            })
+            .append("path")
+            .attr("d", "M2,2 L3,6,L2,11 L10,6 L2,2")
+            .attr('fill', '#333333');
+
+    group.selectAll('.curve')
+            .data(links)
+            .enter()
+            .append('path')
+            .attr({
+                d: function (d) {
+                    return "M" + d.x1 + "," + d.y1 + "A" + d.ax + "," + d.ay + " 0 0,1 " + d.x2 + "," + d.y2;
+                    //return "M" + d.x1 + "," + d.y1 + "L" + d.x2 + "," + d.y2;
+                },
+                'class': 'curve',
+                'fill': 'none',
+                stroke: '#333333',
+                'marker-end': 'url(#markerArrow)'
+            });
+
+    group.selectAll('circle')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr({
+                cx: function (d) {
+                    return d.x
+                },
+                cy: function (d) {
+                    return d.y
+                },
+                r: radius,
+                fill: 'steelblue'
+            })
+</script>
+</html>
