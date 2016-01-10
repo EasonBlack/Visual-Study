@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var color = ['#FF6666', '#FFFF66', '#99CC66'];
+
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 300);
+    var group = canvas.append('g');
+
+    group.append('circle')
+            .attr({
+                cx: 100,
+                cy: 200,
+                r: 50,
+                fill: '#FF6666'
+            })
+            .transition()
+            .duration(1000)
+            .attrTween('r', function (d,i,a) {
+                return d3.interpolate(a, 100)
+            })
+</script>
+</html>
