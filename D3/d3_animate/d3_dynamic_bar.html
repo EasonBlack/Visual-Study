@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data = [10, 44, 23, 12, 5, 27];
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 1500)
+            .attr('height', 300)
+            .append('g')
+
+    function render(data) {
+        var _bar = canvas.selectAll('rect')
+                .data(data);
+
+        _bar.enter()
+                .append('rect')
+                .attr({
+                    x: 10,
+                    y: function (d, i) {
+                        return i * 30
+                    },
+                    width: function (d) {
+                        return d * 3
+                    },
+                    height: 20,
+                    'opacity': 1
+                })
+
+        _bar.transition().duration(1500)
+                .attr("y",  function(d,i){  return i * 30})
+                .attr("width",  function(d){  return d * 3 })
+
+    }
+    render(data);
+    setInterval(function () {
+        data.shift();
+        data.push(Math.random() * 50 + 5);
+        render(data);
+    }, 1500);
+</script>
+</html>

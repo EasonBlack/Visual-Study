@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    //Create the SVG
+    var svg = d3.select("body").append("svg")
+            .attr("width", 800)
+            .attr("height", 920);
+
+    //Create an SVG path
+    svg.append("path")
+            .attr("id", "wavy")
+            .attr("d", "M 0,300 A 200,200 0 0,1 400,300")
+            .style("fill", "none")
+            .style("stroke", "#AAAAAA")
+            .style('opacity',1)
+            .transition()
+            .duration(1000)
+            .attrTween("d", pathTween("M 100,300 A 150,150 0 0,1 350,300", 4))
+
+    //Create an SVG text element and append a textPath element
+    svg.append("text")
+            .append("textPath") //append a textPath to the text element
+            .attr("xlink:href", "#wavy") //place the ID of the path here
+            .style("text-anchor","middle") //place the text halfway on the arc
+            .attr("startOffset", "50%")
+            .text("Yay, my text is on a wavy path")
+
+
+
+    function pathTween(d1, precision) {
+        return function() {
+            var path0 = this,
+                    path1 = path0.cloneNode(),
+                    n0 = path0.getTotalLength(),
+                    n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
+
+            // Uniform sampling of distance based on specified precision.
+            var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
+            while ((i += dt) < 1) distances.push(i);
+            distances.push(1);
+
+            // Compute point-interpolators at each distance.
+            var points = distances.map(function(t) {
+                var p0 = path0.getPointAtLength(t * n0),
+                        p1 = path1.getPointAtLength(t * n1);
+                return d3.interpolate([p0.x, p0.y], [p1.x, p1.y]);
+            });
+
+            return function(t) {
+                return t < 1 ? "M" + points.map(function(p) { return p(t); }).join("L") : d1;
+            };
+        };
+    }
+</script>
+</html>

@@ -26,8 +26,17 @@
             })
             .transition()
             .duration(1000)
-            .attrTween('r', function (d,i,a) {
-                return d3.interpolate(a, 100)
+            .tween('r',function(){
+                var currentValue= parseInt(this.attributes.r.value);
+                var i = d3.interpolateRound( currentValue, 100 );
+                var ci = d3.interpolateRgb('#FF6666', '#FFFF66');
+                return function(t) {
+                    this.attributes.r.value = i(t);
+                    this.attributes.fill.value= ci(t);
+                };
             })
+//            .attrTween('r', function (d,i,a) {
+//                return d3.interpolate(a, 100)
+//            })
 </script>
 </html>

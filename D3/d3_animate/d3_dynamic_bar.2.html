@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data = [10, 44, 23, 12, 5, 27];
+    var canvas = d3.select('#container')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 300)
+            .append('g')
+            .attr('transform','translate(0,300) rotate(-90)');
+
+    var y = d3.scale.linear()
+                      .domain([0,50])
+                      .range([0,300]);
+
+    function render(data) {
+        var group = canvas.selectAll('rect')
+                .data(data);
+
+        var textgroup = canvas.selectAll('text')
+                .data(data);
+
+        group.enter().append('rect')
+                .attr({
+                    x: 10,
+                    y: function (d, i) {
+                        return i * 30
+                    },
+                    height: 20,
+                    'opacity': 1
+                });
+        textgroup.enter()
+                .append('text')
+                .attr({
+                    fill: 'white',
+                    x: 10,
+                    'font-size' :"12px",
+                    transform: 'rotate(90)',
+                    "text-anchor": "middle"
+                })
+
+        group.attr('width', function(d){ return y(d)});
+
+        textgroup.attr('y', function(d,i){ return i*30 +14 })
+                .attr('x', function(d,i){return y(d)-15})
+                .text(function(d) { return d})
+                .attr("transform", function(d,i) {
+                    var _y =   i*30 +14
+                    var _x =  y(d)-12;
+                    return 'rotate(90,'+_x+','+_y+')'
+                });
+
+    }
+    render(data);
+    setInterval(function () {
+        data.shift();
+        data.push(parseInt(Math.random() * 45) + 5);
+        render(data);
+    }, 500);
+</script>
+</html>
