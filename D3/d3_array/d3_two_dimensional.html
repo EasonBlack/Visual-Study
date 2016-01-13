@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var dataSet = [[1,2,3],[4,5,6],[7,8,9]];
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 300);
+
+    canvas.append('g')
+            .selectAll('g')
+            .data(dataSet)
+            .enter()
+            .append('g')
+            .selectAll('text')
+            .data(function(d){return d})
+            .enter()
+            .append('text')
+            .text(function(d){return d;})
+            .attr({
+                x: function(d,i,j){return i*30},      //j is parent element index
+                y: function(d,i,j){return j*30+30},
+                "font-family" : "sans-serif",
+                'font-size': '20px',
+                stroke: 'steelblue'
+            })
+
+
+</script>
+</html>
