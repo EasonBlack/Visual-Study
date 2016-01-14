@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+
+    var dataSet = [1, 1, 1, 1, 1]
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 500);
+
+
+    function calculate(sideLength) {
+        var thirtyDegree = 30.0 * (Math.PI / 180.0);
+        this.sideLength = sideLength;
+        this.height = Math.sin(thirtyDegree) * this.sideLength;
+        this.distance = Math.cos(thirtyDegree) * this.sideLength;
+        this.rectHeight = sideLength + 2.0 * this.height;
+        this.rectWidth = 2.0 * this.distance;
+        this.halfRectHeight = this.rectHeight / 2.0;
+        this.halfRectWidth = this.distance;
+
+//        this.path = [ // clockwise
+//            [this.distance, 0.0],                           // top-middle
+//            [this.rectWidth, this.height],                   // top-right
+//            [this.rectWidth, this.rectHeight - this.height], // bottom-right
+//            [this.distance, this.rectHeight],               // bottom-middle
+//            [0.0, this.rectHeight - this.height], // bottom-left
+//            [0.0, this.height],                   // top-left
+//            [this.distance, 0.0],                           // top-middle
+//        ];
+
+        this.path = [ // clockwise
+            {x: this.distance, y: 0.0},                           // top-middle
+            {x: this.rectWidth, y: this.height},                    // top-right
+            {x: this.rectWidth, y: this.rectHeight - this.height},    // bottom-right
+            {x: this.distance, y: this.rectHeight},                 // bottom-middle
+            {x: 0.0, y: this.rectHeight - this.height},    // bottom-left
+            {x: 0.0, y: this.height},                    // top-left
+            {x: this.distance, y: 0.0}                         // top-middle
+        ];
+    }
+
+
+    drawHexagon =
+            d3.svg.line()
+                    .x(function (d) {
+                        return d.x;
+                    })
+                    .y(function (d) {
+                        return d.y;
+                    })
+
+    var hex = new calculate(30);
+
+    canvas.selectAll('path')
+            .data(dataSet)
+            .enter()
+            .append("path")
+            .attr("d", drawHexagon(hex.path))
+            .attr("stroke", "red")
+            .attr("fill", "rgba(255,0,0,0.4)")
+            .attr("transform", function (d, i) {
+                return "translate(" + (i + 1) * hex.distance*2 + ")"
+            })
+</script>
+</html>

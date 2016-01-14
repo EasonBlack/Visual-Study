@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+
+    var dataSet = [
+        {x: 10, y: 10},
+        {x: 30, y: 30},
+        {x: 50, y: 50},
+        {x: 70, y: 70}
+    ]
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height', 500);
+
+    var h = (Math.sqrt(3) / 2),
+            radius = 16,
+            xp = 0,
+            yp = 0,
+            distance = radius * h,
+            hexagonData = [
+                {"x": radius + xp, "y": yp},
+                {"x": radius / 2 + xp, "y": radius * h + yp},
+                {"x": -radius / 2 + xp, "y": radius * h + yp},
+                {"x": -radius + xp, "y": yp},
+                {"x": -radius / 2 + xp, "y": -radius * h + yp},
+                {"x": radius / 2 + xp, "y": -radius * h + yp},
+                {"x": radius + xp, "y": yp}
+            ];
+
+
+    drawHexagon =
+            d3.svg.line()
+                    .x(function (d) {
+                        return d.x;
+                    })
+                    .y(function (d) {
+                        return d.y;
+                    });
+
+    canvas.selectAll('path')
+            .data(dataSet)
+            .enter()
+            .append('path')
+            .attr("d", drawHexagon(hexagonData))
+            .attr("stroke", "red")
+            .attr("fill", "rgba(255,0,0,0.4)")
+            //.attr("transform", function(d,i){ return "translate(16,"  + (i+1)*h*radius*2 + ")"})
+            .attr("transform", function(d,i){
+                var _x,_y;
+                var _offsetx = 20;
+                var _offsety = 50;
+                _x = i*(1.5)*radius +_offsetx;
+                if(i%2) {
+                    _y =0+_offsety ;
+                } else {
+                    _y = distance+_offsety;
+                }
+                return "translate("+ _x +","  + _y + ")"
+            })
+
+
+</script>
+</html>

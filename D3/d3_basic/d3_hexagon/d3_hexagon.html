@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', 500)
+            .attr('height',500);
+
+    var h = (Math.sqrt(3)/2),
+            radius = 100,
+            xp = 150,
+            yp = 150,
+            hexagonData = [
+                { "x": radius+xp,   "y": yp},
+                { "x": radius/2+xp,  "y": radius*h+yp},
+                { "x": -radius/2+xp,  "y": radius*h+yp},
+                { "x": -radius+xp,  "y": yp},
+                { "x": -radius/2+xp,  "y": -radius*h+yp},
+                { "x": radius/2+xp, "y": -radius*h+yp},
+                { "x": radius+xp,   "y": yp}
+            ];
+
+
+    drawHexagon =
+            d3.svg.line()
+                    .x(function(d) { return d.x; })
+                    .y(function(d) { return d.y; })
+
+
+            canvas.append("path")
+                    .attr("d", drawHexagon(hexagonData))
+                    .attr("stroke", "red")
+                    .attr("fill", "rgba(255,0,0,0.4)");
+</script>
+</html>
