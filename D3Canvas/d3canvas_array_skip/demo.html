@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script src="../../vendor/lodash.js" charset="utf-8"></script>
+<script>
+    var years = [2005,2007,2009,2014,2015];
+    var yearsEvent = [
+        {start: 2005, end: 2007, title: 'aaaa'},
+        {start: 2005, end: 2009, title: 'bbbb'},
+        {start: 2014, end: 2015, title: 'cccc'},
+        {start: 2009, end: 2015, title: 'eeee'}
+    ];
+    var yearsLine =[];
+    var rectWidth = 50;
+    var rectHeight = 20;
+
+    var canvas = d3.select('#container')
+            .append('canvas')
+            .attr("width", 650)
+            .attr("height", 300);
+
+    var context = canvas.node().getContext("2d");
+
+    var scale = d3.scale.linear()
+            .domain([d3.min(years),d3.max(years)])
+            .range([10, 590])
+
+
+    context.beginPath();
+    context.strokeStyle = "black";
+    context.moveTo(scale(d3.min(years))-rectWidth,160);
+    context.lineTo(scale(d3.max(years))+rectWidth*2,160);
+    context.stroke();
+    context.closePath();
+
+    years.forEach(function(d, i) {
+        context.beginPath();
+        context.rect(scale(d), 150, rectWidth, rectHeight);
+        context.fillStyle= 'rgba(255, 102, 102, 1)'
+        context.fill();
+        context.font = "13px yahei";
+        context.textAlign = "start";
+        context.fillStyle ='white';
+        context.fillText(d, scale(d)+5 ,165);
+        context.closePath();
+    });
+
+    yearsEvent.forEach(function(d,i){
+        context.beginPath();
+        context.strokeStyle = "#666666";
+
+        var _heightOffset = 20
+        var yearConflict =  _.filter(yearsEvent,function(e){
+            return e.finish && ((d.start>= e.start && d.start<= e.end) || (d.end>= e.start && d.end<= e.end))
+        })
+        _heightOffset = (yearConflict.length+1) * 20;
+
+        context.beginPath();
+        context.moveTo(scale(d.start),160);
+        context.lineTo(scale(d.start),160 - _heightOffset);
+        context.lineTo(scale(d.start)+rectWidth/2,160 - _heightOffset);
+        context.fillStyle ='black';
+        context.fillText(d.title, scale(d.start)+rectWidth/2+5 ,160 - _heightOffset +3);
+        context.moveTo(scale(d.end)+rectWidth/2,160- _heightOffset);
+        context.lineTo(scale(d.end)+rectWidth,160 - _heightOffset);
+        context.lineTo(scale(d.end)+rectWidth,160);
+        context.stroke();
+        context.closePath();
+        d.finish = 1;
+        //yearsLine[d.start] ? yearsLine[d.start]= yearsLine[d.start]+1 : yearsLine[d.start]=1;
+    });
+
+    console.log(yearsLine);
+
+</script>
+</html>
