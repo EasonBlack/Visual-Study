@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        svg {
+            font: 10px sans-serif;
+        }
+
+        .y.axis path {
+            fill: none;
+            stroke: #000;
+        }
+
+        .y.axis line  {
+            stroke: #777;
+            stroke-dasharray: 2,2;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data= [10,50,100,67,54];
+    var width = 700;
+    var height = 300;
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', width)
+            .attr('height',height)
+            .append('g')
+
+    var scale = d3.scale.linear()
+            .domain([0,d3.max(data)])
+            .range([290, 10]);
+
+    var yaxis = d3.svg.axis()
+            .ticks(10)
+            .scale(scale)
+            .orient("right");
+
+    var node = canvas.selectAll('g')
+            .data(data)
+            .enter()
+            .append('g')
+            .attr({
+                transform: function(d,i){
+                    var x= i*30+30;
+                    var y = scale(d) ;
+                    return 'translate('+ x +','+ y +')'
+                }
+            })
+
+
+    node.append('rect')
+            .attr({
+                width: 25,
+                height:function(d,i){return height - scale(d) -10},
+                fill: 'rgba(0,51,153,0.6)'
+            });
+
+    node.append('text')
+            .text(function(d){return d})
+            .attr({
+                'font-size' :"10px",
+                fill: 'white',
+                x: 3,
+                y: 15
+            })
+
+    var yAxisGroup = canvas.append('g')
+            .attr("class", "y axis")
+            .call(yaxis);
+
+    yAxisGroup.selectAll('line')
+            .attr('x2', function(d,i){
+                if(d>=d3.max(data)) {
+                    return width
+                } else {
+                    return 2
+                }
+
+            });
+
+</script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data= [10,50,100,67,54];
+    var width = 700;
+    var height = 300;
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', width)
+            .attr('height',height)
+            .append('g')
+          //  .attr('transform',' translate(100,300) rotate(-90)');
+
+    var scale = d3.scale.linear()
+            .domain([0,d3.max(data)])
+            .range([10, 280]);
+
+    var node = canvas.selectAll('g')
+            .data(data)
+            .enter()
+            .append('g')
+            .attr({
+                transform: function(d,i){
+                    var x= i*30;
+                    var y = height - scale(d);
+                    return 'translate('+ x +','+ y +')'
+                }
+            })
+
+
+    node.append('rect')
+            .attr({
+                width: 25,
+                height:function(d,i){return scale(d)},
+                fill: 'rgba(0,51,153,0.6)'
+            });
+
+    node.append('text')
+            .text(function(d){return d})
+            .attr({
+                'font-size' :"14px",
+                fill: 'white',
+                x: 3,
+                y: 15
+            })
+
+</script>
+</html>
