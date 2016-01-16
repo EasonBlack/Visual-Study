@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var data = [
+        {
+            "Type": 1,
+            "Name": "feb",
+            "Total": 20
+        },
+        {
+            "Type": 2,
+            "Name": "obitu",
+            "Total": 51
+        },
+        {
+            "Type": 1,
+            "Name": "anfeib",
+            "Total": 60
+        },
+        {
+            "Type": 2,
+            "Name": "vucle",
+            "Total": 51
+        },
+        {
+            "Type": 2,
+            "Name": "wapohe",
+            "Total": 45
+        },
+        {
+            "Type": 1,
+            "Name": "sotujpi",
+            "Total": 13
+        },
+        {
+            "Type": 1,
+            "Name": "bu",
+            "Total": 59
+        },
+        {
+            "Type": 2,
+            "Name": "uwwo",
+            "Total": 58
+        },
+        {
+            "Type": 2,
+            "Name": "kezeami",
+            "Total": 5
+        },
+        {
+            "Type": 3,
+            "Name": "zedeji",
+            "Total": 12
+        }
+    ]
+
+    var nest = d3.nest()
+            .key(function(d){
+                return d.Type;
+            })
+            .entries(data);
+
+    console.log(nest);
+</script>
+</html>
