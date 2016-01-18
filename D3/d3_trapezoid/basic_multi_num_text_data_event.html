@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .tra-center-text {
+            fill: white;
+            font-size: 24px;
+        }
+
+        .tra-corner-text {
+            fill: white;
+
+        }
+
+        .tra-tip-text {
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <button id="bt1">Click Me</button>
+</div>
+</body>
+<script src="../../vendor/d3.js"></script>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var dataSet = [
+        {text: 'aaa', cornerText: 11, tip: 'xxxxxxxx'},
+        {text: 'bbb', cornerText: 22, tip: 'xxxxxxxx'},
+        {text: 'ccc', cornerText: 33, tip: 'xxxxxxxx'},
+    ]
+
+    var dataSet2 = [
+        {text: 'aaa', cornerText: 15, tip: 'xxxxxxxx'},
+        {text: 'bbb', cornerText: 77, tip: 'xxxxxxxx'},
+        {text: 'ccc', cornerText: 11, tip: 'xxxxxxxx'},
+    ]
+
+    var height = 500,
+            width = 500,
+            margin = 25;
+
+    var hexagon = function () {
+        this.topwidth = 300;
+        this.bottomwidth = 250;
+        this.offset = (this.topwidth - this.bottomwidth) / 2;
+        this.height = 60;
+        this.interval = 10;
+        this.center = margin + this.topwidth / 2 - 15;
+
+        this.getNextPath = function (num) {
+            var initX = this.offset * (this.height + this.interval) * num / this.height;
+            var topwidth = this.topwidth - initX * 2;
+            var bottomwidth = topwidth - this.offset * 2;
+            var lefttop = {x: margin + initX, y: margin + (this.height + this.interval) * num};
+            var righttop = {x: margin + initX + topwidth, y: margin + (this.height + this.interval) * num};
+            var leftbottom = {
+                x: margin + initX + this.offset,
+                y: margin + (this.height + this.interval) * num + this.height
+            }
+            var rightbottom = {
+                x: margin + initX + this.offset + bottomwidth,
+                y: margin + (this.height + this.interval) * num + this.height
+            }
+
+            var path = [];
+            path.push(lefttop);
+            path.push(righttop);
+            path.push(rightbottom);
+            path.push(leftbottom);
+            path.push(lefttop);
+            return path;
+        }
+
+        this.getTextTransform = function (num) {
+            var centerX = margin + this.topwidth / 2 - 20;
+            var centerY = margin + (this.height + this.interval) * num + this.height / 2;
+            return 'translate(' + centerX + ',' + centerY + ')';
+        }
+
+        this.getCornerTextTransform = function (num) {
+            var centerX = margin + this.offset * (this.height + this.interval) * num / this.height + 10;
+            var centerY = margin + (this.height + this.interval) * num + 15;
+            return 'translate(' + centerX + ',' + centerY + ')';
+        }
+
+        this.getTipTextTransform = function (num) {
+            var centerX = margin + this.topwidth / 2 - 35;
+            var centerY = margin + (this.height + this.interval) * num + this.height / 2 + 15;
+            return 'translate(' + centerX + ',' + centerY + ')';
+        }
+    }
+
+    var _hex = new hexagon();
+
+    var drawHexagon =
+            d3.svg.line()
+                    .x(function (d) {
+                        return d.x;
+                    })
+                    .y(function (d) {
+                        return d.y;
+                    })
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+    var group = canvas.append('g')
+            .attr('transform', 'translate(' + margin + ',' + margin + ')');
+
+    var nodes = group.selectAll('g')
+            .data(dataSet)
+            .enter()
+            .append('g');
+
+    nodes.append('path')
+            .attr('d', function (d, i) {
+                return drawHexagon(_hex.getNextPath(i));
+            })
+            .attr("fill", "rgba(255,0,0,0.4)");
+
+    nodes.append('text')
+            .text(function (d) {
+                return d.text;
+            })
+            .attr('transform', function (d, i) {
+                return _hex.getTextTransform(i)
+            })
+            .attr('class', 'tra-center-text')
+
+    nodes.append('text')
+            .text(function (d) {
+                return d.tip;
+            })
+            .attr('transform', function (d, i) {
+                return _hex.getTipTextTransform(i)
+            })
+            .attr('class', 'tra-tip-text')
+
+    nodes.append('text')
+            .attr('transform', function (d, i) {
+                return _hex.getCornerTextTransform(i)
+            })
+            .attr('class', 'tra-corner-text')
+
+        renderText(dataSet);
+
+        $('#bt1').click(function(){
+            renderText(dataSet2);
+        });
+
+    function renderText(data) {
+        group.selectAll('g .tra-corner-text')
+                .data(data)
+                .text(function (d) {
+                    return d3.select(this).text() || 0;
+                })
+                .transition()
+                .duration(1000)
+                .tween("text", function (d) {
+                    var i = d3.interpolate(parseInt(this.textContent), d.cornerText);
+                    return function (t) {
+                        this.textContent = Math.round(i(t)) + '%';
+                    };
+                });
+
+
+    }
+
+
+</script>
+</html>
