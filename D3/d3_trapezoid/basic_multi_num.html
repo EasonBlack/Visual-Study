@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var  height=300,
+         width=500,
+         margin = 25;
+
+    var hexagon = function(){
+        this.topwidth = 300;
+        this.bottomwidth = 250;
+        this.offset = (this.topwidth - this.bottomwidth)/2;
+        this.height = 60;
+        this.interval = 10;
+        this.lefttop = {x: margin,  y: margin};
+        this.righttop = {x: margin + this.topwidth, y: margin};
+        this.leftbottom = {x: margin + this.offset, y: margin+ this.height}
+        this.rightbottom = {x: margin + this.offset + this.bottomwidth, y: margin+ this.height}
+        this.getPath = function() {
+            var path = [];
+            path.push( this.lefttop);
+            path.push( this.righttop);
+            path.push( this.rightbottom);
+            path.push( this.leftbottom);
+            path.push( this.lefttop);
+            return path
+        }
+
+        this.getNextPath = function(num) {
+            var initX =  this.offset * (this.height + this.interval)*num/this.height;
+            var topwidth = this.topwidth - initX*2;
+            var bottomwidth = topwidth -  this.offset*2;
+
+            var lefttop = {x: margin + initX,  y: margin + (this.height + this.interval)*num};
+            var righttop = {x: margin + initX + topwidth, y:  margin + (this.height + this.interval)*num};
+            var leftbottom = {x: margin + initX + this.offset, y: margin + (this.height + this.interval)*num+ this.height}
+            var rightbottom = {x: margin + initX + this.offset + bottomwidth, y: margin + (this.height + this.interval)*num+ this.height}
+
+            var path = [];
+            path.push(lefttop);
+            path.push(righttop);
+            path.push( rightbottom);
+            path.push(leftbottom);
+            path.push(lefttop);
+            return path;
+        }
+    }
+
+    var _hex = new hexagon();
+
+    var drawHexagon =
+            d3.svg.line()
+                    .x(function(d) { return d.x; })
+                    .y(function(d) { return d.y; })
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', width)
+            .attr('height',height);
+
+    var group = canvas.append('g')
+            .attr('transform','translate('+margin+','+margin+')');
+
+    group.append('path')
+            .attr("d", drawHexagon(_hex.getPath()))
+            .attr("fill", "rgba(255,0,0,0.4)")
+    group.append('path')
+            .attr("d", drawHexagon(_hex.getNextPath(1)))
+            .attr("fill", "rgba(255,0,0,0.4)")
+    group.append('path')
+            .attr("d", drawHexagon(_hex.getNextPath(3)))
+            .attr("fill", "rgba(255,0,0,0.4)");
+
+
+</script>
+</html>
