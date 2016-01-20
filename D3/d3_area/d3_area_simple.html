@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var width = 500;
+    var height = 500;
+    var dataSet = [
+        {x: 10, y :20},
+        {x: 20, y :10},
+        {x: 30, y :40},
+        {x: 40, y :50}
+    ];
+
+    var canvas = d3.select('body').append('svg')
+            .attr({
+                width: width,
+                height: height
+            })
+            .append('g');
+
+    var x = d3.scale.linear()
+            .domain([0,50])
+            .range([0,width]);
+    var y = d3.scale.linear()
+            .domain([0,50])
+            .range([height, 0])
+
+    var line = d3.svg.line()
+            //.interpolate('step-before')
+            .x(function(d) { return x(d.x)})
+            .y(function(d) { return y(d.y)});
+
+    var area = d3.svg.area()
+            //.interpolate('step-before')
+            .x(function(d){ return x(d.x)})
+            .y0(y(0))
+            .y1(function(d){return y(d.y)});
+
+    canvas.selectAll('path.line')
+            .data([dataSet])
+            .enter()
+            .append('path')
+            .attr({
+                class:'line',
+                d: function(d) { return line(d);},
+                stroke: '#333333',
+                fill: 'none'
+            })
+
+    canvas.selectAll('path.area')
+            .data([dataSet])
+            .enter()
+            .append('path')
+            .attr({
+                class: 'area',
+                d: function(d) {return area(d);},
+                fill: 'steelblue'
+            })
+
+    canvas.selectAll('circle')
+            .data(dataSet)
+            .enter()
+            .append('circle')
+            .attr({
+                cx: function(d){return x(d.x)},
+                cy: function(d){return y(d.y)},
+                r:4.5
+            })
+
+
+
+
+
+
+
+</script>
+</html>
