@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #map {
+            width:100%;
+            height:500px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+</body>
+
+<script type="text/javascript">
+    var map;
+    function initMap() {
+        var myLatLng =  {lat: -34.397, lng: 150.644};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: myLatLng,
+            zoom: 8,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        map.addListener('click', function(event) {
+            addMarker(event.latLng);
+        });
+
+        function addMarker(myLatLng) {
+            new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: 'Hello World!'
+            });
+
+            var circle = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                center:  myLatLng,
+                radius: 200
+            });
+        }
+
+    }
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANoP6u-_40UoDuehKCQCeH5PX9ZJxUeDs&callback=initMap">
+</script>
+</html>
