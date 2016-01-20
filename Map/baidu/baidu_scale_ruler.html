@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container{
+            width:50%;
+            height:50%;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6QkMdfO2FR1k3qiceZxbWnG9"></script>
+</head>
+<body>
+<div style="width:697px;height:550px;border:#ccc solid 1px;" id="container"></div>
+<button id="bt1">Get Radius</button>
+<script type="text/javascript">
+    var map = new BMap.Map("container",{minZoom:4 , maxZoom:19});
+    map.centerAndZoom("上海");
+
+
+    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+    map.addControl(top_left_control);
+    map.addControl(top_left_navigation);
+</script>
+</body>
+</html>
