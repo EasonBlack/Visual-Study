@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container{
+            width:50%;
+            height:50%;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6QkMdfO2FR1k3qiceZxbWnG9"></script>
+</head>
+<body>
+<div style="width:697px;height:550px;border:#ccc solid 1px;" id="container"></div>
+<button id="bt1">Get Radius</button>
+<script type="text/javascript">
+    var map = new BMap.Map("container");//在百度地图容器中创建一个地图
+    map.centerAndZoom("上海",18);
+
+    map.addEventListener("click", getInfo);
+
+    function getInfo(e){
+        var mPoint = e.point;
+        var marker = new BMap.Marker(mPoint);
+        circle = new BMap.Circle(mPoint, 20, {fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.1, strokeOpacity: 0.3});
+        map.addOverlay(marker);
+        map.addOverlay(circle);
+        circle.enableEditing();
+        map.panTo(mPoint);
+
+        circle.addEventListener('lineupdate',function(){
+            console.log(this.getRadius());
+        });
+    }
+
+    document.getElementById('bt1').addEventListener('click',function(){
+        console.log(circle.getRadius())
+    })
+
+
+
+
+</script>
+</body>
+</html>

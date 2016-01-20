@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container{
+            width:50%;
+            height:50%;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6QkMdfO2FR1k3qiceZxbWnG9"></script>
+</head>
+<body>
+<div style="width:697px;height:550px;border:#ccc solid 1px;" id="container"></div>
+<script type="text/javascript">
+    var map = new BMap.Map("container", {minZoom:4,maxZoom:19});  // 创建Map实例
+    map.centerAndZoom("上海",15);
+    map.enableScrollWheelZoom(true);
+
+</script>
+</body>
+</html>
