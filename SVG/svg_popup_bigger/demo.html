@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="../../style/bootstrap.css" rel="stylesheet"/>
+    <link href="../../style/bootstrap-theme.css" rel="stylesheet"/>
+    <style>
+        .image-container {
+            height:300px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <a  data-toggle="modal" data-target="#chart-modal" id="btnBigger">Bigger</a>
+        <div class="col-sm-6 image-container" >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" id="myimg" >
+                <view id="tightcrop" viewBox="4.5 1.5 51 49" />
+                <linearGradient id="coin" x2="50%" y2="40%" spreadMethod="reflect">
+                    <stop stop-color="gold" offset="30%" />
+                    <stop stop-color="goldenrod" offset="70%" />
+                    <stop stop-color="white" offset="82%" />
+                    <stop stop-color="gold" offset="92%" />
+                    <stop stop-color="darkgoldenrod" offset="100%" />
+                </linearGradient>
+                <radialGradient id="pot" fx="30%" fy="35%">
+                    <stop stop-color="white" offset="0%" />
+                    <stop stop-color="gold" offset="15%" />
+                    <stop stop-color="goldenrod" offset="80%" />
+                    <stop stop-color="darkgoldenrod" offset="100%" />
+                </radialGradient>
+                <g fill="url(#coin)" stroke="darkgoldenrod" stroke-width="0.5">
+                    <circle r="5" transform="translate(30,7)" />
+                    <circle r="5" transform="translate(35,13)" />
+                    <circle r="5" transform="translate(22,10)" />
+                    <circle r="5" transform="translate(27,9)" />
+                    <circle r="5" transform="translate(18,17)" />
+                    <circle r="5" transform="translate(42,18)" />
+                    <circle r="5" transform="translate(32,19)" />
+                    <circle r="5" transform="translate(30,14)" />
+                    <circle r="5" transform="translate(25,15)" />
+                    <circle r="5" transform="translate(37,19)" />
+                    <circle r="5" transform="translate(31,16)" />
+                    <circle r="5" transform="translate(20,18)" />
+                    <circle r="5" transform="translate(26,21)" />
+                </g>
+                <path fill="url(#pot)" stroke="#751" stroke-width="0.5"
+                      d="M30,50 C45,50 55,45 55,35
+             Q 55,27 50,25 C55,22 53,15 45,20
+             S 23,25 15,20 S5,22 10,25
+             Q 5,27 5,35 C5,45 15,50 30,50Z"
+                        />
+            </svg>
+        </div>
+
+    </div>
+    <div class="modal fade" id="chart-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width:1000px">
+            <div class="modal-content" style="width:100%">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12" id="big_chart_container">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script src="../../vendor/jquery.min.js" charset="utf-8"></script>
+<script src="../../vendor/bootstrap.js" charset="utf-8"></script>
+<script>
+    var NewG;
+    $('#btnBigger').click(function(){
+        var G = document.getElementById("myimg");
+        NewG=G.cloneNode(true);
+
+
+    });
+
+    $('#chart-modal').on('shown.bs.modal', function() {
+        $('#big_chart_container').html('');
+        $('#big_chart_container').append(NewG);
+    })
+
+</script>
+
+</html>
