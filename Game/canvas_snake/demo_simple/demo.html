@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border: 1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420"></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="../../../vendor/lodash.js"></script>
+<script src="grid.js"></script>
+<script src="snake.js"></script>
+<script src="handle.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var iCount = 0;
+    var ctx = canvas.getContext('2d');
+    var gridOptions = {x: 0, y: 0, w: 20, strokeColor: '#CCCCCC', lineWidth: 0.2};
+    var grid = new Grid(ctx, gridOptions);
+    var snakeOptions = {x: 400, y: 100, w: 20, fillStyle: '#336633', len: 3};
+    var snake = new Snake(ctx, snakeOptions, grid);
+    KeyHandle(snake);
+    draw();
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        grid.draw();
+        grid.drawObastacles();
+        if (iCount % 12 == 0) {
+            grid.createRandomBox();
+        }
+        snake.draw();
+
+        iCount++;
+        setTimeout(function () {
+            draw();
+        }, 300);
+        //requestAnimationFrame(draw);
+    }
+</script>
+</html>
