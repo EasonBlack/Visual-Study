@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border: 1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420"></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    draw();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+        var radgrad = ctx.createRadialGradient(60, 60, 0, 60, 60, 60);
+        radgrad.addColorStop(0, 'rgba(255,0,0,1)');
+        radgrad.addColorStop(0.8, 'rgba(228,0,0,.6)');
+        radgrad.addColorStop(1, 'rgba(228,0,0,0)');
+
+        ctx.fillStyle = radgrad;
+        ctx.fillRect(0, 0, 120, 120);
+        //requestAnimationFrame(draw);
+    }
+</script>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border: 1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420"></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    draw();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(100, 100);
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 50, 0, Math.PI * 1.5);
+        ctx.closePath();
+        ctx.fillStyle='#CD2E27';
+        ctx.fill();
+
+        ctx.restore();
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(105, 95);
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 50, Math.PI * 1.5, Math.PI*2);
+        ctx.closePath();
+        ctx.fillStyle='#EC7b75';
+        ctx.fill();
+
+        ctx.restore();
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(240, 100);
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 60, Math.PI * 1.5, Math.PI*2);
+        ctx.closePath();
+        ctx.fillStyle='#CD2E27';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 40, Math.PI * 1.5, Math.PI*2);
+        ctx.closePath();
+        ctx.fillStyle='#EC7b75';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 20, Math.PI * 1.5, Math.PI*2);
+        ctx.closePath();
+        ctx.fillStyle='#F9c2BF';
+        ctx.fill();
+
+        ctx.font = '14px Verdana';
+        ctx.fillStyle = "#000000";
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('weak',-10,0);
+        ctx.fillText('normal',-10,-20);
+        ctx.fillText('strong',-10,-40);
+
+    }
+</script>
+</html>

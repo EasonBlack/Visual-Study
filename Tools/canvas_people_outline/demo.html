@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #canvas {
+            border:1px solid steelblue
+        }
+
+        .sector-container {
+            position:relative;
+            top:0;
+            left:0;
+        }
+
+        .sector{
+            position:absolute;
+
+
+
+        }
+        .sector1{
+            top:0;
+            left:0;
+            height:120px;
+            width:120px;
+            border-radius: 0px 120px 0 0;
+            background:#CD2E27;
+        }
+        .sector2{
+            top:40px;
+            left:0;
+            height:80px;
+            width:80px;
+            border-radius: 0px 80px 0 0;
+            background:#EC7b75;
+        }
+        .sector3{
+            top:80px;
+            left:0;
+            height:40px;
+            width:40px;
+            border-radius: 0px 40px 0 0;
+            background:#F9c2BF;
+        }
+
+
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420" ></canvas>
+<canvas id="control_canvas" width="240" height="120" ></canvas>
+<div class="sector-container">
+    <div class="sector sector1"></div>
+    <div class="sector sector2"></div>
+    <div class="sector sector3"></div>
+</div>
+
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="control.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var controlCanvas = new ControlCanvas();
+
+    var picLength = 420 * 420;
+    var imgOutline = new Image();
+    imgOutline.onload = function() {
+        ctx.drawImage(imgOutline, 0, 0, 420, 420);
+        var _Image = ctx.getImageData(0, 0, 420, 420);
+        for (var i = 0; i < picLength * 4; i++) {
+            if( (i+1) % 4 ==0) {
+                continue;
+            }
+            if(_Image.data[i] == 0) {
+                _Image.data[i] = 255;
+            } else  {
+                _Image.data[i] = 0;
+            }
+        }
+        ctx.putImageData(_Image, 0, 0);
+    };
+    //imgOutline.src = "person_outline.png";
+
+    controlCanvas.init();
+
+    $('.sector').click(function(e){
+        var _target = e.target;
+        var color = $(e.target).css('background-color');
+        alert(color);
+    })
+
+
+    draw();
+    function draw() {
+        requestAnimationFrame(draw);
+    }
+</script>
+</html>
