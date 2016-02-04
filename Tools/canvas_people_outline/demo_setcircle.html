@@ -50,7 +50,6 @@
 </head>
 <body>
 <canvas id="canvas" width="420" height="420" ></canvas>
-<canvas id="control_canvas" width="240" height="120" ></canvas>
 <div class="sector-container">
     <div class="sector sector1"></div>
     <div class="sector sector2"></div>
@@ -63,39 +62,48 @@
 <script>
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
-    var controlCanvas = new ControlCanvas();
+    var canvasOffset = $("#canvas").offset();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+    var selectRgb =  'rgb(255,0,0)';
 
-    var picLength = 420 * 420;
-    var imgOutline = new Image();
-    imgOutline.onload = function() {
-        ctx.drawImage(imgOutline, 0, 0, 420, 420);
-        var _Image = ctx.getImageData(0, 0, 420, 420);
-        for (var i = 0; i < picLength * 4; i++) {
-            if( (i+1) % 4 ==0) {
-                continue;
-            }
-            if(_Image.data[i] == 0) {
-                _Image.data[i] = 255;
-            } else  {
-                _Image.data[i] = 0;
-            }
-        }
-        ctx.putImageData(_Image, 0, 0);
-    };
-    imgOutline.src = "person_outline.png";
+    $("#canvas").mousedown(function (e) {
+        handleMouseDown(e);
+    });
 
-    controlCanvas.init();
+    function handleMouseDown(e){
+        e.preventDefault();
+        startX = parseInt(e.clientX - offsetX);
+        startY = parseInt(e.clientY - offsetY);
+        drawBlurCircle(ctx, startX, startY);
+
+    }
+
+    function drawBlurCircle(ctx, startX, startY) {
+        ctx.beginPath();
+        var radgrad = ctx.createRadialGradient(startX, startY, 0, startX, startY, 15);
+        radgrad.addColorStop(0, transferColor(selectRgb, 1));
+        radgrad.addColorStop(0.5,  transferColor(selectRgb, 0.6));
+        radgrad.addColorStop(1, transferColor(selectRgb, 0));
+        ctx.arc(startX, startY, 15, 0, 2 * Math.PI);
+        ctx.fillStyle = radgrad;
+        ctx.fill()
+    }
+
+    function transferColor(rgb, alpha){
+        var result = ''
+        result = rgb.replace('rgb','rgba');
+        result = result.replace(')',','+alpha+')');
+        return result;
+
+    }
 
     $('.sector').click(function(e){
         var _target = e.target;
         var color = $(e.target).css('background-color');
-        alert(color);
+        selectRgb = color;
     })
 
 
-    draw();
-    function draw() {
-        requestAnimationFrame(draw);
-    }
 </script>
 </html>
