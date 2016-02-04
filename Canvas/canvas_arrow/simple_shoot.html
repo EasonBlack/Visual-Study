@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border:1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420" ></canvas>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var points = [
+        {fromx: 100,fromy:100,tox:200,toy:200},
+        {fromx: 16,fromy:23,tox:120,toy:87},
+        {fromx: 98,fromy:34,tox:199,toy:287},
+        {fromx: 156,fromy:47,tox:256,toy:220},
+    ]
+
+    function canvas_arrow(context, p){
+        var headlen = 10;   // length of head in pixels
+        context.moveTo(p.fromx, p.fromy);
+        context.lineTo(p._partx, p._party);
+        context.lineTo(p._partx-headlen*Math.cos(p.angle-Math.PI/6),p._party-headlen*Math.sin(p.angle-Math.PI/6));
+        context.moveTo(p._partx, p._party);
+        context.lineTo(p._partx-headlen*Math.cos(p.angle+Math.PI/6),p._party-headlen*Math.sin(p.angle+Math.PI/6));
+    }
+
+
+
+
+    function linePartEnd(context, p){
+        p._y =  p._x*Math.tan(p.angle);
+        p._partx = p._x + p.fromx;
+        p._party = p._y + p.fromy;
+
+    }
+
+
+    for (var i =0;i<points.length;i++) {
+        var p = points[i];
+        var angle = Math.atan2(p.toy- p.fromy, p.tox- p.fromx);
+        p.angle = angle;
+        p._x = 1;
+    }
+
+    draw();
+    function draw() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (var i =0;i<points.length;i++) {
+            var p = points[i];
+             ctx.beginPath();
+            linePartEnd(ctx, p);
+            canvas_arrow(ctx, p);
+            ctx.stroke();
+            if( p._x+ p.fromx < p.tox) {
+                p._x++;
+            }
+        }
+
+        requestAnimationFrame(draw);
+    }
+</script>
+</html>
