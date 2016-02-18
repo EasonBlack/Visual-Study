@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border:1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="620" height="420" ></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var  alpah = 0;
+    var rotate_step = 1;
+
+    var circle = {x: 100, y:100, r:100}
+    var point = {x: 200, y: 100, r: 5};
+    var end = {x: 400, y: 100, width:10, height:40};
+
+    var leverlen = end.x - point.x;
+
+    draw();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(128,165,208,0.7)';
+        ctx.arc(circle.x, circle.y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(circle.x, circle.y);
+        ctx.lineTo(420,100);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(128,165,208,0.7)';
+        ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI)
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(128,165,208,0.7)';
+        ctx.arc(point.x, point.y, point.r, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.save()
+        ctx.strokeStyle = 'rgba(128,165,208,0.7)';
+        ctx.lineWidth = 5;
+        ctx.moveTo(point.x, point.y);
+        ctx.lineTo(end.x,end.y);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(128,165,208,0.7)';
+        ctx.rect(end.x - end.width/2, end.y-end.height/2, end.width, end.height)
+        ctx.fill();
+
+
+        var _point = {
+            x: point.x - circle.x,
+            y: point.y - circle.y
+        }
+        var angle  = rotate_step * Math.PI / 180;
+
+        var _x = _point.x * Math.cos(angle) - _point.y * Math.sin(angle);
+        var _y = _point.x * Math.sin(angle) + _point.y * Math.cos(angle);
+
+        point.x = _x + circle.x;
+        point.y = _y + circle.y;
+
+
+        //end x
+        var rotateA =alpah * Math.PI / 180;
+        var _leftx = circle.r * Math.cos(rotateA);
+        var _tempy = circle.r * Math.sin(rotateA);
+        var _rightx = Math.sqrt(leverlen*leverlen - _tempy*_tempy);
+        end.x = circle.x + _leftx + _rightx;
+
+        if(alpah==360) alpah=0;
+        alpah += rotate_step;
+
+
+        requestAnimationFrame(draw);
+    }
+</script>
+</html>
