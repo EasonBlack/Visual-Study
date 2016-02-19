@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            padding:0;
+            margin:0;
+        }
+        canvas {
+            display:block;
+            position: absolute;
+            border:1px solid steelblue
+        }
+
+        #c2 {
+            left: 420px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="c1" width="420" height="420" ></canvas>
+<canvas id="c2" width="420" height="420" ></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script>
+    var canvasWidth = 420;
+    var canvasHeight = 420;
+    var ctx1 = document.getElementById('c1').getContext('2d');
+    var ctx2 = document.getElementById('c2').getContext('2d');
+
+    var ball  = { x: 10, y:100, r:10, d: 'right'};
+    var step = 1;
+    draw();
+    function draw() {
+        ctx1.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx1.fillStyle = 'steelblue';
+        ctx2.fillStyle = 'steelblue';
+        if(ball.x <= canvasWidth + ball.r ) {
+            ctx1.beginPath();
+            ctx1.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
+            ctx1.fill();
+        }
+
+        if(ball.x > canvasWidth - ball.r) {
+            ctx2.beginPath();
+            ctx2.arc(ball.x - canvasWidth, ball.y, ball.r, 0, 2 * Math.PI);
+            ctx2.fill()
+        }
+
+
+        if(ball.x == 2* canvasWidth - ball.r) {
+            ball.d = 'left';
+        }
+        if(ball.x == ball.r) {
+            ball.d = 'right';
+        }
+
+
+        ball.d == 'right' ? ball.x += step : ball.x -= step
+
+
+        requestAnimationFrame(draw);
+    }
+</script>
+</html>
