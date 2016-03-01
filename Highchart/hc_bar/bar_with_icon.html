@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .store-name {
+            color: black;
+            font-size:200;
+            margin-left:5px;
+        }
+    </style>
+</head>
+<body>
+<div id="container" style="min-width: 410px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="../../vendor/highcharts.src.js"></script>
+<script src="../../vendor/highcharts-more.src.js"></script>
+<script>
+    var stores = [
+        {id: 1, name : 'KFC', icon : 'LOGO/kfc.png'},
+        {id: 2, name : 'Bread', icon : 'LOGO/bread.png'},
+        {id: 3, name : 'Burger', icon : 'LOGO/burger.png'},
+        {id: 4, name : 'Manji', icon : 'LOGO/manji.png'},
+        {id: 5, name : 'Pizzahut', icon : 'LOGO/pizzahut.png'}
+    ]
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'bar',
+                marginLeft : 150
+            },
+            title: {
+                text: ''
+            },
+
+            xAxis: [{
+                //visible: false,
+                lineColor: 'transparent',
+                tickLength: 0,
+                title: {
+                    text: null
+                },
+                labels : {
+                    useHTML: true,
+                    formatter: function() {
+                        return '<img src="'+ stores[this.value].icon+ '" style="width: 30px; vertical-align: middle" />' + '<span class="store-name">' + stores[this.value].name + '</span>';
+                    },
+                    align: 'left',
+                    x: -100,
+                    y: -5
+
+                }
+            }, {
+                opposite: true,
+                categories: ['D','E','F','E','F']
+            }],
+            yAxis: {
+                //visible: false,
+                gridLineColor: 'transparent',
+                labels : {
+                    enabled: false
+                },
+                min: 0,
+                title: {
+                    text: '',
+                    align: 'high'
+                }
+            },
+
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+                series: {
+                    pointPadding: 0,
+                    groupPadding: 0.2
+                }
+            },
+            legend: {
+              enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                xAxis:0,
+                name: 'Stores',
+                data: [108,78,34,12,10]
+            }]
+        });
+    });
+</script>
