@@ -53,8 +53,32 @@
 
                 }
             }, {
+                lineColor: 'transparent',
+                tickLength: 0,
+                linkedTo: 0,
                 opposite: true,
-                categories: ['D','E','F','E','F']
+                labels : {
+                    useHTML: true,
+                    formatter: function() {
+                        if(!stores[this.value]) return ;
+                        return '<span class="store-index">' + stores[this.value].id + '</span>';
+                    }
+                }
+            },{
+                lineColor: 'transparent',
+                tickLength: 0,
+                linkedTo: 0,
+                labels: {
+                    formatter: function() {
+                        return 'xxxxxxxxx';
+                    },
+                    style: {
+                        color: '#89A54E'
+                    },
+                    align: 'left',
+                    x: 100,
+                    y: -5
+                }
             }],
             yAxis: {
                 //visible: false,
@@ -87,10 +111,10 @@
                 enabled: false
             },
             series: [{
-                xAxis:0,
                 name: 'Stores',
                 data: [108,78,34,12,10]
-            }]
+            }
+            ]
         });
     });
 </script>

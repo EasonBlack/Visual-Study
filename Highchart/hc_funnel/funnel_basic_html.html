@@ -3,15 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        .fun-key {
+            position: absolute;
+            left:-30px;
+        }
+
+        .fun-value {
+            margin-left: 50%;
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
    <div id="container" style="min-width: 410px; max-width: 600px; height: 400px; margin: 0 auto"></div>
 </body>
 <script src="../../vendor/jquery.min.js"></script>
+<script src="../../vendor/lodash.js"></script>
 <script src="../../vendor/highcharts.src.js"></script>
 <script src="../../vendor/highcharts-more.src.js"></script>
 <script src="../../vendor/highcharts-funnel.src.js"></script>
 <script>
+
+    var obj = [
+        {key: 'aaa', value: '100%'},
+        {key: 'bbb', value: '75%'},
+        {key: 'ccc', value: '35%'},
+    ]
+
     $(function () {
 
         $('#container').highcharts({
@@ -31,7 +50,15 @@
                         enabled: true,
                         distance : -60,
                         position: 'left',
-                        connectorWidth: 0   //连接线的宽度
+                        connectorWidth: 0,   //连接线的宽度
+                        useHTML:true,
+                        formatter: function() {
+                            var self = this;
+                            //console.log(this);
+                            if(!this.key) return ;
+                            return '<div class="fun-key">'+ this.key+'</div> '
+                                    + '<div class="fun-value">'+ _.find(obj,function(e) { return e.key == self.key}).value +'</div>';
+                        }
                     },
                     //neckWidth: '30%',
                     neckHeight: '0',
@@ -55,13 +82,20 @@
             series: [{
                 name: 'Unique users',
                 data: [
-                    {y: 1, type: 'pie', name: 'aaa', dataLabels: {}},
+                    {y: 1, name: 'aaa', dataLabels: {}},
                     {y: 0.7,name: '', color: 'white', dataLabels: {}},
                     {y: 1, name: 'bbb', dataLabels: {}},
                     {y: 0.7,name: '', color: 'white', dataLabels: {}},
                     {y: 1, name: 'ccc', dataLabels: {}},
                 ]
             }]
+        }, function(chartObj) {
+            $.each(chartObj.series[0].data, function(i, point) {
+                console.log(point);
+//                if(point.y > 100) {
+//                    point.dataLabel.attr({x:20});
+//                }
+            });
         });
     });
 </script>
