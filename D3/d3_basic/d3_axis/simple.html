@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #container {
+            border:1px solid #adadad;
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <svg width="500" height="300">
+    </svg>
+</div>
+</body>
+<script src="../../../vendor/d3.js" charset="utf-8"></script>
+<script>
+    var widthScale = d3.scale.linear()
+            .domain([0, 160])
+            .range([0,480]);
+
+    var heightScale = d3.scale.linear()
+            .domain([160, 0])
+            .range([0,280]);
+
+    var axis = d3.svg.axis()
+            .ticks(3)
+            .scale(widthScale);
+
+    var yaxis = d3.svg.axis()
+            .ticks(10)
+            .orient("left")
+            .scale(heightScale);
+
+    var canvas = d3.select('svg')
+            .append('g')     //group
+            .attr('transform','translate(30,0)');
+
+    canvas.append('g')
+            .call(axis)
+            .attr({
+                'fill':'none',
+                'stroke':'#000',
+                'transform':'translate(0,250)'
+            }).style({
+                'font-size':'10px'
+            });
+
+    canvas.append('g')
+            .call(yaxis)
+            .attr({
+                'fill':'none',
+                'stroke':'#000',
+                'transform':'translate(0,-30)'
+            }).style({
+                'font-size':'10px'
+            });
+
+</script>
