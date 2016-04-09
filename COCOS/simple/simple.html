@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../../vendor/cocos2d-js-v3.10.js"></script>
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="500"></canvas>
+<script type="text/javascript">
+    window.onload = function(){
+        cc.game.onStart = function(){
+            var myScene = cc.Scene.extend({
+                onEnter:function(){
+                    this._super();
+                    var layer = new myLayer();
+                    layer.init();
+                    this.addChild(layer);
+                }
+            });
+
+            var myLayer = cc.Layer.extend({
+                init:function(){
+                    this._super();
+                    var circleSpeed = 2;
+                    var gameLayer = cc.LayerColor.create(new cc.Color(0, 0, 0, 255), 500, 500);
+                    for(i=0;i<10;i++){
+                        var greenCircle = cc.Sprite.create("greencircle.png");
+                        gameLayer.addChild(greenCircle);
+                        greenCircle.setPosition(new cc.Point(Math.random()*500,Math.random()*500));
+                    }
+                    this.addChild(gameLayer);
+                    return true;
+                }
+            });
+
+            cc.director.runScene(new myScene());
+        }
+        cc.game.run("gameCanvas");
+    }
+
+</script>
+</body>
+</html>

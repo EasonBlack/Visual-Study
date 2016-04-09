@@ -1,0 +1,170 @@
+<html>
+<head>
+    <title>My first Three.js app</title>
+    <script src="../../../vendor/three.min.js"></script>
+    <script src="../../../vendor/jquery.min.js"></script>
+    <style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+</body>
+<script>
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    var wallheight = 60;
+    //scene & renderer
+    var scene = new THREE.Scene;
+    var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    renderer.setSize(width, height);
+    renderer.setClearColor(0xffffff, 1);
+    document.body.appendChild(renderer.domElement);
+
+    //cube
+
+    var cubeGeometry = new THREE.CubeGeometry(100, wallheight, 10);
+    cubeGeometry.translate(0, 0, 0);
+    var cubeMaterial = new THREE.MeshLambertMaterial({color: 0x1ec876});
+    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    //cube.rotation.y = Math.PI * 45 / 180;
+    scene.add(cube);
+
+    var cubeGeometry1 = new THREE.CubeGeometry(10, wallheight, 150);
+    cubeGeometry1.translate(50, 0, 0);
+    var cube1 = new THREE.Mesh(cubeGeometry1, cubeMaterial);
+    //cube.rotation.y = Math.PI * 45 / 180;
+    scene.add(cube1);
+
+    var cubeGeometry2 = new THREE.CubeGeometry(10, wallheight, 150);
+    cubeGeometry2.translate(-50, 0, 0);
+    var cube2 = new THREE.Mesh(cubeGeometry2, cubeMaterial);
+    //cube.rotation.y = Math.PI * 45 / 180;
+    scene.add(cube2);
+
+    var cubeGeometry3 = new THREE.CubeGeometry(40, wallheight, 10);
+    cubeGeometry3.translate(-30, 0, -70);
+    var cube3 = new THREE.Mesh(cubeGeometry3, cubeMaterial);
+    scene.add(cube3);
+
+    var cubeGeometry4 = new THREE.CubeGeometry(40, wallheight, 10);
+    cubeGeometry4.translate(30, 0, -70);
+    var cube4 = new THREE.Mesh(cubeGeometry4, cubeMaterial);
+    scene.add(cube4);
+
+    var cubeGeometry5 = new THREE.CubeGeometry(40, wallheight, 10);
+    cubeGeometry5.translate(-30, 0, 70);
+    var cube5 = new THREE.Mesh(cubeGeometry5, cubeMaterial);
+    scene.add(cube5);
+
+    var cubeGeometry6 = new THREE.CubeGeometry(40, wallheight, 10);
+    cubeGeometry6.translate(30, 0, 70);
+    var cube6 = new THREE.Mesh(cubeGeometry6, cubeMaterial);
+    scene.add(cube6);
+
+    //circle
+    var material = new THREE.MeshBasicMaterial({
+        color: 0xff0000
+    });
+
+    var radius = 5;
+    var segments = 32;
+
+    var circleGeometry = new THREE.CircleGeometry( radius, segments );
+    var circle = new THREE.Mesh( circleGeometry, material );
+    circleGeometry.translate(0, 10, 5);
+    scene.add( circle );
+    var circleGeometry1 = new THREE.CircleGeometry( radius, segments,0 ,2*Math.PI );
+    var circle1 = new THREE.Mesh( circleGeometry1, material );
+    circle1.rotation.y = Math.PI * 90 / 180;
+    circleGeometry1.translate(50, 10, 55);
+    scene.add( circle1 );
+
+    //camera
+    var camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 10000);
+    camera.position.y = 360;
+    camera.position.z = 400;
+    camera.lookAt(cube.position);
+    scene.add(camera);
+
+
+    var pointLight = new THREE.PointLight(0xffffff);
+    pointLight.position.set(0, 300, 200);
+
+    scene.add(pointLight);
+
+    //GridHelper(size, step)
+    var grid = new THREE.GridHelper(250, 10);
+    scene.add(grid);
+
+
+    var isDragging = false;
+    var previousMousePosition = {
+        x: 0,
+        y: 0
+    };
+    $(renderer.domElement).on('mousedown', function (e) {
+        isDragging = true;
+    })
+            .on('mousemove', function (e) {
+                var deltaMove = {
+                    x: e.offsetX - previousMousePosition.x,
+                    y: e.offsetY - previousMousePosition.y
+                };
+
+                if (isDragging) {
+
+                    var deltaRotationQuaternion = new THREE.Quaternion()
+                            .setFromEuler(new THREE.Euler(
+                                    toRadians(deltaMove.y * 1),
+                                    toRadians(deltaMove.x * 1),
+                                    0,
+                                    'XYZ'
+                            ));
+
+                    cube.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube.quaternion);
+                    cube1.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube1.quaternion);
+                    cube2.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube2.quaternion);
+                    cube3.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube3.quaternion);
+                    cube4.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube4.quaternion);
+                    cube5.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube5.quaternion);
+                    cube6.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube6.quaternion);
+                    circle.quaternion.multiplyQuaternions(deltaRotationQuaternion, circle.quaternion);
+                    circle1.quaternion.multiplyQuaternions(deltaRotationQuaternion, circle1.quaternion);
+                    grid.quaternion.multiplyQuaternions(deltaRotationQuaternion, grid.quaternion);
+
+                }
+
+                previousMousePosition = {
+                    x: e.offsetX,
+                    y: e.offsetY
+                };
+            });
+
+    $(document).on('mouseup', function (e) {
+        isDragging = false;
+    });
+
+
+    function render() {
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+    }
+
+    function toRadians(angle) {
+        return angle * (Math.PI / 180);
+    }
+
+    function toDegrees(angle) {
+        return angle * (180 / Math.PI);
+    }
+
+    render();
+
+
+</script>
+
+</html>

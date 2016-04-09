@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../../../vendor/three.min.js"></script>
+    <script src="../../../vendor/three/OrbitControls.js"></script>
+    <style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script>
+
+    renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff }  );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera.position.set( 5, 5, 5 );
+
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+    material = new THREE.LineBasicMaterial({ color: 0x0077ff });
+    geometry = new THREE.Geometry();
+    geometry.vertices.push( new THREE.Vector3( 0, 0, 0) );
+    geometry.vertices.push( new THREE.Vector3( 1, 1, 0) );
+    geometry.vertices.push( new THREE.Vector3( 0, 1, 1) );
+    line = new THREE.Line( geometry, material );
+    scene.add( line );
+
+
+    renderer.render(scene, camera);
+</script>
+</html>
