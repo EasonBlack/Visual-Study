@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .check {
+            stroke-dasharray: 130px 130px;
+            stroke-dashoffset: 130px;
+            -webkit-transition: stroke-dashoffset 4.1s linear 0s;
+            transition: stroke-dashoffset 500ms ease-in-out;
+        }
+
+        .animate {
+            stroke-dashoffset: 0px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button id="btnCheck">Check</button>   <button id="btnUnCheck">UnCheck</button> <button id="btnToggle">Toggle</button>
+</div>
+<div>
+    <svg version="1.1" id="Layer_1"
+     x="0px" y="0px" width="90.594px" height="59.714px" viewBox="0 0 90.594 59.714"
+     enable-background="new 0 0 90.594 59.714" xml:space="preserve">
+  <polyline class="check" fill="none" stroke="#006837" stroke-width="5" stroke-miterlimit="10" points="1.768,23.532 34.415,56.179 88.826,1.768"/>
+</svg>
+</div>
+
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script>
+    $('#btnCheck').click(function () {
+        $('.check').css('stroke-dashoffset', 0);
+    })
+    $('#btnUnCheck').click(function () {
+        $('.check').css('stroke-dashoffset', 130);
+    })
+
+    $('#btnToggle').click(function () {
+        var _attr =  $('.check')[0].getAttribute('class');
+        if(_attr.indexOf('animate') == -1) {
+            $('.check')[0].setAttribute("class", "check animate");
+        } else {
+            $('.check')[0].setAttribute("class", "check");
+        }
+    })
+
+</script>
+</html>
