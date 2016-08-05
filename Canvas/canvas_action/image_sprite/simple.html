@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border: 1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420"></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var coinImage = new Image();
+    coinImage.src = "../../../images/coin-sprite-animation.png";
+    let index = 0;
+    let step = 0;
+    let stepCount = 3;
+    draw();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(coinImage,
+                100 * index, 0, 100, 100,
+                100, 100, 100, 100);
+        step++;
+        if (step >= stepCount) {
+            step = 0;
+            index = index + 1;
+            if (index >= 10) {
+                index = 0;
+            }
+        }
+
+        requestAnimationFrame(draw);
+    }
+</script>
+</html>
