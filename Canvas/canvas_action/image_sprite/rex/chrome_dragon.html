@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border: 1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420"></canvas>
+<button id="btnBlink">Blink</button>
+<button id="btnRun">Run</button>
+<button id="btnDull">Dull</button>
+<button id="btnDive">Dive</button>
+</body>
+<script src="../../../../vendor/jquery.min.js"></script>
+<script src="rex.js"></script>
+<script>
+
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var rexImage = new Image();
+    var animateFlag;
+    rexImage.src = "../../../../images/t-rex.png";
+    rexImage.onload = function () {
+        draw();
+    }
+
+    var dragon = new Dragon({
+        ctx: ctx,
+        image: rexImage,
+        position: {
+            x: 200, y: 200
+        }
+    })
+
+    draw();
+    function draw(type) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        dragon.draw(dragon.setType(type));
+        animateFlag = requestAnimationFrame(function () {
+            draw(type)
+        });
+    }
+
+    $('#btnBlink').click(function () {
+        if (animateFlag) cancelAnimationFrame(animateFlag);
+        draw("BLINK")
+    })
+
+    $('#btnRun').click(function () {
+        if (animateFlag) cancelAnimationFrame(animateFlag);
+        draw("RUN")
+    })
+    $('#btnDull').click(function () {
+        if (animateFlag) cancelAnimationFrame(animateFlag);
+        draw("DULL")
+    })
+    $('#btnDive').click(function () {
+        if (animateFlag) cancelAnimationFrame(animateFlag);
+        draw("DIVE")
+    })
+</script>
+</html>
