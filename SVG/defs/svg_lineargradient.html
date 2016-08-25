@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        .circle1 {
+            stroke: red;
+        }
+        .circle1:hover{
+            stroke: green;
+        }
+    </style>
 </head>
 <body>
 <div id="container">
@@ -13,7 +21,7 @@
                 <stop offset="50%" style="stop-color:white" />
             </linearGradient>
         </defs>
-         <circle cx="100" cy="100" r="30" stroke="#333333" stroke-width="3px" fill="url(#grad1)"></circle>
+         <circle class="circle1" cx="100" cy="100" r="30" stroke="#333333" stroke-width="3px" fill="url(#grad1)"></circle>
     </svg>
 </div>
 </body>
