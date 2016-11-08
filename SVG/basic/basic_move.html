@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+
+    </style>
+    <script src="../../vendor/jquery.min.js"></script>
+</head>
+<body>
+<svg x="0px" y="0px" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <g id="g1">
+        <rect id='rect1' width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
+    </g>
+</svg>
+<div>
+    <button id="btnMove">Move</button>
+</div>
+</body>
+<script>
+
+
+    $('#btnMove').click(function () {
+        var _x = 0;
+        var _id = setInterval(function () {
+            if (_x >= 280) {
+                console.log('Its over');
+                clearInterval(_id)
+            }
+            else {
+                console.log('continue');
+                _x += 2;
+            }
+            $('#g1').attr('transform', 'translate(' + _x + ',0)');
+        }, 13);
+
+    })
+</script>
+</html>
