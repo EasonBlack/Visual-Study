@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        path {
+            box-shadow: 6px 4px 10px 10px #888888;
+        }
+
+        body {
+            overflow: hidden;
+            background-image: url(http://tympanus.net/Development/SegmentEffect/img/1.jpg);
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div id="svgout">
+
+</div>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="../../../vendor/snap.svg.js"></script>
+<script>
+    var s = Snap("#svgout");
+    var scaleTwo = new Snap.Matrix();
+    scaleTwo.scale(2);
+
+    var click_china = false;
+    var tux = Snap.load("trasparentMap.svg", function (loadedFragment) {
+        s.append(loadedFragment);
+    });
+
+    $('#svgout').on('click', 'path[clickable]', function (d) {
+         s.animate({transform: scaleTwo}, 1000);
+    })
+</script>
+</html>
