@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .progress-container {
+            stroke: #2b2326;
+            stroke-width: 2px;
+            fill: #392F32;
+        }
+
+        .progress-container .top {
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+<div id="svg_container">
+    <svg id="cylinder-progress" width="550px" height="320px">
+        <g class="progress-container">
+            <rect x="0" y="20" width="150" height="80"></rect>
+            <ellipse cx="75" cy="20" rx="75" ry="15" class="top"></ellipse>
+            <ellipse cx="75" cy="100" rx="75" ry="15" class="bottom"></ellipse>
+        </g>
+    </svg>
+</div>
+
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="../../vendor/snap.svg.js"></script>
+<script>
+    var s = Snap("#svg_container");
+    var g = s.select('.progress-container');
+    var rect = g.select('rect');
+    var bottom = g.select('.bottom');
+
+    setInterval(function(){
+        rect.animate({height: 180}, 500,function(){
+            rect.animate({height: 80}, 500)
+        });
+        bottom.animate({cy: 200}, 500,function(){
+            bottom.animate({cy: 100}, 500)
+        });
+    }, 1000)
+</script>
+</html>
