@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        path {
+            box-shadow: 6px 4px 10px 10px #888888;
+        }
+
+        body {
+            overflow: hidden;
+            background-image: url(http://tympanus.net/Development/SegmentEffect/img/1.jpg);
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div id="svgout"></div>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="../../../vendor/snap.svg.js"></script>
+<script>
+    var s = Snap("#svgout");
+    var tux = Snap.load("trasparentMap.svg", function (loadedFragment) {
+        s.append(loadedFragment);
+    });
+
+    $('#svgout').on('click', 'path[contry=china]', function (d) {
+        var g1 = s.select("path[contry=china]");
+        var firstScene = new Snap.Matrix();
+        firstScene.translate(-450, -350);
+        firstScene.scale(4);
+        var shadow = g1.paper.filter(Snap.filter.shadow(-3, 5, 3));
+        g1.attr({filter: shadow});
+        g1.animate({transform: firstScene, 'fill-opacity': 1 }, 1000, mina.ease)
+
+        $('#Mercator_Projection  > :not(#chinagroup)').animate({opacity:0});
+        //$('#Mercator_Projection').children().not('#chinagroup').hide()//.css('opacity',0.5);
+    });
+</script>
+</html>
