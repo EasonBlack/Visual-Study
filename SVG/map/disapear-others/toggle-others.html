@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        path {
+            box-shadow: 6px 4px 10px 10px #888888;
+        }
+
+        body {
+            overflow: hidden;
+            background-image: url(http://tympanus.net/Development/SegmentEffect/img/1.jpg);
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div id="svgout"></div>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script src="../../../vendor/snap.svg.js"></script>
+<script>
+    var s = Snap("#svgout");
+    var tux = Snap.load("world.svg", function (loadedFragment) {
+        s.append(loadedFragment);
+    });
+
+    $('#svgout').on('click', '#chinapath', function (d) {
+        var $china = s.select("#china");
+        var $world = s.select("#world");
+        var firstScene = new Snap.Matrix();
+        firstScene.translate(1450, 450);
+        firstScene.scale(3.2);
+        var shadow = $china.paper.filter(Snap.filter.shadow(-3, 5, 3));
+        //$china.attr({filter: shadow});
+        $world.animate({ 'fill-opacity': 0}, 1000, mina.ease)
+        $china.animate({transform: firstScene, 'opacity': 1 }, 1000, mina.ease)
+
+    });
+</script>
+</html>
