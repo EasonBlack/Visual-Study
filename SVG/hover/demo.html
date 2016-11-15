@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg width="400" height="200">
+    <text id="t_text" x="100" y="20" text-anchor="middle" font-size="15" font-family="Arial" fill="red">Mouse over the text here</text>
+    <rect id="t_box" visibility="hidden" x="1" y="40" width="200" height="50" fill="yellow">
+        <set attributeName="visibility" from="hidden" to="visible" begin="t_text.mouseover" end="t_text.mouseout" />
+    </rect>
+
+    <text id="t_text" visibility="hidden" x="100" y="70" text-anchor="middle" font-size="12" font-family="Arial" fill="black">
+        And see the text on yellow box
+        <set attributeName="visibility" from="hidden" to="visible" begin="t_text.mouseover" end="t_text.mouseout" />
+    </text>
+</svg>
+</body>
+</html>
