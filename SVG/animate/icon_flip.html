@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #draw{
+            width:486px;
+            display:block;
+            margin:20px auto;
+        }
+        #batman{
+            transform-origin:center center;
+        }
+    </style>
+</head>
+<body>
+<svg id="draw"  version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" width="486px" height="486px" viewBox="0 0 486 486" enable-background="new 0 0 486 486"
+	 xml:space="preserve">
+<path id="batman"  fill="#ffff00" d="M228.502 124.377c-.006.022-.014.042-.02.065l3-.002c-1.845-.016-2.925-.036-2.98-.063zm-75.787 0c-.454.227-74.01 0-74.01 0s.144.067.398.196l73.65-.065c-.01-.045-.025-.086-.038-.13zM109.58 175.23s68.876-9.74 81.01 40.037v.146l.02-.073.02.073v-.146c12.133-49.777 81.008-40.037 81.008-40.037-.908-36.097 30.876-50.854 30.876-50.854s-57.22.177-71.03.062l-3 .002c-6.824 24.218-24.502 20.82-28.13 20.367-2.044-.68-3.18-6.356-3.406-16.8-2.144 8.578-5.907 7.636-6.318 7.505v-.013h-.02l-.02-.01v.012c-.41.13-4.174 1.072-6.317-7.506-.228 10.443-1.363 16.12-3.406 16.8-3.625.453-21.27 3.842-28.11-20.3l-73.65.064c3.633 1.84 31.322 16.93 30.473 50.66z"></path>
+</svg>
+</body>
+<script src="../../vendor/jquery.min.js"></script>
+<script src="../../vendor/snap.svg.js"></script>
+<script>
+    var s = Snap("#draw");
+    var $batman = s.select('#batman');
+    console.log($batman);
+    var flip = function(){
+        Snap.animate(0, 180, function (value) {
+            $batman.attr({style : "transform:rotateY("+value+"deg)"});
+        }, 500,function(){
+            Snap.animate(180, 360, function (value) {
+                $batman.attr({style : "transform:rotateY("+value+"deg)"});
+            }, 500,function(){
+                flip();
+            })
+        });
+    }
+    flip();
+</script>
+</html>
