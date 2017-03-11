@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border:1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"  ></canvas>
+</body>
+<script src="../../../vendor/jquery.js"></script>
+<script src="circle.js"></script>
+<script>
+    var WIDTH = 420;
+    var HEIGHT = 420;
+    var data = [20,30,66,32,50,85];
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    var circle = new Circle(ctx, {WIDTH:WIDTH, HEIGHT:HEIGHT, r:100, bones: 6, data: data, triangle: 15})
+    circle.drawCircle();
+    circle.drawHeart();
+    circle.drawBones();
+    circle.drawTriangle();
+
+</script>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas {
+            border:1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"  ></canvas>
+<button id="btnQuadratic">QuadraticCurve</button>
+<button id="btnBezier">BezierCurve</button>
+</body>
+<script src="../../../vendor/jquery.js"></script>
+<script src="circle.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var WIDTH = 420;
+    var HEIGHT = 420;
+    var data = [20,30,66,32,50,85];
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    var circle = new Circle(ctx, {WIDTH:WIDTH, HEIGHT:HEIGHT, r:100, bones: 6, data: data, triangle: 15});
+
+    function draw(type) {
+        ctx.clearRect(0,0,WIDTH,HEIGHT);
+        circle.drawCircle();
+        circle.drawHeart();
+        circle.drawBones();
+        circle.drawCurve(type);
+    }
+    draw('quadratic');
+
+    $('#btnQuadratic').click(function(){
+        draw('quadratic');
+    })
+
+    $('#btnBezier').click(function(){
+        draw('bezier');
+    })
+
+
+
+
+
+
+</script>
+</html>
