@@ -21,10 +21,10 @@
     var ctx = canvas.getContext('2d');
     var WIDTH = 420;
     var HEIGHT = 420;
-    var data = [20,30,66,32,50,85];
+    var data = [20,30,66,32,50,85, 12,15,43];
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
-    var circle = new Circle(ctx, {WIDTH:WIDTH, HEIGHT:HEIGHT, r:100, bones: 6, data: data, triangle: 15});
+    var circle = new Circle(ctx, {WIDTH:WIDTH, HEIGHT:HEIGHT, r:100, data: data, triangle: 15});
 
     function draw(type) {
         ctx.clearRect(0,0,WIDTH,HEIGHT);
@@ -32,6 +32,7 @@
         circle.drawHeart();
         circle.drawBones();
         circle.drawCurve(type);
+        circle.drawSubtitle();
     }
     draw('quadratic');
 

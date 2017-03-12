@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <button id="btnQuadratic">QuadraticCurve</button>
+    <button id="btnBezier">BezierCurve</button>
+</body>
+<script src="../../../vendor/jquery.js"></script>
+<script src="../../../vendor/snap.svg.js"></script>
+<script src="circle.js"></script>
+<script>
+    let WIDTH = 800;
+    let HEIGHT = 600;
+    let data = [20,30,66,32,50,85, 12,15,43];
+    var s = Snap("#svg");
+    s = Snap(WIDTH, HEIGHT);
+
+    function draw(type) {
+        let circle = new Circle({width:WIDTH, height: HEIGHT, snap: s, r: 100, data: data});
+        circle.drawCircle();
+        circle.drawBones();
+        circle.drawCurve(type);
+    }
+    draw('quadratic');
+
+    $('#btnQuadratic').click(function(){
+        draw('quadratic');
+    })
+
+    $('#btnBezier').click(function(){
+        draw('bezier');
+    })
+
+
+</script>
+</html>
