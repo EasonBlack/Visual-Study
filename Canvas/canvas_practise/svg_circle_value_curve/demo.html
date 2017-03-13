@@ -8,6 +8,9 @@
 
     <button id="btnQuadratic">QuadraticCurve</button>
     <button id="btnBezier">BezierCurve</button>
+    <button id="btnBCurveOnly">BCurve Only</button>
+    <button id="btnQCurveOnly">QCurve Only</button>
+    <button id="btnCatmullOnly">Catmull Only</button>
 </body>
 <script src="../../../vendor/jquery.js"></script>
 <script src="../../../vendor/snap.svg.js"></script>
@@ -15,15 +18,32 @@
 <script>
     let WIDTH = 800;
     let HEIGHT = 600;
-    let data = [20,30,66,32,50,85, 12,15,43];
+    let data = [70,30,66,32,50,85, 12,15,43];
     var s = Snap("#svg");
     s = Snap(WIDTH, HEIGHT);
+    let circle = new Circle({width:WIDTH, height: HEIGHT, snap: s, r: 100, data: data});
 
-    function draw(type) {
-        let circle = new Circle({width:WIDTH, height: HEIGHT, snap: s, r: 100, data: data});
+    function drawBasic() {
+        s.clear();
         circle.drawCircle();
         circle.drawBones();
+    }
+    function draw(type) {
+        drawBasic();
         circle.drawCurve(type);
+    }
+
+    function drawBCurveOnly() {
+        drawBasic();
+        circle.drawBCurveOnly();
+    }
+    function drawQCurveOnly() {
+        drawBasic();
+        circle.drawQCurveOnly();
+    }
+    function drawCatmullOnly() {
+        drawBasic();
+        circle.drawCatmullOnly();
     }
     draw('quadratic');
 
@@ -33,6 +53,16 @@
 
     $('#btnBezier').click(function(){
         draw('bezier');
+    })
+
+    $('#btnBCurveOnly').click(function() {
+        drawBCurveOnly();
+    })
+    $('#btnQCurveOnly').click(function() {
+        drawQCurveOnly();
+    })
+    $('#btnCatmullOnly').click(function() {
+        drawCatmullOnly();
     })
 
 

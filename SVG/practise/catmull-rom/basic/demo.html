@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+</body>
+<script src="../../../../vendor/snap.svg.js"></script>
+<script src="points.js"></script>
+<script>
+
+
+    let WIDTH = 800;
+    let HEIGHT = 600;
+    let data = [{x:100,y:350}, {x:200, y:100},{x:300, y:350},{x:400, y:150},{x:500, y:350},{x:600, y:200},{x:700, y:350}];
+    var s = Snap("#svg");
+    s = Snap(WIDTH, HEIGHT);
+    let points = new Points({width:WIDTH, height: HEIGHT, snap: s, data: data, k:1});
+
+    points.drawPolyline();
+    points.drawCatmullRom();
+</script>
+</html>

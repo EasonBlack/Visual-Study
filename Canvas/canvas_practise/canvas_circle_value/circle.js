@@ -61,7 +61,7 @@ class Circle {
             x.lineTo(oleft.x, oleft.y);
             x.lineTo(oright.x, oright.y);
             x.lineTo(o.x, o.y);
-            x.lineWidth  = 8;
+            x.lineWidth  = 1;
             x.stroke();
             x.fill();
             x.closePath();
