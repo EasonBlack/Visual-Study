@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body, html {
+            width:100%;
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"  width="400" height="400"></canvas>
+</body>
+<script>
+
+
+    var canvas = document.getElementById('canvas');
+    var WIDTH = canvas.offsetWidth;
+    var HEIGHT = canvas.offsetHeight
+    var R = WIDTH/3;
+    var LineWidth = 25;
+    var AQI = 120;
+
+    var ctx = canvas.getContext('2d');
+
+
+
+    var startA = 1.5 * Math.PI;
+
+
+    function draw(an) {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.save();
+        ctx.translate(WIDTH/2, HEIGHT/2);
+        ctx.beginPath();
+        ctx.lineWidth  = LineWidth;
+        ctx.strokeStyle= 'rgba(200,200,200,0.1)';
+
+        ctx.arc(0,0,R, 1.5 * Math.PI , 3 * Math.PI);
+        ctx.stroke();
+
+
+        ctx.beginPath();
+        ctx.strokeStyle= 'rgba(200,200,200,1)';
+        ctx.arc(0,0,R,  1.5 * Math.PI ,an);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.restore();
+    }
+
+    let a = setInterval(function(){
+        console.log(1)
+        if(startA < 3 * Math.PI) {
+            startA += 0.1;
+            draw(startA);
+        } else {
+            console.log('finish');
+            clearInterval(a)
+        }
+    },30)
+
+
+</script>
+</html>
