@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+<script src="particle.js"></script>
+<script src="smoke.js"></script>
+<script>
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var WIDTH = 500;
+    var HEIGHT = 500;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+
+    var smokeImage = new Image();
+    smokeImage.src = 'http://s4.postimg.org/atxdou6u1/smoke.png';
+
+    var smoke = new Smoke({
+        count : 200,
+        ctx : ctx,
+        x: 250,
+        y: 0,
+        size: 70,
+        speedx : -2,
+        speedy : 2.5,
+        image : smokeImage
+    })
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        smoke.draw();
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+</script>
+</html>
