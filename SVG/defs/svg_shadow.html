@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg width="500" height="500">
+    <defs>
+        <filter id="f1" x="-50%" y="-50%"  width="200%" height="200%" >
+            <feOffset  result='ddd' in="SourceAlpha" dx="0" dy="0" />
+            <feGaussianBlur in="ddd" stdDeviation="5" />
+            <feBlend in="SourceGraphic" mode="normal" />
+        </filter>
+    </defs>
+
+    <circle  cx="100" cy="100" r="30"  fill="yellow" filter="url(#f1)"></circle>
+
+</svg>
+</body>
+</html>
