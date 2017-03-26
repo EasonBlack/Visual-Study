@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container {
+            display:flex;
+        }
+        .col__1 {
+            flex:1;
+        }
+        .col__1 button {
+            display:block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <canvas id="canvas" style="border:1px solid steelblue" ></canvas>
+        </div>
+
+        <div class="col__1">
+            <button class="btn" data-action="f">Front</button>
+
+            <button class="btn" data-action="b">Back</button>
+
+
+            <button class="btn" data-action="l">Left</button>
+
+            <button class="btn" data-action="r">Right</button>
+
+        </div>
+    </div>
+    <img id="person-image" src='../../../images/game/person.png' style="display:none">
+</body>
+<script src="../../../vendor/jquery.js"></script>
+<script src="../module/charactor.js"></script>
+<script>
+    let WIDTH = 1200;
+    let HEIGHT = 600;
+    var canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+    let animateFlag;
+    let personImage = $('#person-image')[0];
+
+    let person = new Charactor({ctx: ctx, x: 100,y:100, image: personImage});
+
+    $('.btn').click(function(e){
+        person.set(e.target.dataset.action);
+    })
+
+    $(window).on('keydown',function(e){
+        let x = 0.5, y = 0.5;
+        if ( e.keyCode == 39 ) {   //right
+            person.set('r');
+            y = 0;
+        }
+        if ( e.keyCode == 37 ) {   //left
+            person.set('l');
+            y = 0; x = x * -1;
+        }
+        if ( e.keyCode == 38 ) {   //up
+            person.set('b');
+            x =0; y = y * -1 ;
+        }
+        if ( e.keyCode == 40 ) {   //down
+            person.set('f');
+            x =0 ;
+        }
+        person.position(x,y);
+    });
+
+    person.set('f');
+    draw();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        person.draw()
+        animateFlag = requestAnimationFrame(function () {
+            draw()
+        });
+    }
+</script>
+</html>

@@ -6,13 +6,22 @@
 </head>
 <body>
     <canvas id="canvas" style="border:1px solid steelblue" ></canvas>
+    <img id="ground-image" src='../../../images/game/floor.png' style="display:none">
 </body>
+<script src="../../../vendor/jquery.js"></script>
+<script src="../module/ground.js"></script>
 <script>
-    let WIDTH = 500;
-    let HEIGHT = 500;
+
+    let WIDTH = 1200;
+    let HEIGHT = 600;
     var canvas = document.getElementById('canvas');
-    canvas.clientHeight = HEIGHT;
-    canvas.clientWidth = WIDTH;
-    var ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+
+    let groundImage = $('#ground-image')[0];
+
+    var ground = new Ground({ctx: ctx, columns:10, rows: 5, size:100, image: groundImage, showgrid: true});
+    ground.draw()
 </script>
 </html>
