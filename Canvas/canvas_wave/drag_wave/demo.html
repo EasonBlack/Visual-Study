@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+
+        #canvas {
+           border: 0px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script>
+    var WIDTH = window.innerWidth;
+
+    var HEIGHT = 80;
+    var distance = 30;
+    var lastX , lastY;
+    var isDown = false;
+    var step = 0;
+
+    var canvas = document.getElementById('canvas');
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "rgba(0,222,255, 0.5)";
+
+
+    $('#canvas').mousedown(function(e){
+        e.preventDefault();
+        isDown = true;
+    });
+    $(document).mouseup(function(e){
+        e.preventDefault();
+        isDown = false;
+        lastX = e.pageX;
+        lastY = e.pageY;
+        bubble(ctx, {x: lastX, y: lastY});
+    });
+    $(document).mousemove(function(e) {
+        e.preventDefault();
+        if(!isDown) {
+            return ;
+        }
+        var position = {x: e.pageX, y: e.pageY}
+        draw(ctx, position);
+    });
+
+//    $('#canvas').click(function(e) {
+//        var position = {
+//            x: e.pageX,
+//            y: e.pageY
+//        }
+//        draw(ctx, position);
+//    });
+
+    draw(ctx);
+
+    function draw(ctx, position) {
+        ctx.clearRect(0,0,WIDTH, HEIGHT);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(WIDTH, 0);
+        ctx.lineTo(WIDTH, HEIGHT/2);
+        if(position) {
+            let {x,y} = position;
+            let _h;
+            let basic = HEIGHT / 2;
+            if(y > HEIGHT) {
+                _h = HEIGHT - basic;
+            } else if(y> basic){
+                _h = y - basic;
+            }
+            if(y >=basic) {
+                ctx.lineTo(x+distance, basic);
+                ctx.quadraticCurveTo(x+distance/2, basic, x+distance/2, basic + _h * 1/2 );
+                ctx.quadraticCurveTo(x+distance/2, basic + _h,  x, basic + _h);
+                ctx.quadraticCurveTo(x-distance/2, basic + _h,  x-distance/2, basic + _h* 1/2);
+                ctx.quadraticCurveTo(x-distance/2, basic, x-distance,basic );
+            }
+        }
+        ctx.lineTo(0, HEIGHT/2);
+        ctx.fill();
+    }
+
+    function bubble(ctx, position) {
+        var timeFlag = setInterval(function() {
+            console.log('draw ' + step + ' times');
+            if(step > 20) {
+                clearInterval(timeFlag);
+                step = 0;
+            } else {
+                var basic = HEIGHT / 2;
+                var s = (position.y - basic) /20 * step;
+                draw(ctx, {x:position.x, y: position.y - s });
+                step ++ ;
+            }
+        },20);
+    }
+
+</script>
+</html>
