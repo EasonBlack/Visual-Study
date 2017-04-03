@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <button id="btnClip">Clip</button>
+    <img id='myImg' src="../../../images/400_300.png" style="display:none">
+</body>
+<script src="../../../vendor/jquery.js"></script>
+<script src="point.js"></script>
+<script src="pointList.js"></script>
+<script>
+    var WIDTH = 400;
+    var HEIGHT = 300;
+    var isDown = false;
+    var currentPoint = null;
+    var canvas = document.getElementById('canvas');
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+    var ctx = canvas.getContext('2d');
+
+    var p1 = new Point({ctx: ctx, x: 50, y:50});
+    var p2 = new Point({ctx: ctx, x: 200, y:50});
+    var p3 = new Point({ctx: ctx, x: 200, y:150});
+    var p4 = new Point({ctx: ctx, x: 50, y:150});
+
+    var img = $('#myImg')
+    var pointlist = new PointList({ctx,w: WIDTH, h: HEIGHT, img: img}, [
+        p1,p2,p3,p4
+    ])
+
+
+    function draw() {
+        ctx.clearRect(0,0,WIDTH, HEIGHT);
+        ctx.beginPath();
+        ctx.drawImage(img[0], 0, 0, WIDTH, HEIGHT);
+        ctx.beginPath();
+        ctx.fillStyle='rgba(0,0,0,0.3)'
+        ctx.moveTo(0,0);
+        ctx.lineTo(WIDTH, 0);
+        ctx.lineTo(WIDTH, HEIGHT);
+        ctx.lineTo(0, HEIGHT);
+        ctx.fill();
+        pointlist.draw();
+    }
+    draw();
+
+    $('#canvas').mousedown(function(e){
+        e.preventDefault();
+        isDown = true;
+        let x = e.offsetX;
+        let y = e.offsetY;
+        console.log(e);
+        currentPoint = pointlist.isInPoints(x,y);
+
+    });
+
+    $(document).mouseup(function(e){
+        e.preventDefault();
+        isDown = false;
+        currentPoint = null;
+    })
+
+    $(document).mousemove(function(e){
+        e.preventDefault();
+        if(isDown && currentPoint) {
+            currentPoint.set(e.offsetX, e.offsetY);
+            draw();
+        }
+    })
+
+   
+
+
+</script>
+</html>
