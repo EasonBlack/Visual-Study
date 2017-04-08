@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+<script src="../../../vendor/jquery.js"></script>
+<script src="../module/ground.js"></script>
+<script src="../module/bomb.js"></script>
+<script src="../module/bombs.js"></script>
+<script src="../module/cube.js"></script>
+<script src="../module/cubes.js"></script>
+<img id="bomb"         src="../assets/bomb.png" style="display:none">
+<img id="bombexplode" src="../assets/bomb_explore.png" style="display:none">
+<script>
+    let WIDTH = 1200;
+    let HEIGHT = 600;
+    let SIZE = 50;
+    var canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+
+
+    var ground = new Ground({ctx: ctx, columns:10, rows: 5, size: SIZE});
+    ground.draw()
+
+    let bombImage = $('#bomb')[0];
+    let explodeImage = $('#bombexplode')[0];
+    Bomb.setBomb({bombImage,explodeImage, size: SIZE });
+
+    var bombs = new Bombs({ctx: ctx });
+    bombs.createBombs();
+
+    var cubes= new Cubes({ctx: ctx, columns:10, rows: 5, bombs:bombs, size: SIZE });
+    cubes.draw();
+</script>
+</html>
