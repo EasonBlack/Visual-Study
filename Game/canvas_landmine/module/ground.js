@@ -6,6 +6,7 @@ class Ground {
 
     draw() {
         let {ctx, size, rows, columns }= this.opts;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
         for(let i=0;i<rows;i++) {
             for(let j=0;j<columns;j++) {

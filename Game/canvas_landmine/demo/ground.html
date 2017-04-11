@@ -10,7 +10,6 @@
 <script src="../../../vendor/jquery.js"></script>
 <script src="../module/ground.js"></script>
 <script src="../module/bomb.js"></script>
-<script src="../module/bombs.js"></script>
 <script src="../module/cube.js"></script>
 <script src="../module/cubes.js"></script>
 <img id="bomb"         src="../assets/bomb.png" style="display:none">
@@ -20,10 +19,12 @@
     let HEIGHT = 600;
     let SIZE = 50;
     var canvas = document.getElementById('canvas');
+    let canvasOffset = $("#canvas").offset();
+    let offsetX = canvasOffset.left;
+    let offsetY = canvasOffset.top;
     let ctx = canvas.getContext('2d');
     canvas.height = HEIGHT;
     canvas.width = WIDTH;
-
 
     var ground = new Ground({ctx: ctx, columns:10, rows: 5, size: SIZE});
     ground.draw()
@@ -32,10 +33,19 @@
     let explodeImage = $('#bombexplode')[0];
     Bomb.setBomb({bombImage,explodeImage, size: SIZE });
 
-    var bombs = new Bombs({ctx: ctx });
-    bombs.createBombs();
-
-    var cubes= new Cubes({ctx: ctx, columns:10, rows: 5, bombs:bombs, size: SIZE });
+    var cubes= new Cubes({ctx: ctx, columns:10, rows: 5,  size: SIZE, bombNum:3 });
     cubes.draw();
+
+
+    $("#canvas").mousedown(function (e) {
+        e.preventDefault();
+        let x = parseInt(e.clientX - offsetX);
+        let y = parseInt(e.clientY - offsetY);
+        cubes.checkClick(x,y)
+
+        ground.draw();
+        cubes.draw();
+    });
+
 </script>
 </html>

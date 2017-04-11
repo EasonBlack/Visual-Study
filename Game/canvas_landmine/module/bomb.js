@@ -1,6 +1,7 @@
 class Bomb {
     constructor(opts) {
         this.opts = opts;
+        this.clicked = false;
     }
 
     static setBomb(o) {
@@ -9,19 +10,22 @@ class Bomb {
         Bomb.prototype.size = o.size;
     }
 
+    explode() {
+        this.clicked = true;
+    }
+
     draw() {
         let {ctx, x, y } = this.opts;
         ctx.beginPath();
-        ctx.drawImage(this.bombImage,
-            x * this.size, y * this.size, this.size, this.size);
+        if(this.clicked) {
+            ctx.drawImage(this.explodeImage,
+                x * this.size, y * this.size, this.size, this.size);
+        } else {
+            ctx.drawImage(this.bombImage,
+                x * this.size, y * this.size, this.size, this.size);
+        }
     }
 
-    explode() {
-        let {ctx, x, y } = this.opts;
-        ctx.beginPath();
-        ctx.drawImage(this.explodeImage,
-            x * this.size, y * this.size, this.size, this.size);
-    }
 
     
 }
