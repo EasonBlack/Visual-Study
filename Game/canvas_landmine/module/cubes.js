@@ -66,7 +66,9 @@ class Cubes {
             let yEnd = (y + 1) * size;
             if(cx>xStart && cx <xEnd && cy > yStart && cy<yEnd) {
                 this.cubes[i].getClick();
-                this.startCombo([this.cubes[i]]);
+                if(this.cubes[i].opts.num==0 ){
+                    this.startCombo([this.cubes[i]]);
+                }
                 return {x: x, y: y};
             }
         }
@@ -114,7 +116,7 @@ class Cubes {
                 _bombs.push({x, y});
             }
         }
-      
+
         _bombs.forEach(o=> {
             let b = new Bomb({ctx: this.c, x: o.x, y:o.y});
             this.bombs.push(b);
