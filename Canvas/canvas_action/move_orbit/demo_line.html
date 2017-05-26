@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        canvas {
+            border: 1px solid steelblue
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="420" height="420"></canvas>
+</body>
+<script src="../../../vendor/jquery.min.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var radius = 5;
+
+    context.globalAlpha = 0.85;
+    var height = 420;
+    var width = 420;
+
+    var y = 100;
+
+    var backCanvas = document.createElement('canvas'),
+        backCtx = backCanvas.getContext('2d');
+    backCanvas.width = width;
+    backCanvas.height = height;
+    backCtx.globalCompositeOperation = 'copy';
+
+    var drawCircle = function() {
+        context.beginPath();
+        context.arc(100, y, radius, 0, Math.PI * 2);
+        context.closePath();
+        context.lineWidth = 1;
+        context.fillStyle = 'blue';
+        context.fill();
+        y+=1;
+    };
+
+    var render = function() {
+        //1.先将主canvas的图像缓存到临时canvas中
+        backCtx.drawImage(canvas, 0, 0, width, height);
+
+        //2.清除主canvas上的图像
+        context.clearRect(0, 0, width, height);
+
+        //3.在主canvas上画新圆
+        drawCircle();
+
+        //4.等新圆画完后，再把临时canvas的图像绘制回主canvas中
+        context.drawImage(backCanvas, 0, 0, width, height);
+        requestAnimationFrame(render);
+    };
+
+    render();
+</script>
+</html>
