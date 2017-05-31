@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;
+        }
+        body{
+            background-color:#151520;
+        }
+        #text{
+            display:block;
+            margin:10px auto;
+            background-color:#eee;
+            border:1px solid #888;
+        }
+        #kannwas{
+            display:block;
+            margin:10px auto;
+        }
+
+    </style>
+</head>
+<body>
+<canvas id = "kannwas" width="900" height="350">
+</canvas>
+<input type="text" id="text" value="hello" />
+</body>
+<script>
+    var particles = new Array(1500), pi2 = Math.PI * 2;
+    var can, ctx, map;
+    window.onload = function() {
+        can = document.getElementById('kannwas');
+        ctx = can.getContext('2d');
+        map = new Array(can.width * can.height);
+        for (var i = 0; i < particles.length; i++)
+            particles[i] = new Particle();
+        makeMap(document.getElementById('text').value);
+        document.getElementById('text').onkeyup = function() {
+            makeMap(document.getElementById('text').value);
+
+        }
+        loop();
+    }
+    function makeMap(text) {
+        var canT = document.createElement('canvas');
+        canT.width = can.width;
+        canT.height = can.height;
+        var ctxT = canT.getContext('2d');
+        ctxT.fillStyle = 'rgb(255,255,255)';
+        ctxT.font = '300px sans-serif';
+        ctxT.textAlign = 'left';
+        ctxT.textBaseline = 'middle';
+        ctxT.fillText(text, 20, canT.height / 2);
+        var pixT = ctxT.getImageData(0, 0, canT.width, canT.height).data;
+        for (var i = 0, n = canT.width * canT.height; i < n; i++) {
+            map[i] = pixT[i * 4] > 0;
+        }
+    }
+
+    function Particle() {
+        this.x = Math.random() * can.width;
+        this.y = Math.random() * can.height;
+        this.vx = Math.random() * 3  - 1.5;
+        this.vy = Math.random() * 3 - 1.5;
+        this.c = 'rgba(0,0,0,.5)';
+        this.r = 0;
+        this. in =false;
+    }
+
+    Particle.prototype.update = function() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > can.width)
+            this.vx = -this.vx;
+        if (this.y < 0 || this.y > can.height)
+            this.vy = -this.vy;
+        this.in  =map[~~this.y * can.width + ~~this.x];
+        if (this. in &&this.r < 1)
+            this.r++;
+        else if (!this. in &&this.r > 0)
+            this.r--;
+        if (this.r) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, pi2, true);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+    }
+    Particle.prototype.drawinset=function(){
+        if (this.r) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r*.9, 0, pi2, true);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+    }
+
+    function loop() {
+        can.width = can.width;
+        ctx.fillStyle = '#888';
+        for (var i = 0, n = particles.length; i < n; i++) {
+            particles[i].update();
+        }
+
+        ctx.fillStyle = '#fff';
+        ctx.shadowColor="transparent";
+        for (var i = 0, n = particles.length; i < n; i++) {
+            particles[i].drawinset();
+            let ball1 = particles[i]
+            if(!ball1.in || !ball1.r) continue;
+            for(let j=0, n=particles.length;j<n;j++) {
+                let ball2 = particles[j];
+                var dist = Math.hypot(ball1.x - ball2.x, ball1.y - ball2.y);
+
+                if (dist < 15 && dist > 0) {
+                    if(!ball2.in || !ball2.r) continue;
+                    //console.log(dist);
+                    ctx.strokeStyle = "#448fda";
+                    //ctx.globalAlpha = 1 - (dist > 100 ? .8 : dist / 150);
+                    ctx.lineWidth = "1px";
+                    ctx.moveTo(ball1.x, ball1.y);
+                    ctx.lineTo(ball2.x, ball2.y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+
+
+        setTimeout(loop, 20);
+    }
+
+</script>
+</html>
