@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            position:relative;
+        }
+
+        body {
+            width:100vw;
+            height:100vh;
+            position:relative;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var WIDTH = 500;
+    var HEIGHT = 500;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+
+    var step = 0;
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let centerPoint = [WIDTH/2, HEIGHT/2];
+        ctx.font="140px Arial";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText("π",centerPoint[0],centerPoint[1]);
+
+        ctx.beginPath();
+        ctx.lineWidth  = 2;
+        ctx.strokeStyle= 'rgba(200,200,200,0.1)';
+//        ctx.arc(centerPoint[0],centerPoint[1], 160, 0 , 2 * Math.PI);
+//        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineWidth  = 2;
+        ctx.strokeStyle= 'rgba(0,0,0,0.8)';
+        //ctx.arc(centerPoint[0],centerPoint[1], 240, 0 , 2 * Math.PI);
+        //ctx.stroke();
+
+        let textPi = '3.14159265358979323846264338327950288419716939937510582097 ';
+        let index = 0 ;
+        let outRadius =  240;
+        let innRadius = 160;
+        let angleStep = (360 * Math.PI / 180) / textPi.length ;
+        ctx.font="10px Arial";
+        while (index < textPi.length){
+            let character = textPi.charAt(index);
+            let angle = angleStep * ((index+step) % textPi.length)  - ( Math.PI / 2);
+            ctx.save();
+            ctx.beginPath();
+            ctx.translate(centerPoint[0] + Math.cos(angle) * outRadius,
+                    centerPoint[1] + Math.sin(angle) * outRadius);
+            ctx.rotate(angle + ( Math.PI / 2));
+            ctx.fillText(character, 0, 0);
+            ctx.restore();
+
+
+            let innerAngle = angleStep * ((index-step) % textPi.length)  - ( Math.PI / 2);
+            ctx.save();
+            ctx.beginPath();
+            ctx.translate(centerPoint[0] + Math.cos(innerAngle) * innRadius,
+                    centerPoint[1] + Math.sin(innerAngle) * innRadius);
+            ctx.rotate(innerAngle + ( Math.PI / 2));
+            index%2 ? ctx.fillRect(0, 0, 3, 10): ctx.fillRect(0, 0, 3, 5)
+            ctx.restore();
+            index ++;
+
+        }
+        step = step + 0.1;
+        requestAnimationFrame(draw);
+    }
+    draw();
+
+</script>
+</html>
