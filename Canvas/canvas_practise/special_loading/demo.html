@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            position:relative;
+        }
+
+        body {
+            width:100vw;
+            height:100vh;
+            position:relative;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto auto;
+            border: 1px solid steelblue;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var WIDTH = 500;
+    var HEIGHT = 500;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+
+    var rectWidth = 100;
+    var rectHeight = 8;
+    let angleStep = (180 * Math.PI / 180) / 60 ;
+    let rectHold = 30;
+    let boxWidth = 20;
+    let step = 0;
+    let distance = WIDTH/2;
+    let distanceStep = distance / 60;
+    let points  = [
+        {x: WIDTH/4, y: HEIGHT/4, initAngle: 0, offsetX:0,offsetY: -1 * (boxWidth/2 + rectHeight/2), dx: 1},
+        {x: WIDTH * 3/4, y: HEIGHT/4, initAngle: 90 * Math.PI/180, offsetX:boxWidth/2 + rectHeight/2, offsetY: 0, dy: 1  },
+        {x: WIDTH * 3/4, y: HEIGHT * 3/4, initAngle: 0, offsetX: 0, offsetY: boxWidth/2 + rectHeight/2 , dx: -1},
+        {x: WIDTH/4, y: HEIGHT * 3/4, initAngle: 90 * Math.PI/180,offsetX: -1 * (boxWidth/2 + rectHeight/2), offsetY: 0, dy: -1 },
+    ]
+    let _points = points.slice();
+
+    function drawBoxAndLine(point, index) {
+        ctx.beginPath();
+        ctx.fillStyle='steelblue';
+        ctx.fillRect(point.x - boxWidth/2 + (point.dx ? point.dx * (step%60) * distanceStep : 0) ,
+                point.y - boxWidth/2 + (point.dy ? point.dy * (step%60) * distanceStep : 0),
+                boxWidth,boxWidth);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(point.x + point.offsetX, point.y + point.offsetY);
+        ctx.rotate(point.initAngle - angleStep * step);
+        ctx.fillStyle="#ccc";
+        ctx.fillRect(0 - rectWidth/2, 0 - rectHeight/2, rectWidth, rectHeight );
+        ctx.restore();
+    }
+
+    function draw() {
+        if(step <= 59) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            _points.forEach(function(point, index){
+                drawBoxAndLine(point, index);
+            })
+            step++;
+        } else {
+            if(rectHold > 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                points.forEach(function(point, index){
+                    drawBoxAndLine(point, index);
+                })
+                rectHold--;
+            } else {
+                _points = points.slice();
+                step = 0;
+                rectHold = 30 ;
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+
+</script>
+</html>
