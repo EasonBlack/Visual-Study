@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            position:relative;
+        }
+
+        body {
+            width:100vw;
+            height:100vh;
+            position:relative;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto auto;
+            border: 1px solid steelblue;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var WIDTH = 500;
+    var HEIGHT = 500;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+
+    let centerPoint = [100, HEIGHT/2];
+    let step = 0;
+    let isMouseDown = false;
+    let circleRadius = 30;
+    let rectWidth = 100;
+    let angle = (45 * Math.PI/180) / rectWidth;
+    let speed = 8;
+    let currentAngle;
+
+    function Ball(x, y ,r) {
+        this.originx = x;
+        this.originy = y;
+        this.x = x;
+        this.y = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.r = r;
+        this.g = 0.3; //重力
+    }
+    Ball.prototype.setSpeed = function(speed, angel) {
+        this.vx = Math.cos(angel) * speed;
+        this.vy = Math.sin(angel) * speed;
+    }
+    Ball.prototype.fly = function() {
+        if(!this.vy) return false;
+        if((this.y - this.vy) > centerPoint[1]) {
+            this.y = centerPoint[1];
+            this.vy = 0;
+            this.vx = 0;
+            return false;
+        }
+        this.x += this.vx;
+        this.y -= this.vy;
+        this.vy -= this.g;
+    }
+    Ball.prototype.rotate = function() {
+        this.x =centerPoint[0] +  Math.cos(angle * step) * 30;
+        this.y =centerPoint[1] -  Math.sin(angle * step) * 30;
+    }
+    Ball.prototype.back = function() {
+        this.x = this.originx;
+        this.y = this.originy;
+    }
+
+    let ball = new Ball(centerPoint[0] +  circleRadius, centerPoint[1], 7);
+
+
+    canvas.addEventListener('mousedown',function(){
+        isMouseDown = true;
+        ball.back();
+        mouseHoldEvent();
+    });
+    canvas.addEventListener('mouseup',function(){
+        isMouseDown = false;
+        currentAngle = angle * step;
+        ball.setSpeed(speed/2 + speed/2 * (step/rectWidth), currentAngle);
+        mouseUpEvent();
+    });
+
+    function mouseHoldEvent()
+    {
+        if(isMouseDown)
+        {
+            draw(1);
+            requestAnimationFrame(mouseHoldEvent);
+        }
+        else {
+            return;
+        }
+    }
+
+    function mouseUpEvent() {
+        if(step && !isMouseDown) {
+            draw(0);
+            requestAnimationFrame(mouseUpEvent);
+        } else {
+            return ;
+        }
+
+    }
+
+    function draw(direction) {
+        if(direction && step >= rectWidth ) {
+           return false;
+        }
+        if(!direction && step ==0 ) {
+            return false;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(0,0,0,0.2)"
+        ctx.lineWidth  = 2;
+        ctx.arc(centerPoint[0],centerPoint[1], circleRadius, 0 , 2 * Math.PI);
+        ctx.stroke();
+        ctx.clip();
+
+        ctx.beginPath();
+        ctx.fillStyle = 'lightgreen';
+        ctx.fillRect(centerPoint[0]-rectWidth/2, centerPoint[1]+rectWidth/2 - step, rectWidth,rectWidth);
+        ctx.restore();
+        direction ? step++ : step--
+
+        //base line
+        var rgrd=ctx.createLinearGradient(0,centerPoint[1]-4,0,centerPoint[1]+4);
+        rgrd.addColorStop(0, "rgba(0,0,0,0.2)");
+        rgrd.addColorStop(0.7,"rgba(0,0,0,0.1)");
+        rgrd.addColorStop(1,"rgba(0,0,0,0.2)");
+
+        ctx.beginPath();
+        ctx.lineWidth  = 2;
+        ctx.fillStyle = rgrd;
+        ctx.strokeStyle = "rgba(0,0,0,0.2)"
+        ctx.strokeRect(centerPoint[0] + circleRadius + 15 - 1, centerPoint[1] - 5, 220, 10);
+        ctx.fillRect(centerPoint[0] + circleRadius + 15 - 1, centerPoint[1] - 5, 220, 10);
+
+        ctx.beginPath();
+        var cgrd=ctx.createRadialGradient(ball.x+4,ball.y-3, 0, ball.x,ball.y,ball.r);
+        cgrd.addColorStop(0, '#EEE');
+        cgrd.addColorStop(0.9,"steelblue");
+        cgrd.addColorStop(1,"steelblue");
+
+        ctx.fillStyle = cgrd;
+        ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2,true);
+        ctx.fill();
+        ball.vy ?  ball.fly() :  ball.x <=  ball.originx ? ball.rotate() : null;
+    }
+
+    draw(1);
+
+
+
+
+</script>
+</html>
