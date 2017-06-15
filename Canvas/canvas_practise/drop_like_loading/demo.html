@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto auto;
+            border: 1px solid steelblue;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var WIDTH = 150;
+    var HEIGHT = 150;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    let originDistance = 10;
+    let originelasticity = 15;
+    let ball = {x: WIDTH / 2, y: HEIGHT / 2, r: 28, direction : 1, xr: 30, yr: 30, halfdistance:0, elasticity:0};
+
+    function negativeIsZero(val) {
+        if(val<0) return 0
+        else return val;
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.fillStyle = 'steelblue';
+        if(ball.y >=HEIGHT  - ball.r && ball.y <= HEIGHT - ball.r/2 + 10) {
+            if(ball.elasticity==0) {
+                ball.elasticity = originelasticity;
+                ball.halfdistance = originDistance;
+            }
+            ctx.ellipse(ball.x, ball.y, ball.xr, ball.yr, 0, 0, 2 * Math.PI, false);
+            if(ball.direction) {
+                ball.xr +=1;
+                ball.yr -=0.5;
+            } else {    //反弹
+                ball.xr -=1;
+                ball.yr +=0.5;
+            }
+            ball.direction ?  ball.y+=1 : ball.y-=1;
+        } else if(ball.y <= ball.r && ball.y >= ball.r/2 - 10) {
+            if(ball.elasticity==0) {
+                ball.elasticity = originelasticity;
+                ball.halfdistance = originDistance;
+            }
+            ctx.ellipse(ball.x, ball.y, ball.xr, ball.yr, 0, 0, 2 * Math.PI, false);
+            if(ball.direction) {
+                ball.xr -=1;
+                ball.yr +=0.5;
+            } else {
+                ball.xr +=1;
+                ball.yr -=0.5;
+            }
+            ball.direction ?  ball.y+=1 : ball.y-=1;
+        } else {
+            if(ball.direction && ball.elasticity>0){
+                ctx.beginPath();
+                ctx.lineTo(ball.x+ball.halfdistance, 0);
+                ctx.quadraticCurveTo(ball.x+ball.halfdistance/2, 0, ball.x+ball.halfdistance/2,  negativeIsZero(ball.elasticity/2)  );
+                ctx.quadraticCurveTo(ball.x+ball.halfdistance/2, ball.elasticity,  ball.x,  ball.elasticity);
+                ctx.quadraticCurveTo(ball.x-ball.halfdistance/2, ball.elasticity,  ball.x-ball.halfdistance/2,  negativeIsZero(ball.elasticity/2));
+                ctx.quadraticCurveTo(ball.x-ball.halfdistance/2, 0, ball.x-ball.halfdistance,0 );
+                ctx.fill();
+            } else if(!ball.direction && ball.elasticity>0) {
+                ctx.beginPath();
+                ctx.lineTo(ball.x+ball.halfdistance, HEIGHT);
+                ctx.quadraticCurveTo(ball.x+ball.halfdistance/2, HEIGHT, ball.x+ball.halfdistance/2, HEIGHT - negativeIsZero(ball.elasticity/2) );
+                ctx.quadraticCurveTo(ball.x+ball.halfdistance/2, HEIGHT - ball.elasticity,  ball.x, HEIGHT - ball.elasticity);
+                ctx.quadraticCurveTo(ball.x-ball.halfdistance/2, HEIGHT - ball.elasticity,  ball.x-ball.halfdistance/2, HEIGHT - negativeIsZero(ball.elasticity/2));
+                ctx.quadraticCurveTo(ball.x-ball.halfdistance/2, HEIGHT, ball.x-ball.halfdistance,HEIGHT );
+                ctx.fill();
+            }
+            if(ball.elasticity>0) {
+                ball.elasticity--;
+                ball.halfdistance--;
+            }
+
+            ctx.beginPath()
+            ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
+            ball.direction ?  ball.y+=1 : ball.y-=1;
+            ball.yr = ball.xr = ball.r;
+        }
+
+        ctx.fill();
+
+        if(ball.y >=HEIGHT  - ball.r/2 + 10 ) {
+            ball.direction = 0;
+        } else if(ball.y -ball.r/2 + 10 <=0) {
+            ball.direction = 1;
+        }
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+</script>
+</html>
