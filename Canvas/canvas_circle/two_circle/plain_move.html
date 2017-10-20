@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="600" style="border:1px solid gainsboro" ></canvas>
+<button id='btnMove'>move</button>
+<button id='btnMoveCircleRight'>Right little circle</button>
+<button id='btnMoveCircleLeft'>Left little circle</button>
+</body>
+<script>
+    const circle = {x: 300, y:300, r:100}
+    const canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let circle1 = {x:100, y:300, r: 50, color: '#bbb', q: 30};
+    let circle2 = {x:300, y:300, r: 100, color: '#eee', q: 50};
+    let d = circle2.x - circle1.x;
+    let maxspread = Math.acos((circle2.r-circle1.r) / d);
+    let extraAngel = 0;
+  
+
+  
+
+    
+   
+
+    let drawCircle = (circle)=> {
+      ctx.beginPath();
+      ctx.fillStyle = circle.color || 'red';
+      ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    let drawLink = (items)=> {
+      ctx.beginPath();
+      ctx.strokeStyle='green';
+      for(let i=0;i<items.length;i++) {
+        if(i==0) { 
+          ctx.moveTo(items[0].x, items[0].y);
+        } else {
+          ctx.lineTo(items[i].x, items[i].y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    let drawBezierCurve = (items) => {
+      ctx.beginPath();
+      ctx.strokeStyle='green';
+      let first = items.shift();
+      ctx.moveTo(first.x, first.y);
+      let others = items.reduce((all, t) => { all.push(t.x);all.push(t.y); return all}, [])
+      ctx.bezierCurveTo(...others)
+      ctx.stroke();
+    }
+
+    let updateSpread = (m)=>{
+      m || (m=0)
+      extraAngel = extraAngel + maxspread * m
+      circle1_a_point = {
+        x: circle1.x - Math.cos( maxspread + extraAngel) * circle1.r,
+        y: circle1.y - Math.sin( maxspread + extraAngel) * circle1.r,
+        r: 5
+      } 
+      circle1_q_point = {
+        x: circle1.x + Math.cos(Math.PI - (maxspread + extraAngel + circle1.qr_angel)) * circle1.qr,
+        y: circle1.y - Math.sin(Math.PI - (maxspread + extraAngel + circle1.qr_angel)) * circle1.qr,
+        r: 3
+      } 
+      circle2_a_point = {
+        x: circle2.x - Math.cos(maxspread - extraAngel) * circle2.r,
+        y: circle2.y - Math.sin(maxspread - extraAngel) * circle2.r,
+        r: 5,
+      } 
+      circle2_q_point = {
+        x: circle2.x - Math.cos(maxspread - extraAngel - circle2.qr_angel) * circle2.qr,
+        y: circle2.y - Math.sin(maxspread - extraAngel - circle2.qr_angel) * circle2.qr,
+        r: 3
+      }  
+    }
+
+    let updateCircle = (m) => {
+      circle1.x += m;
+      d = circle2.x - circle1.x;
+      maxspread = Math.acos((circle2.r-circle1.r) / d);
+      circle1.qr =Math.sqrt(circle1.q*circle1.q + circle1.r*circle1.r);
+      circle2.qr =Math.sqrt(circle2.q*circle2.q + circle2.r*circle2.r);
+      circle1.qr_angel = Math.atan(circle1.q/circle1.r);
+      circle2.qr_angel = Math.atan(circle2.q/circle2.r);
+    }
+
+    const draw = () => {
+      drawCircle(circle1);
+      drawCircle(circle2);
+      drawCircle(circle2_a_point);
+      drawCircle(circle1_a_point);
+      drawCircle(circle1_q_point);
+      drawCircle(circle2_q_point);
+      drawLink([circle1, circle1_a_point, circle2_a_point, circle2, circle1]);
+      drawLink([circle1_a_point, circle1_q_point]);
+      drawLink([circle2_a_point, circle2_q_point]);
+      drawBezierCurve([circle1_a_point, circle1_q_point, circle2_q_point, circle2_a_point]);
+    }
+
+    updateSpread();
+    draw();
+
+    document.getElementById('btnMove').addEventListener('click', ()=>{
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateSpread(0.05);
+      draw();
+    })
+
+    document.getElementById('btnMoveCircleRight').addEventListener('click', ()=>{
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateCircle(5);
+      updateSpread();
+      draw();
+    })
+    document.getElementById('btnMoveCircleLeft').addEventListener('click', ()=>{
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      updateCircle(-5);
+      updateSpread();
+      draw();
+    })
+
+    
+   
+</script>
+</html>

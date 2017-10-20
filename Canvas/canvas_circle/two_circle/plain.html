@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="600" height="600" style="border:1px solid gainsboro" ></canvas>
+</body>
+<script>
+    const circle = {x: 300, y:300, r:100}
+    const canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let circle1 = {x:100, y:300, r: 50, color: '#bbb'};
+    let circle2 = {x:300, y:300, r: 100, color: '#eee'};
+    let d = circle2.x - circle1.x;
+
+    let maxspread = Math.acos((circle2.r-circle1.r) / d);
+    let circle2_a_point = {
+      x: circle2.x - Math.cos(maxspread) * circle2.r,
+      y: circle2.y - Math.sin(maxspread) * circle2.r,
+      r: 5,
+    } 
+    let circle1_a_point = {
+      x: circle1.x - Math.cos(maxspread) * circle1.r,
+      y: circle1.y - Math.sin(maxspread) * circle1.r,
+      r: 5
+    } 
+
+    let drawCircle = (circle)=> {
+      ctx.beginPath();
+      ctx.fillStyle = circle.color || 'red';
+      ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    let drawLink = (items)=> {
+      ctx.beginPath();
+      ctx.strokeStyle='green';
+      for(let i=0;i<items.length;i++) {
+        if(i==0) { 
+          ctx.moveTo(items[0].x, items[0].y);
+        } else {
+          ctx.lineTo(items[i].x, items[i].y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    drawCircle(circle1);
+    drawCircle(circle2);
+    drawCircle(circle2_a_point);
+    drawCircle(circle1_a_point);
+    drawLink([circle1, circle1_a_point, circle2_a_point, circle2])
+   
+</script>
+</html>
