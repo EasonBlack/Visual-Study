@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="canvas" style="border:1px solid steelblue" ></canvas>
+    <img id="ground-image" src='../../../images/game/pokemon_tiles.png' style="display:none">
+</body>
+<script src="../../../vendor/jquery.js"></script>
+<script>
+
+    let WIDTH = 1200;
+    let HEIGHT = 600;
+    var canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    canvas.height = HEIGHT;
+    canvas.width = WIDTH;
+    let tiles = $('#ground-image')[0];
+    let size = 50;
+    // ctx.drawImage(tiles, 0, 0, 49, 48,    0, 0, 50, 50); //[0,0]
+    // ctx.drawImage(tiles, 0, 224, 65, 64,    0, 50, 50, 50); //[0,4]
+
+    let array = [
+      [0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+      [0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0],
+      [0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0],
+      [0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0],
+    ]
+    let tile1 = [0,0,48,48];
+    let tile2 = [0,224,64,64];
+
+    for(let i=0;i<array.length;i++) {
+      for(let j=0;j<array[i].length;j++) {
+        if(array[i][j]) {
+          ctx.drawImage(tiles, ...tile2,    j*size, i*size, size, size); 
+        } else {
+          ctx.drawImage(tiles, ...tile1,    j*size, i*size, size, size);
+        }
+      }
+    }
+    ctx.drawImage(tiles, 50, 0, 49, 48,   0, 50, 50, 50);
+</script>
+</html>
