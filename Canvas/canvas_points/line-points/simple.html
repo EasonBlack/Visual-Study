@@ -1,0 +1,56 @@
+<html>
+  <header>
+    <style>
+      
+    </style>
+  </header>
+  <body>
+    <canvas id='1canvas' style="border:1px solid gainsboro"></canvas>
+  </body>
+  <script>
+      const WIDTH = 400;
+      const HEIGHT = 400;
+      var canvas = document.getElementById('1canvas');
+      canvas.width = WIDTH;
+      canvas.height = HEIGHT;
+      var ctx = canvas.getContext('2d');
+      ctx.strokeStyle = 'black';
+      ctx.fillStyle = 'gainsboro';
+
+      class Point {
+        constructor({x, y, ctx, size}) {
+          this.x = x || Math.random()*size;
+          this.y = y || Math.random()*size;
+          this.ctx = ctx;
+        }
+        show() {
+          this.ctx.beginPath();
+          this.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+          this.ctx.fill()
+        }
+      }
+
+      class Line {
+        constructor({ctx, f, size}) {
+          this.f = f;
+          this.ctx = ctx;
+          this.size = size;
+        }
+        show() {
+          this.ctx.beginPath();
+          console.log(this.f(0), this.f());
+          this.ctx.moveTo(0, this.f(0));
+          this.ctx.lineTo(this.size ,this.f(this.size));
+          this.ctx.stroke();
+        }
+      }
+
+      let points = new Array(100).fill({}).map(a => new Point({ctx, size: WIDTH}));
+      points.forEach(p=>{
+        p.show();
+      })
+      //y = x +5 
+      let line = new Line({ctx, f: (x)=> (1/3)*x + 75, size: WIDTH })
+      line.show();
+  </script>
+</html>
