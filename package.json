@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "echarts": "^4.0.2",
     "jquery": "^3.2.1",
     "webpack": "^2.4.1"
   },

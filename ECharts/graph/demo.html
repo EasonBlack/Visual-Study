@@ -1,0 +1,114 @@
+<html>
+<head>
+    <title></title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script src="../../node_modules/echarts/dist/echarts.min.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+    let obj = {
+        "categories": [
+            {
+                "name": "aa",
+            },
+            {
+                "name": "bb"
+            },
+            {
+                "name": "cc"
+            },
+        ],
+        "nodes": [
+            {
+                "id": 0,
+                "name": "a1",
+                "value": 1,
+                "category": 0
+            },
+            {
+                "id": 1,
+                "name": "a2",
+                "value": 1,
+                "category": 0
+            },
+            {
+                "id": 2,
+                "name": "b1",
+                "value":15,
+                "category": 1
+            },
+            {
+                "id": 3,
+                "name": "b2",
+                "value":1,
+                "category": 1
+            },
+            {
+                "id": 4,
+                "name": "c1",
+                "value":22,
+                "category": 2
+            },
+        ],
+        links: [
+            {
+                "source": 0,
+                "target": 1
+            },
+            {
+                "source": 0,
+                "target": 2
+            },
+            {
+                "source": 0,
+                "target": 3
+            },
+            {
+                "source": 0,
+                "target": 4
+            },
+            {
+                "source": 1,
+                "target": 2
+            },
+
+        ]
+    }
+    option = {
+
+        series: [{
+            type: 'graph',
+            layout: 'circular',
+            animation: false,
+            label: {
+                normal: {
+                    position: 'right',
+                    formatter: '{b}'
+                }
+            },
+            draggable: true,
+            data: obj.nodes,
+            categories: obj.categories,
+          
+            edges: obj.links,
+            roam: true,
+            lineStyle: {
+                    normal: {
+                        color: 'source',
+                        curveness: 0.3
+                    }
+                }
+        }]
+    };
+
+    myChart.setOption(option);
+
+</script>
+
+</html>
