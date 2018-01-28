@@ -1,0 +1,141 @@
+<html>
+<head>
+    <title></title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script src="../../node_modules/echarts/dist/echarts.min.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+    let obj = {
+        "categories": [
+            {
+                "name": "aa",
+            },
+            {
+                "name": "bb"
+            },
+            {
+                "name": "cc"
+            },
+        ],
+        "nodes": [
+            {
+                "id": 0,
+                "name": "a1",
+                "value": 1,
+                "category": 0,
+                "x": 10,
+                "y": 10,
+                "re": "xsdfs"
+            },
+            {
+                "id": 1,
+                "name": "a2",
+                "value": 1,
+                "category": 0,
+                "x": 20,
+                "y": 10
+            },
+            {
+                "id": 2,
+                "name": "b1",
+                "value":15,
+                "category": 1,
+                "x": 10,
+                "y": 20
+            },
+            {
+                "id": 3,
+                "name": "b2",
+                "value":1,
+                "category": 1,
+                "x": 20,
+                "y": 20
+            },
+            {
+                "id": 4,
+                "name": "c1",
+                "value":22,
+                "category": 2,
+                "x": 10,
+                "y": 40
+            },
+        ],
+        links: [
+            {
+                "source": 0,
+                "target": 1,
+                "x": "xsdfs"
+            },
+            {
+                "source": 0,
+                "target": 2,
+                "x": "xxx"
+            },
+            {
+                "source": 0,
+                "target": 3,
+                "x": "aaa"
+            },
+            {
+                "source": 0,
+                "target": 4,
+                "x": "bbbb"
+            },
+            {
+                "source": 1,
+                "target": 2,
+                "x": "ccc"
+            },
+
+        ]
+    }
+    option = {
+
+        series: [{
+            type: 'graph',
+            layout: 'none',
+            animation: false,
+            label: {
+                normal: {
+                    position: 'right',
+                    formatter: '{b}'
+                }
+            },
+            edgeLabel: {
+                normal: {
+                    show: true,
+                    position: 'middle',
+                    formatter: function(a){
+                        console.log(a);
+                        return a.data.x;
+                    }
+                }
+            },
+            draggable: true,
+            data: obj.nodes,
+            categories: obj.categories,
+          
+            edges: obj.links,
+            roam: true,
+
+            lineStyle: {
+                    normal: {
+                        color: 'source',
+                        curveness: 0.3
+                    }
+                }
+        }]
+    };
+
+    myChart.setOption(option);
+
+</script>
+
+</html>
