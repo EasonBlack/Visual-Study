@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+
+        }
+        #container {
+            margin: auto;
+            border: 1px solid #333333;
+            width:500px;
+            height:500px;
+            position:relative;
+        }
+        .rect {
+            fill:blue;
+            stroke:pink;
+            stroke-width:20;
+            stroke-alignment:inner ;
+            animation: blink .5s ease infinite;
+        }
+        @keyframes blink {
+            0%   {fill: blue}
+            50%  {fill: green}
+            100% {fill: blue}
+        }
+        .line {
+            animation: lineblink .5s ease infinite;
+        }
+        @keyframes lineblink {
+            0%   {stroke-width: 3}
+            50%  {stroke-width: 0}
+            100% {stroke-width: 3}
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="500" height="500">
+        <rect class='rect' x="50" y="50" width="250" height="250"  stroke-alignment="inner"></rect>
+        <path class ='line' d="M150 0 L75 200 L225 200 Z" fill="none" stroke-width="3"  stroke="red"/>
+    </svg>
+</div>
+</body>
+</html>
