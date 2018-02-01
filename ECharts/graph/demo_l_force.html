@@ -28,63 +28,82 @@
             {
                 "id": 0,
                 "name": "a1",
-                "value": 1,
-                "category": 0
+                "value": 30,
+                "category": 0,
+                "re": "xsdfs"
             },
             {
                 "id": 1,
                 "name": "a2",
-                "value": 1,
-                "category": 0
+                "value": 10,
+                "category": 0,
+           
             },
             {
                 "id": 2,
                 "name": "b1",
                 "value":15,
-                "category": 1
+                "category": 1,
+               
             },
             {
                 "id": 3,
                 "name": "b2",
-                "value":1,
-                "category": 1
+                "value":10,
+                "category": 1,
+             
             },
             {
                 "id": 4,
                 "name": "c1",
                 "value":22,
-                "category": 2
+                "category": 2,
+               
             },
         ],
         links: [
             {
                 "source": 0,
-                "target": 1
+                "target": 1,
+                "x": "xsdfs"
             },
             {
                 "source": 0,
-                "target": 2
+                "target": 2,
+                "x": "xxx"
             },
             {
                 "source": 0,
-                "target": 3
+                "target": 3,
+                "x": "aaa"
             },
             {
                 "source": 0,
-                "target": 4
+                "target": 4,
+                "x": "bbbb"
             },
             {
                 "source": 1,
-                "target": 2
+                "target": 2,
+                "x": "ccc"
             },
 
         ]
     }
     option = {
-
+        tooltip: {
+            formatter:(a)=>{
+                if(a.data.x) {
+                    return a.data.x;
+                } else {
+                    return a.name
+                }
+                
+            }
+        },
         series: [{
             type: 'graph',
-            layout: 'circular',
+            layout: 'force',
             animation: false,
             label: {
                 normal: {
@@ -92,18 +111,32 @@
                     formatter: '{b}'
                 }
             },
-            draggable: true,
+            force: {
+                edgeLength: 80,
+                repulsion: 100,
+                layoutAnimation: false,
+            },
+            edgeLabel: {
+                normal: {
+                    //show: true,
+                    // position: 'middle',
+                    // formatter: function(a){
+                    //     return a.data.x;
+                    // }
+                }
+            },
             data: obj.nodes,
-            categories: obj.categories,
-          
+            categories: obj.categories,       
             edges: obj.links,
             roam: true,
+            draggable: false,
+            symbolSize:(value, p)=>{return value;},
             lineStyle: {
-                    normal: {
-                        color: 'source',
-                        curveness: 0.3
-                    }
+                normal: {
+                    color: 'source',
+                    curveness: 0.3
                 }
+            }
         }]
     };
 
