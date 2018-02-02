@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <svg ></svg>
+    <div>
+        <button id='btnFilter'>Filter</button>
+        <button id='btnInvisible'>Invisible</button>
+    </div>
+</body>
+<script src="../../vendor/d3.4.13.0.js" charset="utf-8"></script>
+<script src="../../vendor/d3.layout.cloud.js" charset="utf-8"></script>
+
+<script>
+    let fill = d3.scaleOrdinal(d3.schemeCategory20);
+    let items = [
+        {text: ".NET", size: 30, type:1},
+        {text: "Silverlight", size: 30, type:1},
+        {text: "jQuery", size: 30, type:1},
+        {text: "CSS3", size: 30, type:2},
+        {text: "HTML5", size: 30, type:1},
+        {text: "JavaScript", size: 50, type:2},
+        {text: "SQL", size: 30, type:1},
+        {text: "C#", size: 30, type:1},
+        {text: "Python", size: 30, type:1},
+        {text: "PHP", size: 30, type:1},
+        {text: "Ruby", size: 10, type:1},
+        {text: "GO", size: 27, type:1},
+        {text: "Scala", size: 15, type:1},
+        {text: "Kotlin", size: 13, type:1},
+    ]
+
+    let wordsSvg = d3.layout.cloud().size([300, 300])
+            .on("end", draw)
+            .font("Impact")
+
+    let svg = d3.select('svg')
+                .attr("width", 300)
+                .attr("height", 300)
+
+    let btnFilter = document.querySelector('#btnFilter')
+    let btnInvisible = document.querySelector('#btnInvisible')
+    btnFilter.addEventListener('click',(e)=>{
+        svg.selectAll('*').remove()
+        initWord(1);
+    })
+    btnInvisible.addEventListener('click',(e)=>{
+        svg.selectAll('.word1')
+            .transition()
+            .duration(1000)
+            .attr("transform", function(d) {
+                    return "scale(0)";
+            })
+            .remove();
+
+        svg.selectAll('.word2')
+            .transition()
+            .duration(1000)
+            .attr("transform", function(d, i, a,b) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ") scale(1.2)";
+            })
+    })
+
+
+    
+
+    function initWord(type) {
+        wordsSvg
+            .words(items.filter(item=>{
+                return type ? item.type==type : item
+            }))
+            .rotate(function() { return  0; })
+            .fontSize(function(d) { return d.size; })    
+            .start();
+    }
+
+    initWord();
+
+    function draw(words) {
+        svg    
+                .append("g")
+                .attr("transform", "translate(150,150)")
+                .selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; })
+                .style("font-family", "Impact")
+                .style("fill", function(d, i) { return fill(i); })
+                .transition()
+                .duration(1000)
+                .attr("text-anchor", "middle")
+                .attr('class', (d)=>{
+                    if(d.type == 1) {
+                        return 'word1';
+                    } else {
+                        return  'word2';
+                    }
+                })
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+    }
+
+
+</script>
+</html>
