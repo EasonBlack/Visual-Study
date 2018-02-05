@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        svg {
+            font: 10px sans-serif;
+        }
+
+        .y.axis path {
+            fill: none;
+            stroke: #000;
+        }
+
+        .y.axis line  {
+            stroke: #777;
+            stroke-dasharray: 2,2;
+        }
+
+        .rect:hover {
+            fill: rgba(123,34,23,0.3);
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../../../vendor/d3.4.13.0.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+<script>
+    var data= [10,50,100,67,54,32, 10, 87, 44, 38];
+    var width = 700;
+    var height = 400;
+
+    var canvas = d3.select('body')
+            .append('svg')
+            .attr('width', width)
+            .attr('height',height)
+            .append('g')
+
+    var scale = d3.scaleLinear()
+            .domain([0,d3.max(data)+10])
+            .range([height, 0]);
+    let _bottom = scale(0);
+
+    let buttons = [
+        {text: 'Update1', handle: ()=>{alert(123)}},
+        {text: 'Update2', handle: ()=>{alert(987)}},
+    ]
+    
+
+    var yaxis = d3.axisRight(scale)
+            .ticks(5)
+    
+    var node = canvas.selectAll('g')
+            .data(data)
+            .enter()
+            .append('g')
+            .attrs({
+                transform: function (d, i) { 
+                    var x = i*30+30;
+                    var y = scale(d) ;
+                    return 'translate('+ x +','+ y +')'
+                },
+            });
+    
+        let chartButton = canvas.selectAll('rect.button')
+                .data(buttons)
+                .enter()
+                .append('g')
+                .attrs({
+                    transform: (d, i)=>{
+                        let x = i*70+60;
+                        let y = 0 ;
+                        return 'translate('+ x +','+ y +')'
+                    }
+                })
+                .on("click", (d,i)=>{
+                    d.handle();
+                })
+
+            chartButton.append('rect')
+                .attrs({
+                    class: 'button',
+                    width: 45,
+                    height: 20,
+                    fill: 'steelblue',
+                   
+                })
+            chartButton.append('text')
+                .text((d,i)=>d.text)
+                .attrs({
+                    fill: 'white',
+                    x:3,
+                    y : 10
+                })
+                
+    var gradient = canvas.append("defs")
+        .append("linearGradient")
+        .attr("id", "gradient")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "3%")
+        .attr("y2", "3%")
+        .attr("spreadMethod", "repeat")
+        .attr("gradientUnits", "userSpaceOnUse");
+
+    gradient.append("stop")
+        .attr("offset", "50%")
+        .attr("stop-color", "yellow")
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr("offset", "50%")
+        .attr("stop-color", "white")
+
+
+    node.append('rect')
+            .attr('class', 'rect')
+            .attrs({
+                width: 25,
+                height:function(d,i){return  height - scale(d) },
+                fill: function(d,i) {
+                    console.log('draw rect')
+                    if(d>40 && d<60) {
+                        return 'rgba(0,51,153,0.6)'
+                    } else {
+                        return 'url(#gradient)'
+                    }              
+                }
+            });
+
+    node.append('path')
+            .attrs({
+                d: function(d,i) {
+                    let h = height - scale(d);
+                    return `M0 ${h} L0 0 L25 0 L25 ${h} `
+                },
+                stroke:'red',
+                fill:'none',
+                'stroke-width':2
+            })
+
+    node.append('circle')
+        .attrs({
+            r: 5, 
+            cx: 12.5,
+            cy: 0,
+            fill: 'pink',
+        })
+    
+    node.append('path')
+        .attrs({
+            d: function(d,i) {
+                console.log(i)
+                if(i>0) {
+                    console.log('draw line path')
+                    let span = scale(data[i-1]) -scale(d) ;
+                    return `M12.5 0 L-17.5 ${span}`
+                }
+                return ''
+            },
+            stroke:'grey',
+            fill:'none',
+            'stroke-width':2,
+        })
+
+    node.append('text')
+            .text(function(d){return d})
+            .attrs({
+                'font-size' :"10px",
+                fill: 'white',
+                x: 3,
+                y: 15
+            })
+
+    var yAxisGroup = canvas.append('g')
+            .attr("class", "y axis")
+            .call(yaxis)
+
+    yAxisGroup.selectAll('line')
+        .attrs({
+            x2: (d,i)=>{return width},
+            y1: -1,
+            y2: -1
+        })
+    
+    yAxisGroup.selectAll('text')
+        .attr('y', -6)
+    
+       
+
+</script>
+</html>
