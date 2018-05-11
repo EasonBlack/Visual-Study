@@ -30,7 +30,23 @@
                     alternateStartingDirection: true,
                     levelIsConstant: false,
                     tooltip: {
-                        pointFormat: '{point.name}',
+                       // pointFormat: '{point.name} sdf',
+                        pointFormatter: function() {
+                            //判断是不是第一层
+                            let isRoot = this.series.rootNode;
+                            if(!isRoot) {
+                                return "bbbbb"
+                            } else {
+                                return "aaaa";
+                            }
+                            // console.log(this)
+                            // console.log(this.node)
+                            // var value = this.value || this.node.childrenTotal;
+                            // return '<b>aaa'
+                            // + this.name 
+                            // + ':</b> $ '
+                            // + Highcharts.numberFormat(value, 2, '.',',')
+                        }
                     },
                     levels: [{
                         level: 1,
@@ -40,8 +56,10 @@
                             align: 'center',
                             verticalAlign: 'middle',
                             style: {
-                                fontSize: '15px',
-                                fontWeight: 'bold'
+                                fontSize: '20px',
+                                fontWeight: 'bolder',
+                                opacity: 0.3,
+                                textOutline: 0
                             }
                         }
                     }, {
@@ -53,10 +71,10 @@
                     }
                     ],
                     data: [
-                        { id: '10', name: '0x10 - 设备异常' },
-                        { id: '11', name: '0x11 - 投放媒体缺失' },
-                        { id: '20', name: '0x20 - 上网记录异常' },
-                        { id: '30', name: '0x30 - 设备回传信息异常' },
+                        { id: '10', name: '0x10 - 设备异常', color: 'steelblue' },
+                        { id: '11', name: '0x11 - 投放媒体缺失', color: 'red' },
+                        { id: '20', name: '0x20 - 上网记录异常', color: 'green' },
+                        { id: '30', name: '0x30 - 设备回传信息异常' , color: 'grey'},
                         { id: '31', name: '0x31 - 投放媒体上报数据缺失' },
                         { id: '40', name: '0x40 - 广告曝光时间异常' },
 
