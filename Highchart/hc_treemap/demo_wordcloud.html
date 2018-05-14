@@ -1,0 +1,65 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title></title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/wordcloud.src.js"></script>
+  <style>
+    #container {
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container"></div>
+  <script>
+    let data = [
+      { name: "aaa", weight: 4 },
+      { name: "bbb", weight: 4 },
+      { name: "c", weight: 14 },
+      { name: "d", weight: 5 },
+      { name: "e1", weight: 14 },
+      { name: "e4", weight: 16 },
+      { name: "e2", weight: 4 },
+      { name: "e3", weight: 4 },
+    ]
+    data = data.sort((a, b) => a.weight - b.weight)
+    console.log(data);
+
+   
+    Highcharts.seriesTypes.wordcloud.prototype.deriveFontSize = function(relativeWeight) {
+        var maxFontSize =50;
+       
+        let size =  Math.floor(maxFontSize * relativeWeight);
+        console.log(arguments, relativeWeight, size);
+        return size < 15 ? 3 : size;  //sets min size to be 15 if less than 8
+    };
+    Highcharts.chart('container', {
+      chart: {
+        marginRight: 0,
+        marginLeft: 0,
+        marginBottom: 0,
+      },
+      series: [{
+        type: "wordcloud",
+        spiral: 'rectangular',
+        placementStrategy: 'center',
+        rotation: {
+          from: 0,
+          to: 0
+        },
+        //placementStrategy: 'randomHorizontal',
+        data:data
+      }],
+      title: {
+        text: ''
+      }
+
+    });
+  </script>
+  </form>
+</body>
+
+</html>

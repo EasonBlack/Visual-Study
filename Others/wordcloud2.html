@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script src='../vendor/jquery.js'></script>
+  <script src='../vendor/wordcloud2.js'></script>
+  <style>
+    html , body {
+      width:100vw;
+      height:100vh;
+      margin:0;
+      padding:0;
+      box-sizing: border-box;
+    }
+    .canvas {
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id='my_canvas'></canvas>
+</body>
+<script>
+
+
+  let data = [
+    [ "aaa", 34 ],
+    [ "bbb", 16 ],
+    [ "c", 24 ],
+    [ "d", 5 ],
+    [ "e1", 14 ],
+    [ "e4", 16 ],
+    [ "e2", 4 ],
+    [ "e3", 4 ],
+  ]
+  let maxWeight = Math.max(...data.map(d=>d[1]))
+  let maxFontSize = 150;
+  data.map(d=>{
+    var relativeWeight = 1 / maxWeight * d[1];
+    d[1] = relativeWeight * maxFontSize;
+  })
+  canvas = document.getElementById('my_canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  WordCloud(canvas, { 
+    list: data,
+    gridSize: 30,  // the larger the grid size, the bigger the gap between words.
+    minRotation:0,
+    maxRotation: 0,
+    drawMask: false,
+    hover: ()=>{
+     console.log(123)
+    },
+    click: function() {
+      alert(123);
+    }
+
+    //minSize: 15
+  });
+
+</script>

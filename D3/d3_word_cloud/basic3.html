@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <svg></svg>
+</body>
+<script src="../../vendor/d3.4.13.0.js" charset="utf-8"></script>
+<script src="../../vendor/d3.layout.cloud.js" charset="utf-8"></script>
+
+<script>
+    let fill = d3.scaleOrdinal(d3.schemeCategory20);
+    let items = [
+        { name: "aaa", v: 50 },
+        { name: "bbb", v: 41 },
+        { name: "ccc", v: 45 },
+        { name: "ddd", v: 22 },
+        { name: "eee", v: 14 }
+    ]
+    let svg = d3.select('svg')
+        .attr("width", 300)
+        .attr("height", 300)
+        
+    let wordsSvg = d3.layout.cloud().size([300, 300])
+        .words(items)
+        .font("Impact")
+        .fontSize(function(d) { return d.v; })
+        .on("end", draw)
+        .start()
+
+
+
+
+    function draw(words) {
+        svg
+            .append("g")
+            .attr("transform", "translate(150,150)")
+            .selectAll("text")
+            .data(words)
+            .enter().append("text")
+            .style("font-size", function (d) { console.log(d); return d.size + "px"; })
+            .style("font-family", "Impact")
+            .style("fill", function (d, i) { return fill(i); })
+            .attr("text-anchor", "middle")
+            .attr("transform", function (d) {
+                return "translate(" + [d.x, d.y] + ")";
+            })
+            .text(function (d) { return d.name; });
+
+    }
+
+
+</script>
+
+</html>
