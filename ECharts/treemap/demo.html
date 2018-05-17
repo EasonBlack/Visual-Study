@@ -1,0 +1,99 @@
+<html>
+
+<head>
+  <title></title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script src="../../vendor/echarts.min.4.1.0.rc2.js"></script>
+<script>
+  let types = [
+    { id: '10', name: '0x10 - 设备异常', color: 'steelblue' },
+    { id: '11', name: '0x11 - 投放媒体缺失', color: 'red' },
+    { id: '20', name: '0x20 - 上网记录异常', color: 'green' },
+    { id: '30', name: '0x30 - 设备回传信息异常', color: 'grey' },
+    { id: '31', name: '0x31 - 投放媒体上报数据缺失' },
+    { id: '40', name: '0x40 - 广告曝光时间异常' }
+  ];
+  let data = [
+    { name: '0x10000001 (PIT = 9) 如果不存在DeviceID或者DeviceID不正常的值，如：模拟器等，假冒等级较高', parent: '10', value: 386793 },
+    { name: '0x10000002 (PIT = 8) 如果不存在DeviceType或者DeviceType是非正常型号，假冒等级较高', parent: '10', value: 317836 },
+    { name: '0x11000004 (PIT = 7) 市场通用的OS，windows各种型号，Android各个版本，IOS各个型号，MACOS各个版本，如果没有或者不在此范围类，假冒等级较高', parent: '11', value: 6704 },
+    { name: '0x11000008 (PIT = 7) 游览器的UA，以市场上占有率较高的浏览器作为参考，不在此范围内或者缺失此内容，假冒等级较高', parent: '11', value: 7218 },
+    { name: '0x11000010 (PIT = 6) 游览器的名字，以市场上占有率较高的浏览器作为参考，不在此范围内或者缺失此内容，假冒等级较高', parent: '11', value: 6566 },
+    { name: '0x11000020 (PIT = 7) 从用户的行为分析，每个广告的展示都会有触发条件，这个条件可能是用户打开了某个网站看到了广告。如果不知道是从哪个网站看到的广告，而且还是浏览器过来的数据，这个数据就可能作弊', parent: '11', value: 6011 },
+    { name: '0x11000040 (PIT = 6) 从用户的行为分析，每个广告的展示都会有触发条件，这个条件可能是用户打开了APP看到了广告。如果不知道是从哪个APP看到的广告，而且还是通过APP访问的广告，这个数据就可能作弊', parent: '11', value: 6749 },
+    { name: '0x11000080 (PIT = 8) 既不是浏览器也不是APP', parent: '11', value: 8131 },
+    { name: '0x20000001 (PIT = 7) 每秒产生的数据在5-10条', parent: '20', value: 3559 },
+    { name: '0x20000002 (PIT = 9) 每秒产生数据在10-15条', parent: '20', value: 10131 },
+    { name: '0x20000004 (PIT = 10) 每秒产生数据在大于15条', parent: '20', value: 6658 },
+    { name: '0x20000008 (PIT = 5) 每一分钟产生数据在5-10条', parent: '20', value: 10675 },
+    { name: '0x20000010 (PIT = 7) 每一分钟产生数据在10-20条', parent: '20', value: 15029 },
+    { name: '0x20000020 (PIT = 9) 每一分钟产生数据在20-30条', parent: '20', value: 11592 },
+    { name: '0x20000040 (PIT = 10) 每一分钟产生数据在大于30条', parent: '20', value: 14429 },
+    { name: '0x20000080 (PIT = 6) 每两分钟产生数据在10-20条', parent: '20', value: 9930 },
+    { name: '0x20000100 (PIT = 8) 每两分钟产生数据在20-30条', parent: '20', value: 12224 },
+    { name: '0x20000200 (PIT = 10) 每两分钟产生数据在大于30条', parent: '20', value: 9837 },
+    { name: '0x20000400 (PIT = 7) 每三分钟产生数据在20-30条', parent: '20', value: 3254 },
+    { name: '0x20000800 (PIT = 8) 每三分钟产生数据在30-40条', parent: '20', value: 4845 },
+    { name: '0x20001000 (PIT = 9) 每三分钟产生数据在40-50条', parent: '20', value: 689 },
+    { name: '0x20002000 (PIT = 10) 每三分钟产生数据在大于50条', parent: '20', value: 7724 },
+    { name: '0x40000001 (PIT = 6) 广告视频停留时间>20S', parent: '40', value: 8658 },
+    { name: '0x40000002 (PIT = 7) 广告视频停留时间小于20大于10S', parent: '40', value: 4971 },
+    { name: '0x40000004 (PIT = 9) 广告视频停留时间小于10S', parent: '40', value: 8500 },
+    { name: '0x40000008 (PIT = 6) 广告视频停留时间>20S', parent: '40', value: 2226 },
+    { name: '0x40000010 (PIT = 7) 广告视频停留时间小于20大于10S', parent: '40', value: 5656 },
+    { name: '0x40000020 (PIT = 9) 广告视频停留时间小于10S', parent: '40', value: 8692 },
+    { name: '0x30000001 (PIT = 10) 没有上报OS信息，或者上报的OS不是主流设备', parent: '30', value: 5394 },
+    { name: '0x30000002 (PIT = 10) Android必须上报，如果没有就是作弊。其他可以不上报，不算作弊', parent: '30', value: 6118 },
+    { name: '0x30000004 (PIT = 10) Android必须上报，如果没有就是作弊。其他可以不上报，如果没有IDFA和OpenUDID，也算作弊', parent: '30', value: 5823 },
+    { name: '0x30000008 (PIT = 10) IOS必须上报其一', parent: '30', value: 6537 },
+    { name: '0x30000010 (PIT = 10) IOS必须上报其一', parent: '30', value: 6637 },
+    { name: '0x30000020 (PIT = 10) Android必须上报其一', parent: '30', value: 5234 },
+    { name: '0x30000040 (PIT = 10) Android必须上报其一', parent: '30', value: 5128 },
+    { name: '0x30000080 (PIT = 10) 如果上报了IP，与Modem的IP进行比较，如果相同，不算作弊。如果不同就是作弊。如果没上报IP，需要观察其他域的内容。', parent: '30', value: 6346 },
+    { name: '0x30000100 (PIT = 10) 如果上报了TS，与Modem的TS进行比较，如果相同或相差少于1S，不算作弊。如果不同就是作弊。如果没上报TS，需要观察其他域的内容。', parent: '30', value: 6062 },
+    { name: '0x30000200 (PIT = 10) 如果上报了OSVS，与个人设备信息进行比较，如果相同，不算作弊。如果不同就是作弊。如果没上报TS，需要观察其他域的内容。', parent: '30', value: 5710 },
+    { name: '0x30000400 (PIT = 10) 如果上报了TERM，与个人设备信息进行比较，如果相同，不算作弊。如果不同就是作弊。如果没上报TERM，需要观察其他域的内容。', parent: '30', value: 6393 },
+    { name: '0x31000800 (PIT = 10) 如果上报了AKEY，与广告主提供的投放媒体信息进行比较，如果相同，不算作弊。如果不同就是作弊。如果没上报AKEY，需要观察其他域的内容。', parent: '31', value: 5082 },
+    { name: '0x31001000 (PIT = 10) 如果上报了ANAME，与监控所得的投放媒体信息进行比较，如果相同，不算作弊。如果不同就是作弊。如果没上报ANAME，需要观察其他域的内容。', parent: '31', value: 6540 },
+  ]
+
+
+  let source = types.map(t => {
+    let children = data.filter(d => d.parent == t.id);
+    let count = children.reduce((prev, c) => c.value + prev, 0)
+    return {
+      id: t.id,
+      name: t.name,
+      children,
+      value: count
+    }
+  })
+  var myChart = echarts.init(document.getElementById('main'));
+
+  option = {
+    name:'AAA',
+    tooltip: {
+        formatter: function(info){
+          console.log(info);
+          return info.data.value;
+        }
+    },
+    series: [{
+      type: 'treemap',
+      data: source,
+      leafDepth : 1,
+     
+    }]
+  };
+
+  myChart.setOption(option);
+
+</script>
+
+</html>

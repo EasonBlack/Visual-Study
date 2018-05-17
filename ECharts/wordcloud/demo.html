@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="../../vendor/echarts.min.4.1.0.rc2.js"></script>
+    <script src="../../vendor/echarts-wordcloud.min.js"></script>
+    <style>
+        #container {
+            margin: 0 auto;
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+
+
+</body>
+
+</html>
+<script>
+    let data = [
+        { name: "aaa", value: 4 },
+        { name: "bbb", value: 4 },
+        { name: "c", value: 14 },
+        { name: "d", value: 5 },
+        { name: "e1", value: 14 },
+        { name: "e4", value: 16 },
+        { name: "e2", value: 4 },
+        { name: "e3", value: 4 },
+    ]
+
+    var chart = echarts.init(document.getElementById('container'));
+    let chartOption = {
+        series: [{
+            type: 'wordCloud',
+            sizeRange: [12, 60],
+            left: 'center',
+            top: 'center',
+            width: '70%',
+            height: '80%',
+            right: null,
+            bottom: null,
+            rotationRange: [0, 0],
+            textStyle: {
+                normal: {
+                    fontFamily: 'sans-serif',
+                    fontWeight: 'bold',
+                    // Color can be a callback function or a color string
+                    color: function () {
+                        // Random color
+                        return 'rgb(' + [
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160)
+                        ].join(',') + ')';
+                    }
+                },
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            data: data
+        }]
+    }
+
+    chart.setOption(chartOption);
+
+    chart.on('click', function (params) {
+        console.log(params);
+        if (params.componentType === 'series') {
+           alert(params.data.name);
+        }
+
+    });
+
+
+</script>
