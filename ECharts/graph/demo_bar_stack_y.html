@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title></title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script src="../../vendor/echarts.4.0.2.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+
+    option = {
+    
+        yAxis: {
+            type: 'category',
+            data: [1,2,3,4],
+        },
+        xAxis: {
+            type: 'value',
+        
+        },
+        series: [{
+            name: 'min',
+            data: [2, 3, 4, 5],
+            type: 'bar',
+            stack: 'one',
+        }, {
+            name: 'max',
+            data: [1, 2, 3, 4],
+            type: 'bar',
+            stack: 'one',
+        }, {
+            name: 'avg',
+            data: [1, 2, 3, 4],
+            type: 'bar',
+            stack: 'one',
+        }]
+    };
+
+    myChart.setOption(option);
+
+</script>
+
+</html>
