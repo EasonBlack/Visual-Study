@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title></title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script src="../../vendor/echarts.4.0.2.js"></script>
+<script src="../../vendor/moment.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+    let _data = [
+        ['2017-01-01', 8.04],
+        ['2017-02-04', 6.95],
+        ['2017-02-17', 7.58],
+        ['2017-02-19', 8.81],
+        ['2017-02-21', 8.33],
+        ['2017-03-01', 9.96],
+        ['2017-03-07', 7.24],
+        ['2017-03-08', 4.26],
+        ['2017-03-11', 10.84],
+        ['2017-03-21', 4.82],
+        ['2017-04-01', 5.68]
+    ]
+    _data = _data.map(d=>{
+        let _t = new Date(moment(d[0]));
+        return [_t, d[1]];
+    })
+    
+    option = {
+        tooltip: {
+            formatter:(a)=>{
+                         
+            }
+        },
+        yAxis: {},
+        xAxis : [
+            {
+                type : 'time',
+                scale:true,
+                axisLabel : {
+                  
+                },
+                splitLine: {
+                    show: false
+                }
+            }
+        ],
+        series: [{
+            symbolSize: 5,
+            data: _data,
+            type: 'scatter'
+        }]
+    };
+
+    myChart.setOption(option);
+
+</script>
+
+</html>

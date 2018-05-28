@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title></title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script src="../../vendor/echarts.4.0.2.js"></script>
+<script src="../../vendor/moment.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+    let _data = [
+        ['2017-01-01 07:00:00', 8.04],
+        ['2017-01-01 08:00:00', 6.95],
+        ['2017-01-01 12:00:00', 7.58],
+        ['2017-01-01 13:00:00', 8.81],
+        ['2017-01-01 14:00:00', 8.33],
+        ['2017-01-01 21:00:00', 9.96],
+        ['2017-01-01 23:00:00', 7.24],
+        ['2017-01-05 08:00:00', 4.26],
+        ['2017-01-06 08:00:00', 10.84],
+        ['2017-01-11 10:00:00', 4.82],
+        
+    ]
+    _data = _data.map(d=>{
+        let _t = new Date(moment(d[0]));
+        return [_t, d[1]];
+    })
+    
+    option = {
+      
+        yAxis: {},
+        xAxis : [
+            {
+                type : 'time',
+                scale:true,
+                axisLabel : {
+                  formatter: function(t){
+                      return moment(t).format('MM-DD hh:mm')
+                  }
+                },
+                splitLine: {
+                    show: false
+                }
+            }
+        ],
+        series: [{
+            symbolSize: 5,
+            data: _data,
+            type: 'scatter'
+        }]
+    };
+
+    myChart.setOption(option);
+
+</script>
+
+</html>
