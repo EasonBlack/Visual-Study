@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <title></title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 600px; height:400px;"></div>
+</body>
+<script src="../../vendor/echarts.min.4.1.0.rc2.js"></script>
+<script src="../../vendor/echarts-china.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+
+    option = {
+        backgroundColor: '#404a59',
+        title: {
+            text: '全国主要城市空气质量',
+            subtext: 'data from PM25.in',
+            sublink: 'http://www.pm25.in',
+            x: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+                return params.name + ' : ' + params.value[2];
+            }
+        },
+        legend: {
+            orient: 'vertical',
+            y: 'bottom',
+            x: 'right',
+            data: ['pm2.5'],
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        visualMap: {
+            min: 0,
+            max: 200,
+            calculable: true,
+            inRange: {
+                color: ['#50a3ba', '#eac736', '#d94e5d']
+            },
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        geo: {
+            map: 'china',
+            label: {
+                emphasis: {
+                    show: false
+                }
+            },
+            itemStyle: {
+                normal: {
+                    areaColor: '#323c48',
+                    borderColor: '#111'
+                },
+                emphasis: {
+                    areaColor: '#2a333d'
+                }
+            }
+        },
+        series: [
+            {
+                name: 'pm2.5',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: [
+                    {name: "上海", value: [121.48,31.22, 9]},
+                    {name: "厦门", value: [118.1,24.46, 89]},
+                ],
+                symbolSize: 12,
+                label: {
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {
+                        show: false
+                    }
+                },
+                itemStyle: {
+                    emphasis: {
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }
+                },
+               
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+
+</script>
+
+</html>
