@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <title></title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script src="../../vendor/echarts.4.0.2.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            formatter: (e) => {
+                console.log(e);
+                return `AAAAA ${e[0].axisValue}<br>
+                    ${e[0].marker} ${e[0].seriesName} :   ${e[0].data}<br>
+                    ${e[1].marker} ${e[1].seriesName} :   ${e[1].data}<br>
+                `
+            }
+        },
+        yAxis: [{}],
+        xAxis: {
+            data: [1,2,3,4],
+        
+        },
+        series: [{
+            name: 'bar1',
+            data: [2, 3, 4, 5],
+            type: 'bar',
+           
+        }, {
+            name: 'bar2',
+            data: [1, 2, 3, 4],
+            type: 'bar',
+           
+        }]
+    };
+
+    myChart.setOption(option);
+
+</script>
+
+</html>
