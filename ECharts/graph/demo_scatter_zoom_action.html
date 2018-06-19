@@ -39,7 +39,8 @@
                 show: true,
                 realtime: true,
                 start: 10,
-                end: 30
+                end: 30,
+
             },
            
         ],
@@ -72,11 +73,19 @@
             }
         }]
     };
+    // myChart.on('dataZoom', (e)=>{
+    //     console.log(e)
+    // }); 
+  
+    myChart.setOption(option);
+    myChart.dispatchAction({
+        type: 'dataZoom',
+        startValue: 12,
+        endValue: 14
+    });
     myChart.on('dataZoom', (e)=>{
         console.log(e)
     }); 
-    myChart.setOption(option);
-
 </script>
 
 </html>
