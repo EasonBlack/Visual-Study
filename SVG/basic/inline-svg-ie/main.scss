@@ -1,0 +1,40 @@
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+    
+    @if $index {
+      @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    
+    @return $string;
+  }
+
+@function svg-inline($string){
+    $result: str-replace($string, "<svg", "<svg xmlns='http://www.w3.org/2000/svg'");
+    $result: str-replace($result, '%', '%25');
+    $result: str-replace($result, '#', '%23');
+    $result: str-replace($result, '"', '%22');
+    $result: str-replace($result, "'", '%27');
+    $result: str-replace($result, ' ', '%20');
+    $result: str-replace($result, '<', '%3C');
+    $result: str-replace($result, '>', '%3E');
+    @return "data:image/svg+xml," + $result;
+}
+
+
+$mySVG: svg-inline("<svg width='10' height='10'><linearGradient id='gradient'><stop offset='10%' stop-color='#F00'/><stop offset='90%' stop-color='#fcc'/> </linearGradient><rect fill='url(#gradient)' x='0' y='0' width='100%' height='100%'/></svg>");
+
+body { 
+    
+}
+
+div {
+    height:100px;
+    background-image: 
+    url($mySVG);
+}
+
+.box { 
+    height:100px;
+    background: 
+    url("data:image/svg+xml;utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><linearGradient id='gradient'><stop offset='10%' stop-color='#F00'/><stop offset='90%' stop-color='#fcc'/> </linearGradient><rect fill='url(#gradient)' x='0' y='0' width='100%' height='100%'/></svg>");
+}

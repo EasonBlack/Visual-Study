@@ -1,0 +1,9 @@
+div {
+  height: 100px;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2710%27%20height=%2710%27%3E%3ClinearGradient%20id=%27gradient%27%3E%3Cstop%20offset=%2710%25%27%20stop-color=%27%23F00%27/%3E%3Cstop%20offset=%2790%25%27%20stop-color=%27%23fcc%27/%3E%20%3C/linearGradient%3E%3Crect%20fill=%27url(%23gradient)%27%20x=%270%27%20y=%270%27%20width=%27100%25%27%20height=%27100%25%27/%3E%3C/svg%3E"); }
+
+.box {
+  height: 100px;
+  background: url("data:image/svg+xml;utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><linearGradient id='gradient'><stop offset='10%' stop-color='#F00'/><stop offset='90%' stop-color='#fcc'/> </linearGradient><rect fill='url(#gradient)' x='0' y='0' width='100%' height='100%'/></svg>"); }
+
+/*# sourceMappingURL=main.css.map */
