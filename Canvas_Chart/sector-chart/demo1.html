@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <canvas id='canvas'  width="600" height="600" 
+    style="border:1px solid gainsboro" ></canvas>
+</body>
+
+</html>
+<script>
+    const data = [
+        {id: 1, name: "aa", num: 23},
+        {id: 1, name: "a1", num: 13},
+        {id: 1, name: "a2", num: 29},
+        {id: 1, name: "a3", num: 20},
+        {id: 1, name: "a4", num: 63},
+        {id: 2, name: "bb", num: 13},
+        {id: 3, name: "cc", num: 43},
+        {id: 4, name: "dd", num: 8},
+        {id: 5, name: "ee", num: 76},
+        {id: 6, name: "ff", num: 33},
+        {id: 7, name: "gg", num: 51},
+        {id: 8, name: "hh", num: 29},
+        {id: 9, name: "ii", num: 100}    
+    ]
+    const title = "Hello world every day";
+    //const title = "W";
+     
+   
+    let canvas = document.getElementById('canvas');
+    let c = canvas.getContext('2d');
+
+    let center = {
+        x: canvas.width/2 ,
+        y: canvas.height/2
+    }
+    let r = center.x - 40;
+
+    c.beginPath();
+    c.fillStyle = '#ccc';
+    c.arc(center.x, center.y, 5, 0, 2 * Math.PI);
+    c.fill()
+    c.beginPath();
+    c.arc(center.x, center.y, r, 0, 2 * Math.PI);
+    c.stroke();
+
+    //30deg 的边
+    c.beginPath();
+    c.save()
+    c.translate(center.x, center.y);
+    c.rotate(30 * Math.PI / 180);
+    c.moveTo(0, 0);
+    c.lineTo(0, -1 * r);
+    c.stroke();
+    c.restore();
+
+    //下30deg的边
+    c.beginPath();
+    c.save()
+    c.translate(center.x, center.y);
+    c.rotate((30+120) * Math.PI / 180);
+    c.moveTo(0, 0);
+    c.lineTo(0, -1 * r);
+    c.stroke();
+    c.restore();
+
+    //每一根
+    let _perdeg = 120 / (data.length+1) ;
+    data.forEach((d,i)=>{
+        let theDeg = (30+_perdeg*(i+1)) * Math.PI / 180; 
+        console.log(theDeg);
+    
+        c.save();
+        c.translate(center.x, center.y);
+        c.rotate(theDeg);
+        c.beginPath();  
+        c.lineWidth = 1
+        c.strokeStyle = '#ccc';
+        c.moveTo(0, 0);
+        c.lineTo(0, -1 * r );
+        c.stroke();
+
+        c.beginPath();
+        c.lineWidth = 3
+        c.strokeStyle = '#EA4460';
+       
+        c.moveTo(0, 0);
+        c.lineTo(0, -1 * r * d.num/100);
+        c.stroke();
+        
+        c.beginPath();
+        c.lineWidth = 1;
+        c.strokeStyle = 'black';
+        c.rotate( -1 * 90 * Math.PI / 180); //转到水平位置
+        c.strokeText(d.name, r + 5 ,3);   //向下偏移3
+        c.strokeStyle = '#ccc';
+        c.strokeText(d.num, r - 20 , 3);
+        c.restore();
+    })
+
+
+    //外圈文字
+    let perWordDeg = 2;
+    let totleDeg = perWordDeg * title.length;
+    let startDeg = (180 -totleDeg)/2;
+    console.log(startDeg, totleDeg)
+    let rtitle = [...title].reverse();
+    c.textAlign = 'center';
+    for(let i = 0;i<rtitle.length;i++) {
+        c.save();
+        c.beginPath();
+        c.translate(center.x, center.y);
+        c.rotate( (90 - 1* (startDeg + i*perWordDeg ))* Math.PI / 180);
+        c.strokeText(rtitle[i], r + 25 ,3);
+        c.restore();
+    }
+
+</script>
