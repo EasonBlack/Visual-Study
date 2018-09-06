@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <canvas id='canvas'  width="600" height="600" 
+    style="border:1px solid gainsboro" ></canvas>
+</body>
+
+</html>
+<script src='outline.js'></script>
+<script src='item.js'></script>
+<script src='app.js'></script>
+<script>
+    let source = [
+        {name:"aaa", start:"48", end: "48"},
+        {name:"bbb", start:"72", end: "81"},
+        {name:"ccc", start:"79", end: "79"},
+        {name:"ddd", start:"83", end: "97"},
+        {name:"eee", start:"57", end: "62"}
+    ];
+    let source_title="Price Change";
+
+    let canvas = document.getElementById('canvas');
+    let c = canvas.getContext('2d');
+    let canvasMargin  = {
+        x: 20,
+        y: 40,
+    }
+    let chartMargin = {
+        x: 40,
+        y: 0
+    }
+    let chartWH = {
+        w: canvas.width - (canvasMargin.x + chartMargin.x) * 2 ,
+        h: canvas.height - (canvasMargin.y + chartMargin.y) * 2
+    }
+    drawChart({c, items:source, canvasMargin, chartMargin, chartWH});
+</script>
