@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #main {
+            width: 300px;
+            height:300px;
+        }
+    </style>
+</head>
+<body>
+    <div id='main'></div>
+    <!-- <canvas id="canvas"></canvas> -->
+</body>
+<script src='../../node_modules/zrender/dist/zrender.js'></script>
+<script>
+    var zr = zrender.init(document.getElementById('main'));
+    var circle = new zrender.Circle({
+        shape: {
+            cx: 150,
+            cy: 50,
+            r: 40
+        },
+        style: {
+            fill: 'green',
+            stroke: '#F00'
+        }
+    }); 
+    console.log(circle);
+   
+    circle.on('click', function() {alert('Hello, zrender!')});
+   
+
+    circle.on('mouseover',  ()=>{
+        zr.addHover(circle, {
+            stroke: 'yellow',
+            fill: 'red',
+            opacity: 0.4
+        });
+        zr.refresh();
+    });
+    circle.on('mouseout',  function(){
+        zr.removeHover(this);
+    });
+   
+    zr.add(circle);
+</script>
+</html>

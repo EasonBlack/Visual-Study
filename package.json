@@ -11,7 +11,8 @@
   "dependencies": {
     "echarts": "^4.0.2",
     "jquery": "^3.2.1",
-    "webpack": "^2.4.1"
+    "webpack": "^2.4.1",
+    "zrender": "^4.0.4"
   },
   "devDependencies": {
     "webpack-dev-server": "^2.4.3",
